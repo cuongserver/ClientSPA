@@ -1,5 +1,5 @@
 {
-  "name": "ms.spa",
+  "name": "clientspa",
   "version": "0.1.0",
   "private": true,
   "dependencies": {
