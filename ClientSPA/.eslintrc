@@ -4,19 +4,10 @@
 		"ecmaVersion": 6,
 		"sourceType": "module"
 	},
-	"plugins": [
-		"@typescript-eslint"
-	],
-	"extends": [
-		"plugin:react/recommended"
-	],
+	"plugins": ["@typescript-eslint"],
+	"extends": ["plugin:react/recommended"],
 	"rules": {
-		"@typescript-eslint/no-explicit-any": [
-			"error"
-		],
-		"no-unused-vars": "off",
-		"@typescript-eslint/no-unused-vars": [
-			"error"
-		]
+		"@typescript-eslint/no-unused-vars": ["error"],
+		"@typescript-eslint/no-explicit-any": ["error"]
 	}
 }
