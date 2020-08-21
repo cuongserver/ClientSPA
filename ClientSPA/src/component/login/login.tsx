@@ -15,7 +15,9 @@ class Login extends React.PureComponent {
 	render() {
 		return (
 			<React.Fragment>
-				s<h6>This is sparta</h6>
+				<div className="no-margin-collapse">
+					<p>This is sparta</p>
+				</div>
 			</React.Fragment>
 		)
 	}

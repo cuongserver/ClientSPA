@@ -1,0 +1,19 @@
+#root,
+html,
+body {
+	height: 100%;
+	width: 100%;
+	background-color: burlywood;
+	padding: 0px;
+}
+
+.no-margin-collapse {
+	&:before {
+		content: ' ';
+		display: flex;
+	}
+	&:after {
+		content: ' ';
+		display: flex;
+	}
+}

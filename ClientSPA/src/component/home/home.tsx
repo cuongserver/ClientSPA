@@ -1,5 +1,5 @@
 import React from 'react'
-import 'App.css'
+import 'app.css'
 
 class Home extends React.Component {
 	private logo = `${process.env.PUBLIC_URL}/logo192.png`
