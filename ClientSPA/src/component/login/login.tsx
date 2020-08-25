@@ -5,7 +5,6 @@ import {
 	Button,
 	Link,
 	Divider,
-	Avatar,
 	Typography,
 	InputLabel,
 } from '@material-ui/core'
@@ -31,11 +30,106 @@ interface IComponentProps extends WithTranslation {
 	changeLanguage: (lang: string) => void
 }
 
-class Login extends React.PureComponent<IComponentProps> {
+interface IComponentState {
+	mode: string
+}
+
+class Login extends React.PureComponent<IComponentProps, IComponentState> {
+	constructor(props: IComponentProps) {
+		super(props)
+		this.state = {
+			mode: 'login',
+		}
+	}
+
 	changeLanguage = (e: React.MouseEvent): void => {
 		const target = e.currentTarget
 		const newLang = target.getAttribute('alt') as string
 		this.props.changeLanguage(newLang)
+	}
+
+	changeMode = (): void => {
+		if (this.state.mode == 'login') {
+			this.setState({
+				mode: 'passwordRecovery',
+			})
+		} else {
+			this.setState({
+				mode: 'login',
+			})
+		}
+	}
+
+	get layoutLogin(): JSX.Element {
+		const { t } = this.props
+		return (
+			<React.Fragment>
+				<TextField
+					id="login-username"
+					label={t('login-label-username')}
+					variant="outlined"
+					fullWidth
+					size="small"
+				/>
+				<div className="m-t-20"></div>
+				<TextField
+					id="login-password"
+					label={t('login-label-password')}
+					variant="outlined"
+					fullWidth
+					size="small"
+				/>
+				<div className="m-t-20"></div>
+				<Button variant="contained" color="primary" size="large" fullWidth>
+					{t('login-label-login-command')}
+				</Button>
+				<div className="m-t-10"></div>
+				<Typography color="secondary">
+					<Link
+						color="inherit"
+						underline="hover"
+						className="hov-pointer"
+						onClick={() => this.changeMode()}
+					>
+						{t('login-label-forgotpassword')}
+					</Link>
+				</Typography>
+			</React.Fragment>
+		)
+	}
+
+	get layoutRecoverPassword(): JSX.Element {
+		const { t } = this.props
+		return (
+			<React.Fragment>
+				<Typography variant="body1" style={{ fontWeight: 'bold' }}>
+					{t('login-label-email-for-password-recover')}
+				</Typography>
+				<div className="m-t-10"></div>
+				<TextField
+					id="login-username-for-password-recover"
+					label={t('login-label-username')}
+					variant="outlined"
+					fullWidth
+					size="small"
+				/>
+				<div className="m-t-20"></div>
+				<Button variant="contained" color="primary" size="large" fullWidth>
+					{t('login-label-recover-password-command')}
+				</Button>
+				<div className="m-t-10"></div>
+				<Typography color="secondary">
+					<Link
+						color="inherit"
+						underline="hover"
+						className="hov-pointer"
+						onClick={() => this.changeMode()}
+					>
+						{t('login-label-goback')}
+					</Link>
+				</Typography>
+			</React.Fragment>
+		)
 	}
 
 	render() {
@@ -49,55 +143,42 @@ class Login extends React.PureComponent<IComponentProps> {
 					}}
 				>
 					<Card classes={classList} raised>
-						<TextField
-							id="login-username"
-							label={t('login-label-username')}
-							variant="outlined"
-							fullWidth
-							size="small"
-						/>
-						<div className="m-b-20"></div>
-						<TextField
-							id="login-password"
-							label={t('login-label-password')}
-							variant="outlined"
-							fullWidth
-							size="small"
-						/>
-						<div className="m-b-20"></div>
-						<Button variant="contained" color="primary" size="large" fullWidth>
-							{t('login-label-login-command')}
-						</Button>
-						<div className="m-b-10"></div>
-						<Typography color="secondary">
-							<Link color="inherit" underline="hover" className="hov-pointer">
-								{t('login-label-forgotpassword')}
-							</Link>
-						</Typography>
+						<div className="m-t-auto" />
 
-						<div className="m-b-10"></div>
+						{this.state.mode == 'login' ? this.layoutLogin : null}
+						{this.state.mode == 'passwordRecovery'
+							? this.layoutRecoverPassword
+							: null}
+
+						<div className="m-t-auto"></div>
 						<Divider orientation="horizontal" className="w-full" />
-						<div className="m-b-70"></div>
+						<div className="m-t-10"></div>
 						<Typography color="secondary">
 							<InputLabel>{t('login-label-available-language')}</InputLabel>
 						</Typography>
-						<div className="dis-flex p-t-15">
+						<div className="m-t-5"></div>
+						<div className="dis-flex">
 							<img
 								alt="en"
+								title="en"
 								src="/image/flag/uk.png"
 								onClick={this.changeLanguage}
 								height="32px"
 								width="32px"
+								className="p-t-1 p-b-1 p-l-1 p-r-1 hov-pointer login-lang-switch"
 							/>
 							<div className="m-l-5 m-r-5"></div>
 							<img
 								alt="vi"
+								title="vi"
 								src="/image/flag/vietnam.png"
 								onClick={this.changeLanguage}
 								height="32px"
 								width="32px"
+								className="p-t-1 p-b-1 p-l-1 p-r-1 hov-pointer login-lang-switch"
 							/>
 						</div>
+						<div className="m-t-10"></div>
 					</Card>
 				</div>
 			</React.Fragment>
