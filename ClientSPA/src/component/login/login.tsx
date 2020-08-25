@@ -11,9 +11,10 @@ import {
 import 'component/login/login.scss'
 import { WithTranslation, withTranslation } from 'react-i18next'
 import background from 'asset/image/login-background.jpg'
-import { Dispatch } from 'redux'
 import { connect } from 'react-redux'
-import * as LocaleStore from 'store/locale'
+import { AppState } from 'model/base'
+import { actionCreators } from 'store/locale'
+import * as LocaleModel from 'model/locale'
 const classList = {
 	root: 'login-card flex-col-c-m p-l-10 p-r-10',
 }
@@ -25,8 +26,7 @@ const classList = {
 // 		</InputAdornment>
 // 	),
 // }
-interface IComponentProps extends WithTranslation {
-	currentLang: string
+interface IComponentProps extends WithTranslation, LocaleModel.State {
 	changeLanguage: (lang: string) => void
 }
 
@@ -49,7 +49,7 @@ class Login extends React.PureComponent<IComponentProps, IComponentState> {
 	}
 
 	changeMode = (): void => {
-		if (this.state.mode == 'login') {
+		if (this.state.mode === 'login') {
 			this.setState({
 				mode: 'passwordRecovery',
 			})
@@ -145,8 +145,8 @@ class Login extends React.PureComponent<IComponentProps, IComponentState> {
 					<Card classes={classList} raised>
 						<div className="m-t-auto" />
 
-						{this.state.mode == 'login' ? this.layoutLogin : null}
-						{this.state.mode == 'passwordRecovery'
+						{this.state.mode === 'login' ? this.layoutLogin : null}
+						{this.state.mode === 'passwordRecovery'
 							? this.layoutRecoverPassword
 							: null}
 
@@ -188,15 +188,10 @@ class Login extends React.PureComponent<IComponentProps, IComponentState> {
 
 const LoginWithTranslation = withTranslation()(Login)
 
-const mapStateToProps = (state: LocaleStore.IState) => ({
-	currentLang: state.currentLang,
+const mapStateToProps = (state: AppState) => ({
+	...state.locale,
 })
-const mapDispatchToProps = (dispatch: Dispatch) => {
-	return {
-		changeLanguage: (lang: string) =>
-			dispatch({ type: 'CHANGE_LANGUAGE', payload: lang }),
-	}
-}
+const mapDispatchToProps = { ...actionCreators }
 
 const LoginWithStore = connect(
 	mapStateToProps,

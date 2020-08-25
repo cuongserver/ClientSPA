@@ -1,9 +1,21 @@
-import { createStore } from 'redux'
+import { AppState } from 'model/base';
+import { createStore, combineReducers, applyMiddleware } from 'redux'
 import * as LocaleStore from 'store/locale'
+import thunk from 'redux-thunk'
+
+
+const initialState: AppState = {
+	locale: LocaleStore.initialState
+}
+
+const reducers = combineReducers({
+	locale: LocaleStore.reducer
+})
 
 const globalStore = createStore(
-	LocaleStore.reducer,
-	LocaleStore.initialState
+	reducers,
+	initialState,
+	applyMiddleware(thunk)
 )
 
 export default globalStore

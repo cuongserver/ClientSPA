@@ -1,61 +1,68 @@
-import { Action, Reducer } from 'redux'
-import i18n from 'infrastructure/i18n'
+import { Reducer, AnyAction } from 'redux'
+import { PureAction, AppThunkAction, AppState } from 'model/base'
+import i18n, { cacheLang, availableLang } from 'infrastructure/i18n'
+import * as LocaleModel from 'model/locale'
+import { ThunkAction } from 'redux-thunk'
 
-
-export interface IState {
-	loadedTranPkg: string[],
-	currentLang: string,
-	supportedLang: string[]
+export const initialState: LocaleModel.State = {
+	loadedTranPkg: [cacheLang],
+	currentLang: cacheLang,
+	supportedLang: [...availableLang]
 }
-
-
-export interface ChangeLanguageAction {
-	type: 'CHANGE_LANGUAGE',
-	payload: string
-}
-
-export const initialState: IState = {
-	loadedTranPkg: [localStorage.getItem('displayLanguage') || 'vi'],
-	currentLang: localStorage.getItem('displayLanguage') || 'vi',
-	supportedLang: ['vi', 'en']
-}
-
-import(`asset/translation/${initialState.currentLang}.json`).then((data: unknown) => {
-	i18n.addResourceBundle(initialState.currentLang, 'translation', data, true)
-	localStorage.setItem('displayLanguage', initialState.currentLang)
-})
-
-export type KnownAction = ChangeLanguageAction
 
 export const actionCreators = {
-	changeLanguage: (lang: string): ChangeLanguageAction => {
-		return {
-			type: 'CHANGE_LANGUAGE',
-			payload: lang
+	changeLanguage: (lang: string): AppThunkAction<PureAction<string>> => (dispatch, getState) => {
+		const state = getState().locale
+		let targetLang = lang
+		if (!state.supportedLang.includes(lang)) targetLang = state.currentLang
+		if (state.loadedTranPkg.includes(targetLang)) {
+			i18n.changeLanguage(targetLang, () => {
+				dispatch({ type: 'CHANGE_LANGUAGE', payload: targetLang, error: false })
+				localStorage.setItem('displayLanguage', targetLang)
+			})
+		}
+		else {
+			import(`asset/translation/${targetLang}.json`)
+				.then(data => {
+					i18n.addResourceBundle(targetLang, 'translation', data, true)
+					i18n.changeLanguage(targetLang)
+					localStorage.setItem('displayLanguage', targetLang)
+					dispatch({ type: 'CHANGE_LANGUAGE', payload: targetLang, error: false })
+				})
 		}
 	}
 }
 
-export const reducer: Reducer<IState> = (state: IState | undefined, incomingAction: Action): IState => {
+export const reducer: Reducer<LocaleModel.State> = (state: LocaleModel.State | undefined, incomingAction: PureAction<string>): LocaleModel.State => {
 	if (state === undefined) {
 		return initialState
 	}
 	const newState = { ...state }
-	const action = incomingAction as KnownAction;
-	let lang = action.payload;
-	if (!newState.supportedLang.includes(lang)) lang = initialState.currentLang
-	if (newState.loadedTranPkg.includes(lang)) {
-		i18n.changeLanguage(lang)
-	}
-	else {
-		import(`asset/translation/${lang}.json`)
-			.then(data => {
-				i18n.addResourceBundle(lang, 'translation', data, true)
-				i18n.changeLanguage(lang)
-				newState.loadedTranPkg.push(lang)
-			})
-	}
-	localStorage.setItem('displayLanguage', lang)
+	const lang = incomingAction.payload as string
 	newState.currentLang = lang
+	if (!newState.loadedTranPkg.includes(lang)) newState.loadedTranPkg.push(lang)
 	return { ...newState }
 }
+
+// const changeLanguage = (lang: string): ThunkAction<{}, AppState, {}, AnyAction> => (dispatch, getState, extraArg) => {
+
+// 	const state = getState().locale
+// 	let targetLang = lang
+// 	if (!state.supportedLang.includes(lang)) targetLang = state.currentLang
+// 	if (state.loadedTranPkg.includes(targetLang)) {
+// 		i18n.changeLanguage(targetLang, () => {
+// 			dispatch({ type: 'CHANGE_LANGUAGE', payload: targetLang, error: false })
+// 			localStorage.setItem('displayLanguage', targetLang)
+// 		})
+// 	}
+// 	else {
+// 		import(`asset/translation/${targetLang}.json`)
+// 			.then(data => {
+// 				i18n.addResourceBundle(targetLang, 'translation', data, true)
+// 				i18n.changeLanguage(targetLang)
+// 				localStorage.setItem('displayLanguage', targetLang)
+// 				dispatch({ type: 'CHANGE_LANGUAGE', payload: targetLang, error: false })
+// 			})
+// 	}
+// 	return {}
+// }
