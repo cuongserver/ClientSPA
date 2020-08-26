@@ -3,7 +3,7 @@ import { AppAction, AppState } from 'model/base'
 import i18n, { cacheLang, availableLang } from 'common/i18n'
 import * as LocaleModel from 'model/locale'
 import { Epic } from 'redux-observable'
-import { tap, map, filter } from 'rxjs/operators'
+import { map, filter } from 'rxjs/operators'
 
 export const initialState: LocaleModel.State = {
 	loadedTranPkg: [cacheLang],
@@ -21,7 +21,8 @@ export const reducer: Reducer<LocaleModel.State> = (
 
 	if (
 		incomingAction.type === 'CHANGE_LANGUAGE' &&
-		incomingAction.fromMiddleWare === true
+		incomingAction.fromMiddleWare === true &&
+		incomingAction.error === false
 	) {
 		const newState = { ...state }
 		const lang = incomingAction.payload as string
@@ -43,31 +44,33 @@ export const localeEpic: Epic<
 			(action) =>
 				action.type === 'CHANGE_LANGUAGE' && action.fromMiddleWare === false
 		),
-		tap((action) => {
-			const state = store.value.locale
-			let targetLang = action.payload as string
-			if (!state.supportedLang.includes(targetLang))
-				targetLang = state.currentLang
-			if (state.loadedTranPkg.includes(targetLang)) {
-				i18n.changeLanguage(targetLang)
-				localStorage.setItem('displayLanguage', targetLang)
-			} else {
-				import(`asset/translation/${targetLang}.json`)
-					.then((data) => {
+		map(
+			(action) => {
+				const state = store.value.locale
+				let targetLang = action.payload as string
+				let sideEffectFail = false
+				if (!state.supportedLang.includes(targetLang))
+					targetLang = state.currentLang
+				if (state.loadedTranPkg.includes(targetLang)) {
+					i18n.changeLanguage(targetLang)
+					localStorage.setItem('displayLanguage', targetLang)
+				} else {
+					import(`asset/translation/${targetLang}.json`).then((data: unknown) => {
 						i18n.addResourceBundle(targetLang, 'translation', data, true)
 						i18n.changeLanguage(targetLang)
 						localStorage.setItem('displayLanguage', targetLang)
+					}).catch((error: unknown) => {
+						console.log('xxxx')
+						sideEffectFail = true
 					})
-					.catch((error) => {
-						console.log(error)
-					})
+				}
+				console.log('yyyy')
+				return {
+					...action,
+					fromMiddleWare: true,
+					error: sideEffectFail
+				}
 			}
-		}),
-		map((action) => {
-			return {
-				...action,
-				fromMiddleWare: true,
-			}
-		})
+		)
 	)
 }
