@@ -1,19 +1,12 @@
 import * as LocaleModel from 'model/locale'
+import { Action } from 'redux'
 
-
-
-export interface PureAction<TPayload> {
-	type: string
+export interface AppAction<TPayload> extends Action<string> {
 	payload?: TPayload
 	error?: boolean
+	fromMiddleWare?: boolean
 }
-
-
 
 export interface AppState {
 	locale: LocaleModel.State
-}
-
-export interface AppThunkAction<TAction> {
-	(dispatch: (action: TAction) => void, getState: () => AppState): void;
 }

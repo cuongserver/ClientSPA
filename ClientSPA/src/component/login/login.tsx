@@ -12,8 +12,8 @@ import 'component/login/login.scss'
 import { WithTranslation, withTranslation } from 'react-i18next'
 import background from 'asset/image/login-background.jpg'
 import { connect } from 'react-redux'
-import { AppState } from 'model/base'
-import { actionCreators } from 'store/locale'
+import { Dispatch } from 'redux'
+import { AppState, AppAction } from 'model/base'
 import * as LocaleModel from 'model/locale'
 const classList = {
 	root: 'login-card flex-col-c-m p-l-10 p-r-10',
@@ -191,8 +191,12 @@ const LoginWithTranslation = withTranslation()(Login)
 const mapStateToProps = (state: AppState) => ({
 	...state.locale,
 })
-const mapDispatchToProps = { ...actionCreators }
 
+const mapDispatchToProps = (dispatch: Dispatch<AppAction<string>>) => ({
+	changeLanguage: (lang: string) => {
+		dispatch({ type: 'CHANGE_LANGUAGE', payload: lang, fromMiddleWare: false })
+	},
+})
 const LoginWithStore = connect(
 	mapStateToProps,
 	mapDispatchToProps
