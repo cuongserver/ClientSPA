@@ -7,7 +7,12 @@ import {
 	Divider,
 	Typography,
 	InputLabel,
+	InputAdornment,
+	InputProps,
+	IconButton,
 } from '@material-ui/core'
+import Visibility from '@material-ui/icons/Visibility'
+import VisibilityOff from '@material-ui/icons/VisibilityOff'
 import 'component/login/login.scss'
 import { WithTranslation, withTranslation } from 'react-i18next'
 import background from 'asset/image/login-background.jpg'
@@ -19,19 +24,13 @@ const classList = {
 	root: 'login-card flex-col-c-m p-l-10 p-r-10',
 }
 
-// const usernameInputProps: InputProps = {
-// 	startAdornment: (
-// 		<InputAdornment position="start">
-// 			<AccountCircle />
-// 		</InputAdornment>
-// 	),
-// }
 interface IComponentProps extends WithTranslation, LocaleModel.State {
 	changeLanguage: (lang: string) => void
 }
 
 interface IComponentState {
 	mode: string
+	showPassword: boolean
 }
 
 class Login extends React.PureComponent<IComponentProps, IComponentState> {
@@ -39,6 +38,7 @@ class Login extends React.PureComponent<IComponentProps, IComponentState> {
 		super(props)
 		this.state = {
 			mode: 'login',
+			showPassword: false,
 		}
 	}
 
@@ -46,6 +46,14 @@ class Login extends React.PureComponent<IComponentProps, IComponentState> {
 		const target = e.currentTarget
 		const newLang = target.getAttribute('alt') as string
 		this.props.changeLanguage(newLang)
+	}
+	handleClickShowPassword = () => {
+		this.setState({
+			showPassword: !this.state.showPassword,
+		})
+	}
+	handleMouseDownPassword = (event: React.MouseEvent<HTMLButtonElement>) => {
+		event.preventDefault()
 	}
 
 	changeMode = (): void => {
@@ -62,6 +70,18 @@ class Login extends React.PureComponent<IComponentProps, IComponentState> {
 
 	get layoutLogin(): JSX.Element {
 		const { t } = this.props
+		const passwordInputProps: InputProps = {
+			endAdornment: (
+				<InputAdornment position="end">
+					<IconButton
+						onClick={this.handleClickShowPassword}
+						onMouseDown={this.handleMouseDownPassword}
+					>
+						{this.state.showPassword ? <Visibility /> : <VisibilityOff />}
+					</IconButton>
+				</InputAdornment>
+			),
+		}
 		return (
 			<React.Fragment>
 				<TextField
@@ -78,6 +98,8 @@ class Login extends React.PureComponent<IComponentProps, IComponentState> {
 					variant="outlined"
 					fullWidth
 					size="small"
+					type={this.state.showPassword ? 'text' : 'password'}
+					InputProps={passwordInputProps}
 				/>
 				<div className="m-t-20"></div>
 				<Button variant="contained" color="primary" size="large" fullWidth>

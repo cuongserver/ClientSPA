@@ -3,7 +3,8 @@ import { AppAction, AppState } from 'model/base'
 import i18n, { cacheLang, availableLang } from 'common/i18n'
 import * as LocaleModel from 'model/locale'
 import { Epic } from 'redux-observable'
-import { map, filter } from 'rxjs/operators'
+import { filter, switchMap, timeout } from 'rxjs/operators'
+import { ajax } from 'rxjs/ajax'
 
 export const initialState: LocaleModel.State = {
 	loadedTranPkg: [cacheLang],
@@ -40,37 +41,37 @@ export const localeEpic: Epic<
 	AppState
 > = (action$, store) => {
 	return action$.pipe(
-		filter(
-			(action) =>
+		filter((action) => {
+			return (
 				action.type === 'CHANGE_LANGUAGE' && action.fromMiddleWare === false
-		),
-		map(
-			(action) => {
-				const state = store.value.locale
-				let targetLang = action.payload as string
-				let sideEffectFail = false
-				if (!state.supportedLang.includes(targetLang))
-					targetLang = state.currentLang
-				if (state.loadedTranPkg.includes(targetLang)) {
-					i18n.changeLanguage(targetLang)
-					localStorage.setItem('displayLanguage', targetLang)
-				} else {
-					import(`asset/translation/${targetLang}.json`).then((data: unknown) => {
+			)
+		}),
+		switchMap(async (action) => {
+			const state = store.value.locale
+			let targetLang = action.payload as string
+			let sideEffectFail = false
+			if (!state.supportedLang.includes(targetLang))
+				targetLang = state.currentLang
+			if (state.loadedTranPkg.includes(targetLang)) {
+				i18n.changeLanguage(targetLang)
+				localStorage.setItem('displayLanguage', targetLang)
+			} else {
+				await import(`asset/translation/${targetLang}.json`)
+					.then((data: unknown) => {
 						i18n.addResourceBundle(targetLang, 'translation', data, true)
 						i18n.changeLanguage(targetLang)
 						localStorage.setItem('displayLanguage', targetLang)
-					}).catch((error: unknown) => {
-						console.log('xxxx')
+					})
+					// eslint-disable-next-line @typescript-eslint/no-unused-vars
+					.catch((error: unknown) => {
 						sideEffectFail = true
 					})
-				}
-				console.log('yyyy')
-				return {
-					...action,
-					fromMiddleWare: true,
-					error: sideEffectFail
-				}
 			}
-		)
+			return {
+				...action,
+				fromMiddleWare: true,
+				error: sideEffectFail,
+			}
+		})
 	)
 }
