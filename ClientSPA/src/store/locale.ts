@@ -3,8 +3,7 @@ import { AppAction, AppState } from 'model/base'
 import i18n, { cacheLang, availableLang } from 'common/i18n'
 import * as LocaleModel from 'model/locale'
 import { Epic } from 'redux-observable'
-import { filter, switchMap, timeout } from 'rxjs/operators'
-import { ajax } from 'rxjs/ajax'
+import { filter, switchMap } from 'rxjs/operators'
 
 export const initialState: LocaleModel.State = {
 	loadedTranPkg: [cacheLang],
