@@ -1,7 +1,7 @@
-import { AppState, AppAction } from 'model/base'
+import { AppState, AppAction } from 'store/base'
 import { createStore, combineReducers, applyMiddleware } from 'redux'
-import * as LocaleStore from 'store/locale.store'
-import * as LoadingScreenStore from 'store/loading-screen.store'
+import * as LocaleStore from 'store/locale/locale.store'
+import * as LoadingScreenStore from 'store/loading-screen/loading-screen.store'
 import { createEpicMiddleware, combineEpics } from 'redux-observable'
 
 const initialState: AppState = {

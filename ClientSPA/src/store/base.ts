@@ -1,6 +1,6 @@
-/* eslint-disable @typescript-eslint/no-explicit-any */
-import * as LocaleModel from 'model/locale'
-import * as LoadingScreenModel from 'model/loading-screen'
+
+import * as LocaleModel from 'store/locale/locale.store.model'
+import * as LoadingScreenModel from 'store/loading-screen/loading-screen.store.model'
 import { Action } from 'redux'
 
 export interface AppAction<TPayload> extends Action<string> {
@@ -14,6 +14,3 @@ export interface AppState {
 	loadingScreen: LoadingScreenModel.State
 }
 
-export interface GeneralModel {
-	[key: string]: any
-}

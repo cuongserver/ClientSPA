@@ -11,7 +11,7 @@ class App extends React.Component {
 	render() {
 		return (
 			<div className="sizefull">
-				<LoadingScreen loading={false} />
+				<LoadingScreen />
 				<Route path="/" exact component={Login} />
 				<Route path="/login" exact component={Home} />
 			</div>

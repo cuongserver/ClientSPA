@@ -4,8 +4,8 @@ import React from 'react'
 import { Modal, LinearProgress } from '@material-ui/core'
 /**import from inside project */
 import 'component/shared/loading-screen.scss'
-import * as LoadingScreenModel from 'model/loading-screen'
-import { AppState } from 'model/base'
+import * as LoadingScreenModel from 'store/loading-screen/loading-screen.store.model'
+import { AppState } from 'store/base'
 import { connect } from 'react-redux'
 
 /**class declare */
@@ -29,7 +29,7 @@ class LoadingScreen extends React.PureComponent<LoadingScreenModel.State> {
 
 /**HOC */
 const mapStateToProps = (state: AppState) => ({
-	...state.locale,
+	...state.loadingScreen,
 })
 
-export default connect(mapStateToProps)(LoadingScreen)
+export default connect(mapStateToProps, {})(LoadingScreen)

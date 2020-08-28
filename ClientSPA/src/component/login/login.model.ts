@@ -1,11 +1,11 @@
 /**import 3rd party library */
 import { WithTranslation } from 'react-i18next'
 /**import from inside project */
-import * as LocaleModel from 'model/locale'
+import * as LocaleModel from 'store/locale/locale.store.model'
 
 export interface IComponentProps extends WithTranslation, LocaleModel.State {
 	changeLanguage: (lang: string) => void
-	activateLoader: (state: string) => void
+	activateLoader: (state: boolean) => void
 }
 
 export interface IComponentState {

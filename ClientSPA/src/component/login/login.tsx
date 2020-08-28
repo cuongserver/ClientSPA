@@ -22,7 +22,8 @@ import { Dispatch } from 'redux'
 import { Formik, FormikProps, FormikErrors } from 'formik'
 
 /**import from inside project */
-import { AppState, AppAction, GeneralModel } from 'model/base'
+import { AppState, AppAction } from 'store/base'
+import { GeneralModel } from 'model/general'
 import background from 'asset/image/login-background.jpg'
 import {
 	IComponentProps,
@@ -83,10 +84,11 @@ class Login extends React.PureComponent<IComponentProps, IComponentState> {
 	}
 
 	loginHandleClick = () => {
-		this.props.activateLoader('activate')
-		this.loginValidator.current
-			?.validateForm()
-			.then((value) => console.log(value))
+		this.props.activateLoader(true)
+		this.loginValidator.current?.validateForm().then((value) => {
+			console.log(value)
+			setTimeout(() => this.props.activateLoader(false), 10000)
+		})
 	}
 
 	loginHandleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -372,16 +374,20 @@ const mapStateToProps = (state: AppState) => ({
 	...state.locale,
 })
 
-const mapDispatchToProps = (dispatch: Dispatch<AppAction<string>>) => ({
+const mapDispatchToProps = (dispatch: Dispatch) => ({
 	changeLanguage: (lang: string) => {
-		dispatch({ type: 'CHANGE_LANGUAGE', payload: lang, fromMiddleWare: false })
+		dispatch({
+			type: 'CHANGE_LANGUAGE',
+			payload: lang,
+			fromMiddleWare: false,
+		} as AppAction<string>)
 	},
-	activateLoader: (state: string) => {
+	activateLoader: (state: boolean) => {
 		dispatch({
 			type: 'TRIGGER_LOADINGSCREEN',
 			payload: state,
 			fromMiddleWare: false,
-		})
+		} as AppAction<boolean>)
 	},
 })
 const LoginWithStore = connect(

@@ -1,7 +1,7 @@
 import { Reducer } from 'redux'
-import { AppAction, AppState } from 'model/base'
+import { AppAction, AppState } from 'store/base'
 import i18n, { cacheLang, availableLang } from 'common/i18n'
-import * as LocaleModel from 'model/locale'
+import * as LocaleModel from 'store/locale/locale.store.model'
 import { Epic } from 'redux-observable'
 import { filter, switchMap } from 'rxjs/operators'
 
