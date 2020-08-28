@@ -6,5 +6,8 @@
   "login-label-available-language": "Available language for display",
   "login-label-email-for-password-recover": "Enter username for password recovery",
   "login-label-recover-password-command": "Recover password",
-  "login-label-goback": "Return to login"
+  "login-label-goback": "Return to login",
+  "login-error-username-required": "Username is required",
+  "login-error-password-required": "Password is required",
+  "login-error-username-for-password-recover-required": "Username is required"
 }

@@ -2,6 +2,7 @@ import React from 'react'
 import Home from 'component/home/home'
 import { Route } from 'react-router-dom'
 import Login from 'component/login/login'
+import LoadingScreen from 'component/shared/loading-screen'
 import 'app.scss'
 import 'asset/style/utilities.css'
 
@@ -10,6 +11,7 @@ class App extends React.Component {
 	render() {
 		return (
 			<div className="sizefull">
+				<LoadingScreen loading={false} />
 				<Route path="/" exact component={Login} />
 				<Route path="/login" exact component={Home} />
 			</div>
