@@ -18,12 +18,14 @@ import Visibility from '@material-ui/icons/Visibility'
 import VisibilityOff from '@material-ui/icons/VisibilityOff'
 import { withTranslation } from 'react-i18next'
 import { connect } from 'react-redux'
-import { Dispatch } from 'redux'
 import { Formik, FormikProps, FormikErrors } from 'formik'
 
 /**import from inside project */
-import { AppState, AppAction } from 'store/base'
-import { GeneralModel } from 'model/general'
+import { AppState } from 'model/store-model'
+import * as AlertModel from 'model/store-model/alert'
+import * as LocaleModel from 'model/store-model/locale'
+import * as LoadingScreenModel from 'model/store-model/loading-screen'
+import { GeneralModel } from 'model/common'
 import background from 'asset/image/login-background.jpg'
 import {
 	IComponentProps,
@@ -54,13 +56,15 @@ class Login extends React.PureComponent<IComponentProps, IComponentState> {
 		}
 		this.loginValidator = React.createRef()
 		this.recoverPasswordValidator = React.createRef()
+		console.log(this.props)
 	}
 
 	/**event handler */
 	changeLanguage = (e: React.MouseEvent): void => {
 		const target = e.currentTarget
 		const newLang = target.getAttribute('alt') as string
-		this.props.changeLanguage(newLang)
+		if (this.props.currentLang === newLang) return
+		LocaleModel.actionCreators.changeLanguage(this.props.dispatch, newLang)
 	}
 	handleClickShowPassword = () => {
 		this.setState({
@@ -84,11 +88,20 @@ class Login extends React.PureComponent<IComponentProps, IComponentState> {
 	}
 
 	loginHandleClick = () => {
-		this.props.activateLoader(true)
-		this.loginValidator.current?.validateForm().then((value) => {
-			console.log(value)
-			setTimeout(() => this.props.activateLoader(false), 10000)
-		})
+		AlertModel.actionCreators.hideAlert(this.props.dispatch)
+		LoadingScreenModel.actionCreators.activateLoader(this.props.dispatch, true)
+		setTimeout(() => {
+			LoadingScreenModel.actionCreators.activateLoader(
+				this.props.dispatch,
+				false
+			)
+
+			AlertModel.actionCreators.showAlert(
+				this.props.dispatch,
+				new Date().toJSON(),
+				'success'
+			)
+		}, 2000)
 	}
 
 	loginHandleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -372,28 +385,9 @@ class Login extends React.PureComponent<IComponentProps, IComponentState> {
 const LoginWithTranslation = withTranslation()(Login)
 const mapStateToProps = (state: AppState) => ({
 	...state.locale,
+	alertOpen: state.alert.open,
 })
-
-const mapDispatchToProps = (dispatch: Dispatch) => ({
-	changeLanguage: (lang: string) => {
-		dispatch({
-			type: 'CHANGE_LANGUAGE',
-			payload: lang,
-			fromMiddleWare: false,
-		} as AppAction<string>)
-	},
-	activateLoader: (state: boolean) => {
-		dispatch({
-			type: 'TRIGGER_LOADINGSCREEN',
-			payload: state,
-			fromMiddleWare: false,
-		} as AppAction<boolean>)
-	},
-})
-const LoginWithStore = connect(
-	mapStateToProps,
-	mapDispatchToProps
-)(LoginWithTranslation)
+const LoginWithStore = connect(mapStateToProps)(LoginWithTranslation)
 const LoginHoc = () => {
 	return (
 		<React.Suspense fallback="">

@@ -1,11 +1,12 @@
+import { Dispatch } from 'redux';
 /**import 3rd party library */
 import { WithTranslation } from 'react-i18next'
 /**import from inside project */
-import * as LocaleModel from 'store/locale/locale.store.model'
+import * as LocaleModel from 'model/store-model/locale'
 
 export interface IComponentProps extends WithTranslation, LocaleModel.State {
-	changeLanguage: (lang: string) => void
-	activateLoader: (state: boolean) => void
+	dispatch: Dispatch
+	alertOpen: boolean
 }
 
 export interface IComponentState {

@@ -1,7 +1,7 @@
 import { Reducer } from 'redux'
-import { AppAction, AppState } from 'store/base'
-import i18n, { cacheLang, availableLang } from 'common/i18n'
-import * as LocaleModel from 'store/locale/locale.store.model'
+import { AppAction, AppState } from 'model/store-model'
+import i18n, { cacheLang, availableLang } from 'i18n-config'
+import * as LocaleModel from 'model/store-model/locale'
 import { Epic } from 'redux-observable'
 import { filter, switchMap } from 'rxjs/operators'
 
@@ -10,6 +10,9 @@ export const initialState: LocaleModel.State = {
 	currentLang: cacheLang,
 	supportedLang: [...availableLang],
 }
+
+
+
 
 export const reducer: Reducer<LocaleModel.State> = (
 	state: LocaleModel.State | undefined,

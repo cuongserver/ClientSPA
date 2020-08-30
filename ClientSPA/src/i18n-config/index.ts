@@ -11,7 +11,7 @@ i18n.use(initReactI18next).init({
 export const availableLang = ['vi', 'en']
 export const cacheLang =
 	localStorage.getItem('displayLanguage') &&
-	availableLang.includes(localStorage.getItem('displayLanguage') as string)
+		availableLang.includes(localStorage.getItem('displayLanguage') as string)
 		? (localStorage.getItem('displayLanguage') as string)
 		: 'vi'
 

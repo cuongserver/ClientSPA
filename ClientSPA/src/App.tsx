@@ -1,10 +1,12 @@
 import React from 'react'
-import Home from 'component/home/home'
-import { Route } from 'react-router-dom'
-import Login from 'component/login/login'
-import LoadingScreen from 'component/shared/loading-screen'
+import { Route, Switch } from 'react-router-dom'
+import LoadingScreen from 'component/shared/loading-screen/loading-screen.component'
+import Alert from 'component/shared/alert/alert.component'
 import 'app.scss'
 import 'asset/style/utilities.css'
+
+const Login = React.lazy(() => import('component/login/login.component'))
+const Home = React.lazy(() => import('component/home/home.component'))
 
 class App extends React.Component {
 	private logo = `${process.env.PUBLIC_URL}/logo192.png`
@@ -12,8 +14,13 @@ class App extends React.Component {
 		return (
 			<div className="sizefull">
 				<LoadingScreen />
-				<Route path="/" exact component={Login} />
-				<Route path="/login" exact component={Home} />
+				<Alert />
+				<React.Suspense fallback="">
+					<Switch>
+						<Route path="/" exact render={() => <Login />} />
+						<Route path="/login" exact render={() => <Home />} />
+					</Switch>
+				</React.Suspense>
 			</div>
 		)
 	}

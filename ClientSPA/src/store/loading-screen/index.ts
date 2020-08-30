@@ -1,12 +1,13 @@
 /**import 3rd party library */
 import { Reducer } from 'redux'
 /**import from inside project */
-import * as LoadingScreenStore from 'store/loading-screen/loading-screen.store.model'
-import { AppAction } from 'store/base'
+import * as LoadingScreenStore from 'model/store-model/loading-screen'
+import { AppAction } from 'model/store-model'
 
 export const initialState: LoadingScreenStore.State = {
 	loading: false,
 }
+
 
 export const reducer: Reducer<LoadingScreenStore.State> = (
 	state: LoadingScreenStore.State | undefined,
