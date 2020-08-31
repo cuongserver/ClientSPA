@@ -1,14 +1,17 @@
 import React from 'react'
-import { Route, Switch } from 'react-router-dom'
+import { Switch } from 'react-router-dom'
 import LoadingScreen from 'component/shared/loading-screen/loading-screen.component'
 import Alert from 'component/shared/alert/alert.component'
 import 'app.scss'
 import 'asset/style/utilities.css'
+import { AuthRoute } from 'routing-config/auth-route.component'
+import { connect } from 'react-redux'
+import { AppState } from 'model/store-model'
 
 const Login = React.lazy(() => import('component/login/login.component'))
 const Home = React.lazy(() => import('component/home/home.component'))
 
-class App extends React.Component {
+class App extends React.Component<{ isAuthenticated: boolean }> {
 	private logo = `${process.env.PUBLIC_URL}/logo192.png`
 	render() {
 		return (
@@ -17,8 +20,20 @@ class App extends React.Component {
 				<Alert />
 				<React.Suspense fallback="">
 					<Switch>
-						<Route path="/" exact render={() => <Login />} />
-						<Route path="/login" exact render={() => <Home />} />
+						<AuthRoute
+							path="/"
+							exact
+							isAuthenticated={this.props.isAuthenticated}
+							authenticationPath="/"
+							render={() => <Login />}
+						/>
+						<AuthRoute
+							path="/login"
+							isAuthenticated={this.props.isAuthenticated}
+							authenticationPath="/"
+							exact
+							render={() => <Home />}
+						/>
 					</Switch>
 				</React.Suspense>
 			</div>
@@ -26,4 +41,8 @@ class App extends React.Component {
 	}
 }
 
-export default App
+const mapStateToProps = (state: AppState) => ({
+	isAuthenticated: state.identity.isAuthenticated,
+})
+
+export default connect(mapStateToProps)(App)

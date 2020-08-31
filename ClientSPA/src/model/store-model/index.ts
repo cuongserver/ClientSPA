@@ -1,7 +1,7 @@
-
 import * as LocaleModel from 'model/store-model/locale'
 import * as LoadingScreenModel from 'model/store-model/loading-screen'
 import * as AlertModel from 'model/store-model/alert'
+import * as Identity from 'model/store-model/identity'
 import { Action } from 'redux'
 
 export interface AppAction<TPayload> extends Action<string> {
@@ -14,5 +14,5 @@ export interface AppState {
 	locale: LocaleModel.State
 	loadingScreen: LoadingScreenModel.State
 	alert: AlertModel.State
+	identity: Identity.State
 }
-

@@ -1,10 +1,16 @@
-import { Dispatch } from 'redux';
+import { Dispatch } from 'redux'
 /**import 3rd party library */
 import { WithTranslation } from 'react-i18next'
+import { StaticContext } from 'react-router'
+
 /**import from inside project */
 import * as LocaleModel from 'model/store-model/locale'
+import { RouteComponentProps } from 'react-router-dom'
 
-export interface IComponentProps extends WithTranslation, LocaleModel.State {
+export interface IComponentProps
+	extends WithTranslation,
+		LocaleModel.State,
+		RouteComponentProps<{}, StaticContext, { from: string }> {
 	dispatch: Dispatch
 	alertOpen: boolean
 }

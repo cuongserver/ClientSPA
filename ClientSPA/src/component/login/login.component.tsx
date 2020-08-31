@@ -19,12 +19,14 @@ import VisibilityOff from '@material-ui/icons/VisibilityOff'
 import { withTranslation } from 'react-i18next'
 import { connect } from 'react-redux'
 import { Formik, FormikProps, FormikErrors } from 'formik'
+import { withRouter } from 'react-router'
 
 /**import from inside project */
 import { AppState } from 'model/store-model'
 import * as AlertModel from 'model/store-model/alert'
 import * as LocaleModel from 'model/store-model/locale'
 import * as LoadingScreenModel from 'model/store-model/loading-screen'
+import * as IndentityModel from 'model/store-model/identity'
 import { GeneralModel } from 'model/common'
 import background from 'asset/image/login-background.jpg'
 import {
@@ -101,6 +103,10 @@ class Login extends React.PureComponent<IComponentProps, IComponentState> {
 				new Date().toJSON(),
 				'success'
 			)
+			IndentityModel.actionCreators.login(this.props.dispatch)
+
+			const redirectURL = this.props.location.state.from
+			if (redirectURL !== undefined) this.props.history.push(redirectURL)
 		}, 2000)
 	}
 
@@ -382,7 +388,7 @@ class Login extends React.PureComponent<IComponentProps, IComponentState> {
 }
 
 /**HOC */
-const LoginWithTranslation = withTranslation()(Login)
+const LoginWithTranslation = withRouter(withTranslation()(Login))
 const mapStateToProps = (state: AppState) => ({
 	...state.locale,
 	alertOpen: state.alert.open,
