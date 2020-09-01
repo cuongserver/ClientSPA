@@ -61,11 +61,23 @@ class Login extends React.PureComponent<IComponentProps, IComponentState> {
 		console.log(this.props)
 	}
 
+	getSnapshotBeforeUpdate(
+		prevProps: IComponentProps,
+		prevState: IComponentState
+	) {
+		console.log(prevProps.i18n.language)
+		console.log(this.props.i18n.language)
+	}
+
+	componentDidUpdate() {
+		console.log(new Date().toJSON())
+	}
+
 	/**event handler */
 	changeLanguage = (e: React.MouseEvent): void => {
 		const target = e.currentTarget
 		const newLang = target.getAttribute('alt') as string
-		if (this.props.currentLang === newLang) return
+		if (this.props.i18n.language === newLang) return
 		LocaleModel.actionCreators.changeLanguage(this.props.dispatch, newLang)
 	}
 	handleClickShowPassword = () => {
@@ -394,7 +406,6 @@ class Login extends React.PureComponent<IComponentProps, IComponentState> {
 /**HOC */
 const LoginWithTranslation = withRouter(withTranslation()(Login))
 const mapStateToProps = (state: AppState) => ({
-	...state.locale,
 	alertOpen: state.alert.open,
 })
 const LoginWithStore = connect(mapStateToProps)(LoginWithTranslation)

@@ -9,7 +9,6 @@ import { RouteComponentProps } from 'react-router-dom'
 
 export interface IComponentProps
 	extends WithTranslation,
-		LocaleModel.State,
 		RouteComponentProps<{}, StaticContext, { from: string }> {
 	dispatch: Dispatch
 	alertOpen: boolean

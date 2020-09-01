@@ -11,13 +11,11 @@ export const initialState: LocaleModel.State = {
 	supportedLang: [...availableLang],
 }
 
-
-
-
 export const reducer: Reducer<LocaleModel.State> = (
 	state: LocaleModel.State | undefined,
 	incomingAction: AppAction<string>
 ): LocaleModel.State => {
+	console.log(incomingAction.type)
 	if (state === undefined) {
 		return initialState
 	}
@@ -45,7 +43,8 @@ export const localeEpic: Epic<
 	return action$.pipe(
 		filter((action) => {
 			return (
-				action.type === 'CHANGE_LANGUAGE' && action.fromMiddleWare === false
+				action.type === 'CHANGE_LANGUAGE_BEFORE' &&
+				action.fromMiddleWare === false
 			)
 		}),
 		switchMap(async (action) => {
@@ -71,6 +70,7 @@ export const localeEpic: Epic<
 			}
 			return {
 				...action,
+				type: 'CHANGE_LANGUAGE',
 				fromMiddleWare: true,
 				error: sideEffectFail,
 			}
