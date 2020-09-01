@@ -105,8 +105,12 @@ class Login extends React.PureComponent<IComponentProps, IComponentState> {
 			)
 			IndentityModel.actionCreators.login(this.props.dispatch)
 
-			const redirectURL = this.props.location.state.from
-			if (redirectURL !== undefined) this.props.history.push(redirectURL)
+			const redirectURL = this.props.location.state?.from
+			if (redirectURL !== undefined) {
+				this.props.history.push(redirectURL)
+			} else {
+				this.props.history.push('/login')
+			}
 		}, 2000)
 	}
 
