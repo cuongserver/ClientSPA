@@ -4,6 +4,7 @@ import 'suneditor/dist/css/suneditor.min.css'
 import suneditor from 'suneditor'
 import plugins, { imageGallery } from 'suneditor/src/plugins'
 import SunEditor from 'suneditor/src/lib/core'
+import MUIRichTextEditor from 'component/shared/richtext-editor/MUIRichTextEditor.component'
 
 const buttonList = [
 	[
@@ -187,23 +188,27 @@ const viLang = {
 
 class Home extends React.Component {
 	private logo = `${process.env.PUBLIC_URL}/logo192.png`
-	private editor: undefined | SunEditor
 
-	componentDidMount() {
-		this.editor = suneditor.create('editor', {
-			plugins: plugins,
-			buttonList: buttonList,
-			imageGalleryUrl: '/gallery.json',
-		})
-		this.editor.setOptions({
-			plugins: plugins,
-			buttonList: buttonList,
-			lang: viLang,
-		})
+	editorRef: React.RefObject<typeof MUIRichTextEditor>
+	constructor(props: Readonly<{}>) {
+		super(props)
+		this.editorRef = React.createRef()
 	}
+	//private editor: SunEditor[] = []
+
+	// componentDidMount() {
+	// 	this.editor.push(
+	// 		suneditor.create('editor', {
+	// 			plugins: plugins,
+	// 			buttonList: buttonList,
+	// 			imageGalleryUrl: '/gallery.json',
+	// 			lang: viLang,
+	// 		})
+	// 	)
+	// }
 
 	handleClick = () => {
-		console.log((this.editor as SunEditor).getContents(false))
+		//console.log(this.editor[0].getContents(false))
 	}
 
 	render() {
@@ -223,7 +228,7 @@ class Home extends React.Component {
 						Learn React
 					</a>
 					<button onClick={this.handleClick}>View content</button>
-					<textarea id="editor" className="w-full"></textarea>
+					<MUIRichTextEditor label="Start typing..." />
 				</header>
 			</div>
 		)

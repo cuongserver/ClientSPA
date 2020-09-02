@@ -58,19 +58,6 @@ class Login extends React.PureComponent<IComponentProps, IComponentState> {
 		}
 		this.loginValidator = React.createRef()
 		this.recoverPasswordValidator = React.createRef()
-		console.log(this.props)
-	}
-
-	getSnapshotBeforeUpdate(
-		prevProps: IComponentProps,
-		prevState: IComponentState
-	) {
-		console.log(prevProps.i18n.language)
-		console.log(this.props.i18n.language)
-	}
-
-	componentDidUpdate() {
-		console.log(new Date().toJSON())
 	}
 
 	/**event handler */

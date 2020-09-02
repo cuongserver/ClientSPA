@@ -15,7 +15,6 @@ export const reducer: Reducer<LocaleModel.State> = (
 	state: LocaleModel.State | undefined,
 	incomingAction: AppAction<string>
 ): LocaleModel.State => {
-	console.log(incomingAction.type)
 	if (state === undefined) {
 		return initialState
 	}
