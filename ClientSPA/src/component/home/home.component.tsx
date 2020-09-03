@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-unused-vars */
 import React from 'react'
 import 'app.css'
 import 'suneditor/dist/css/suneditor.min.css'
@@ -5,7 +6,6 @@ import suneditor from 'suneditor'
 import plugins, { imageGallery } from 'suneditor/src/plugins'
 import SunEditor from 'suneditor/src/lib/core'
 import MUIRichTextEditor from 'component/shared/richtext-editor/MUIRichTextEditor.component'
-
 const buttonList = [
 	[
 		'undo',
@@ -194,21 +194,21 @@ class Home extends React.Component {
 		super(props)
 		this.editorRef = React.createRef()
 	}
-	//private editor: SunEditor[] = []
+	private editor: SunEditor[] = []
 
-	// componentDidMount() {
-	// 	this.editor.push(
-	// 		suneditor.create('editor', {
-	// 			plugins: plugins,
-	// 			buttonList: buttonList,
-	// 			imageGalleryUrl: '/gallery.json',
-	// 			lang: viLang,
-	// 		})
-	// 	)
-	// }
+	componentDidMount() {
+		this.editor.push(
+			suneditor.create('editor', {
+				plugins: plugins,
+				buttonList: buttonList,
+				imageGalleryUrl: '/gallery.json',
+				lang: viLang,
+			})
+		)
+	}
 
 	handleClick = () => {
-		//console.log(this.editor[0].getContents(false))
+		console.log(this.editor[0].getContents(false))
 	}
 
 	render() {
@@ -228,7 +228,9 @@ class Home extends React.Component {
 						Learn React
 					</a>
 					<button onClick={this.handleClick}>View content</button>
-					<MUIRichTextEditor label="Start typing..." />
+					<div className="w-full">
+						<textarea id="editor" className="w-full"></textarea>
+					</div>
 				</header>
 			</div>
 		)

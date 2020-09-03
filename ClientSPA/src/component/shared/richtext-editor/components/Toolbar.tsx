@@ -1,6 +1,6 @@
 /* eslint-disable react/prop-types */
 /* eslint-disable @typescript-eslint/no-explicit-any */
-import React, { FunctionComponent, useState, useEffect } from 'react'
+import React, { FunctionComponent } from 'react'
 import { EditorState } from 'draft-js'
 import FormatBoldIcon from '@material-ui/icons/FormatBold'
 import FormatItalicIcon from '@material-ui/icons/FormatItalic'
@@ -211,18 +211,23 @@ const STYLE_TYPES: TStyleType[] = [
 	},
 ]
 
-const Toolbar: FunctionComponent<TToolbarProps> = (props) => {
-	const [availableControls, setAvailableControls] = useState(
-		props.controls ? [] : STYLE_TYPES
-	)
-	const { editorState } = props
-	const id = props.inlineMode ? '-inline-toolbar' : '-toolbar'
-
-	useEffect(() => {
-		if (!props.controls) {
-			return
+type TToolbarState = {
+	availableControls: TStyleType[]
+}
+class Toolbar extends React.PureComponent<TToolbarProps, TToolbarState> {
+	constructor(props: TToolbarProps) {
+		super(props)
+		this.state = {
+			availableControls: this.getControlsFromProps(),
 		}
-		const filteredControls: TStyleType[] = []
+	}
+
+	private getControlsFromProps = () => {
+		const props = this.props
+		if (!props.controls) {
+			return STYLE_TYPES
+		}
+		let filteredControls: TStyleType[] = []
 		const controls = props.controls.filter(
 			(control, index) => props.controls!.indexOf(control) >= index
 		)
@@ -252,57 +257,63 @@ const Toolbar: FunctionComponent<TToolbarProps> = (props) => {
 				}
 			}
 		})
-		setAvailableControls(filteredControls)
-	}, [props.controls, props.customControls])
+		return filteredControls
+	}
 
-	return (
-		<div id={`${props.id}${id}`} className={props.className}>
-			{availableControls.map((style) => {
-				if (
-					props.inlineMode &&
-					style.type !== 'inline' &&
-					style.name !== 'link' &&
-					style.name !== 'clear'
-				) {
-					return null
-				}
-				let active = false
-				const action = props.onClick
-				if (style.type === 'inline') {
-					active = editorState.getCurrentInlineStyle().has(style.style)
-				} else if (style.type === 'block') {
-					const selection = editorState.getSelection()
-					const block = editorState
-						.getCurrentContent()
-						.getBlockForKey(selection.getStartKey())
-					if (block) {
-						active = style.style === block.getType()
-					}
-				} else {
-					if (style.style === 'IMAGE' || style.style === 'LINK') {
-						active = style.style === getSelectionInfo(editorState).entityType
-					}
-				}
+	render() {
+		const props = this.props
+		const { editorState } = props
+		const id = props.inlineMode ? '-inline-toolbar' : '-toolbar'
 
-				return (
-					<ToolbarButton
-						id={style.id}
-						editorId={props.id}
-						key={`key-${style.label}`}
-						active={active}
-						label={style.label}
-						onClick={action}
-						style={style.style}
-						type={style.type}
-						icon={style.icon}
-						component={style.component}
-						inlineMode={props.inlineMode}
-						disabled={props.disabled}
-						size={props.size}
-					/>
-				)
-			})}
-		</div>
-	)
+		return (
+			<div id={`${props.id}${id}`} className={props.className}>
+				{this.state.availableControls.map((style) => {
+					if (
+						props.inlineMode &&
+						style.type !== 'inline' &&
+						style.name !== 'link' &&
+						style.name !== 'clear'
+					) {
+						return null
+					}
+					let active = false
+					const action = props.onClick
+					if (style.type === 'inline') {
+						active = editorState.getCurrentInlineStyle().has(style.style)
+					} else if (style.type === 'block') {
+						const selection = editorState.getSelection()
+						const block = editorState
+							.getCurrentContent()
+							.getBlockForKey(selection.getStartKey())
+						if (block) {
+							active = style.style === block.getType()
+						}
+					} else {
+						if (style.style === 'IMAGE' || style.style === 'LINK') {
+							active = style.style === getSelectionInfo(editorState).entityType
+						}
+					}
+
+					return (
+						<ToolbarButton
+							id={style.id}
+							editorId={props.id}
+							key={`key-${style.label}`}
+							active={active}
+							label={style.label}
+							onClick={action}
+							style={style.style}
+							type={style.type}
+							icon={style.icon}
+							component={style.component}
+							inlineMode={props.inlineMode}
+							disabled={props.disabled}
+							size={props.size}
+						/>
+					)
+				})}
+			</div>
+		)
+	}
 }
 export default Toolbar

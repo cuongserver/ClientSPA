@@ -170,7 +170,9 @@ type TCustomRenderers = {
 
 const styles = ({ spacing, typography, palette }: Theme) =>
 	createStyles({
-		root: {},
+		root: {
+			border: '1px solid red',
+		},
 		container: {
 			margin: spacing(1, 0, 0, 0),
 			position: 'relative',
@@ -183,7 +185,7 @@ const styles = ({ spacing, typography, palette }: Theme) =>
 		inheritFontSize: {
 			fontSize: 'inherit',
 		},
-		editor: {},
+		editor: { minHeight: '27px' },
 		editorContainer: {
 			margin: spacing(1, 0, 0, 0),
 			cursor: 'text',
@@ -1337,48 +1339,7 @@ const MUIRichTextEditor: RefForwardingComponent<
 		</div>
 	)
 }
-/*
-class MuiRichTextEditorBlock
-	extends React.PureComponent<IMUIRichTextEditorProps>
-	implements TMUIRichTextEditorRef {
-	//**TMUIRichTextEditorRef implement *
-	focus = () => {
-		this.handleFocus()
-	}
 
-	save = () => {
-		handleSave()
-	}
-	insertAtomicBlock = (name: string, data: any) => {
-		handleInsertAtomicBlockSync(name, data)
-	}
-	insertAtomicBlockSync = (name: string, data: any) => {
-		handleInsertAtomicBlockSync(name, data)
-	}
-	insertAtomicBlockAsync = (
-		name: string,
-		promise: Promise<TAsyncAtomicBlockResponse>,
-		placeholder?: string
-	) => {
-		handleInsertAtomicBlockAsync(name, promise, placeholder)
-	}
-
-
-	//TMUIRichTextEditorRef implement (end)
-	handleFocus = () => {
-		const props = this.props
-		setFocus(true)
-		setTimeout(() => this.focus(), 0)
-		if (props.onFocus) {
-			props.onFocus()
-		}
-	}
-
-	render() {
-		return null
-	}
-}
-*/
 export default withStyles(styles, {
 	withTheme: true,
 	name: 'MUIRichTextEditor',

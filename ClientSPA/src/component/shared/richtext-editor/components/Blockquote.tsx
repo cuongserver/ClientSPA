@@ -1,6 +1,6 @@
 /* eslint-disable react/prop-types */
 /* eslint-disable @typescript-eslint/no-explicit-any */
-import React, { FunctionComponent } from 'react'
+import React from 'react'
 import {
 	createStyles,
 	withStyles,
@@ -21,8 +21,11 @@ interface IBlockquoteProps extends WithStyles<typeof styles> {
 	children?: React.ReactNode
 }
 
-const Blockquote: FunctionComponent<IBlockquoteProps> = (props) => {
-	return <div className={props.classes.root}>{props.children}</div>
+class Blockquote extends React.Component<IBlockquoteProps> {
+	render() {
+		const props = this.props
+		return <div className={props.classes.root}>{props.children}</div>
+	}
 }
 
 export default withStyles(styles, { withTheme: true })(Blockquote)

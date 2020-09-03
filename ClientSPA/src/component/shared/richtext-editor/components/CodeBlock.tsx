@@ -1,6 +1,6 @@
 /* eslint-disable react/prop-types */
 /* eslint-disable @typescript-eslint/no-explicit-any */
-import React, { FunctionComponent } from 'react'
+import React from 'react'
 import {
 	createStyles,
 	withStyles,
@@ -20,8 +20,11 @@ interface IBlockquoteProps extends WithStyles<typeof styles> {
 	children?: React.ReactNode
 }
 
-const CodeBlock: FunctionComponent<IBlockquoteProps> = (props) => {
-	return <div className={props.classes.root}>{props.children}</div>
+class CodeBlock extends React.PureComponent<IBlockquoteProps> {
+	render() {
+		const props = this.props
+		return <div className={props.classes.root}>{props.children}</div>
+	}
 }
 
 export default withStyles(styles, { withTheme: true })(CodeBlock)

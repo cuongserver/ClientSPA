@@ -1,6 +1,6 @@
 /* eslint-disable react/prop-types */
 /* eslint-disable @typescript-eslint/no-explicit-any */
-import React, { FunctionComponent, useState } from 'react'
+import React from 'react'
 import Button from '@material-ui/core/Button'
 import Grid from '@material-ui/core/Grid'
 import Popover from '@material-ui/core/Popover'
@@ -50,164 +50,213 @@ const styles = ({ spacing }: Theme) =>
 		},
 	})
 
-const UrlPopover: FunctionComponent<IUrlPopoverStateProps> = (props) => {
-	const [data, setData] = useState<TUrlData>(
-		props.data || {
-			url: undefined,
-			width: undefined,
-			height: undefined,
-			alignment: undefined,
-			type: undefined,
+type IUrlPopoverState = {
+	data: TUrlData
+}
+class UrlPopover extends React.PureComponent<
+	IUrlPopoverStateProps,
+	IUrlPopoverState
+> {
+	constructor(props: IUrlPopoverStateProps) {
+		super(props)
+		this.state = {
+			data: props.data || {
+				url: undefined,
+				width: undefined,
+				height: undefined,
+				alignment: undefined,
+				type: undefined,
+			},
 		}
-	)
+	}
 
-	const { classes } = props
-
-	const onSizeChange = (value: any, prop: 'width' | 'height') => {
+	onSizeChange = (value: any, prop: 'width' | 'height') => {
 		if (value === '') {
-			setData({ ...data, [prop]: undefined })
+			this.setState({ data: { ...this.state.data, [prop]: undefined } })
 			return
 		}
 		const intValue = parseInt(value, 10)
 		if (isNaN(intValue)) {
 			return
 		}
-		setData({ ...data, [prop]: intValue })
+		this.setState({ data: { ...this.state.data, [prop]: intValue } })
 	}
 
-	return (
-		<Popover
-			open={props.anchor !== undefined}
-			anchorEl={props.anchor}
-			anchorOrigin={{
-				vertical: 'bottom',
-				horizontal: 'left',
-			}}
-			transformOrigin={{
-				vertical: 'top',
-				horizontal: 'left',
-			}}
-		>
-			<div className={classes.linkPopover}>
-				<Grid container spacing={1}>
-					<Grid container item xs spacing={1}>
-						<Grid item xs={12}>
-							<TextField
-								className={classes.linkTextField}
-								onChange={(event) =>
-									setData({ ...data, url: event.target.value })
-								}
-								label="URL"
-								defaultValue={props.data && props.data.url}
-								autoFocus={true}
-								InputLabelProps={{
-									shrink: true,
-								}}
-							/>
+	render() {
+		const props = this.props
+		const { classes } = props
+
+		return (
+			<Popover
+				open={props.anchor !== undefined}
+				anchorEl={props.anchor}
+				anchorOrigin={{
+					vertical: 'bottom',
+					horizontal: 'left',
+				}}
+				transformOrigin={{
+					vertical: 'top',
+					horizontal: 'left',
+				}}
+			>
+				<div className={classes.linkPopover}>
+					<Grid container spacing={1}>
+						<Grid container item xs spacing={1}>
+							<Grid item xs={12}>
+								<TextField
+									className={classes.linkTextField}
+									onChange={(event) =>
+										this.setState({
+											data: { ...this.state.data, url: event.target.value },
+										})
+									}
+									label="URL"
+									defaultValue={props.data && props.data.url}
+									autoFocus={true}
+									InputLabelProps={{
+										shrink: true,
+									}}
+								/>
+							</Grid>
+							{props.isMedia ? (
+								<>
+									<Grid item xs={12}>
+										<ButtonGroup fullWidth>
+											<Button
+												color={
+													!this.state.data.type ||
+													this.state.data.type === 'image'
+														? 'primary'
+														: 'default'
+												}
+												size="small"
+												onClick={() =>
+													this.setState({
+														data: { ...this.state.data, type: 'image' },
+													})
+												}
+											>
+												<InsertPhotoIcon />
+											</Button>
+											<Button
+												color={
+													this.state.data.type === 'video'
+														? 'primary'
+														: 'default'
+												}
+												size="small"
+												onClick={() =>
+													this.setState({
+														data: { ...this.state.data, type: 'video' },
+													})
+												}
+											>
+												<MovieIcon />
+											</Button>
+										</ButtonGroup>
+									</Grid>
+									<Grid item xs={6}>
+										<TextField
+											onChange={(event) =>
+												this.onSizeChange(event.target.value, 'width')
+											}
+											value={this.state.data.width || ''}
+											label="Width"
+											InputLabelProps={{
+												shrink: true,
+											}}
+										/>
+									</Grid>
+									<Grid item xs={6}>
+										<TextField
+											onChange={(event) =>
+												this.onSizeChange(event.target.value, 'height')
+											}
+											value={this.state.data.height || ''}
+											label="Height"
+											InputLabelProps={{
+												shrink: true,
+											}}
+										/>
+									</Grid>
+									<Grid item xs={12}>
+										<ButtonGroup fullWidth>
+											<Button
+												color={
+													this.state.data.alignment === 'left'
+														? 'primary'
+														: 'default'
+												}
+												size="small"
+												onClick={() =>
+													this.setState({
+														data: { ...this.state.data, alignment: 'left' },
+													})
+												}
+											>
+												<FormatAlignLeft />
+											</Button>
+											<Button
+												color={
+													this.state.data.alignment === 'center'
+														? 'primary'
+														: 'default'
+												}
+												size="small"
+												onClick={() =>
+													this.setState({
+														data: { ...this.state.data, alignment: 'center' },
+													})
+												}
+											>
+												<FormatAlignCenter />
+											</Button>
+											<Button
+												color={
+													this.state.data.alignment === 'right'
+														? 'primary'
+														: 'default'
+												}
+												size="small"
+												onClick={() =>
+													this.setState({
+														data: { ...this.state.data, alignment: 'right' },
+													})
+												}
+											>
+												<FormatAlignRight />
+											</Button>
+										</ButtonGroup>
+									</Grid>
+								</>
+							) : null}
 						</Grid>
-						{props.isMedia ? (
-							<>
-								<Grid item xs={12}>
-									<ButtonGroup fullWidth>
-										<Button
-											color={
-												!data.type || data.type === 'image'
-													? 'primary'
-													: 'default'
-											}
-											size="small"
-											onClick={() => setData({ ...data, type: 'image' })}
-										>
-											<InsertPhotoIcon />
-										</Button>
-										<Button
-											color={data.type === 'video' ? 'primary' : 'default'}
-											size="small"
-											onClick={() => setData({ ...data, type: 'video' })}
-										>
-											<MovieIcon />
-										</Button>
-									</ButtonGroup>
-								</Grid>
-								<Grid item xs={6}>
-									<TextField
-										onChange={(event) =>
-											onSizeChange(event.target.value, 'width')
-										}
-										value={data.width || ''}
-										label="Width"
-										InputLabelProps={{
-											shrink: true,
-										}}
-									/>
-								</Grid>
-								<Grid item xs={6}>
-									<TextField
-										onChange={(event) =>
-											onSizeChange(event.target.value, 'height')
-										}
-										value={data.height || ''}
-										label="Height"
-										InputLabelProps={{
-											shrink: true,
-										}}
-									/>
-								</Grid>
-								<Grid item xs={12}>
-									<ButtonGroup fullWidth>
-										<Button
-											color={data.alignment === 'left' ? 'primary' : 'default'}
-											size="small"
-											onClick={() => setData({ ...data, alignment: 'left' })}
-										>
-											<FormatAlignLeft />
-										</Button>
-										<Button
-											color={
-												data.alignment === 'center' ? 'primary' : 'default'
-											}
-											size="small"
-											onClick={() => setData({ ...data, alignment: 'center' })}
-										>
-											<FormatAlignCenter />
-										</Button>
-										<Button
-											color={data.alignment === 'right' ? 'primary' : 'default'}
-											size="small"
-											onClick={() => setData({ ...data, alignment: 'right' })}
-										>
-											<FormatAlignRight />
-										</Button>
-									</ButtonGroup>
-								</Grid>
-							</>
-						) : null}
-					</Grid>
-					<Grid container item xs={12} direction="row" justify="flex-end">
-						{props.data && props.data.url ? (
-							<Button onClick={() => props.onConfirm(props.isMedia, '')}>
-								<DeleteIcon />
+						<Grid container item xs={12} direction="row" justify="flex-end">
+							{props.data && props.data.url ? (
+								<Button onClick={() => props.onConfirm(props.isMedia, '')}>
+									<DeleteIcon />
+								</Button>
+							) : null}
+							<Button
+								onClick={() =>
+									props.onConfirm(
+										props.isMedia,
+										this.state.data.url,
+										this.state.data.width,
+										this.state.data.height,
+										this.state.data.alignment,
+										this.state.data.type
+									)
+								}
+							>
+								<CheckIcon />
 							</Button>
-						) : null}
-						<Button
-							onClick={() =>
-								props.onConfirm(
-									props.isMedia,
-									data.url,
-									data.width,
-									data.height,
-									data.alignment,
-									data.type
-								)
-							}
-						>
-							<CheckIcon />
-						</Button>
+						</Grid>
 					</Grid>
-				</Grid>
-			</div>
-		</Popover>
-	)
+				</div>
+			</Popover>
+		)
+	}
 }
 
 export default withStyles(styles, { withTheme: true })(UrlPopover)
