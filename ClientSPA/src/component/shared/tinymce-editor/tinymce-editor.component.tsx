@@ -5,24 +5,45 @@ import 'tinymce'
 import 'tinymce/themes/modern'
 import 'tinymce/plugins/table'
 import 'tinymce/plugins/link'
+import 'tinymce/plugins/image'
+import 'tinymce/plugins/imagetools'
+import 'tinymce/plugins/textcolor'
+import 'tinymce/plugins/code'
+import 'tinymce/plugins/lists'
 import { Settings, Editor } from 'tinymce'
 
-declare var tinymce: any
-class TinyMceEditor extends React.PureComponent<{ currentLang: string }> {
-	constructor(props: Readonly<{ currentLang: string }>) {
-		super(props)
-	}
+declare const tinymce: any
+export class TinyMceEditor extends React.PureComponent<{
+	currentLang: string
+}> {
+	private editor!: Editor
+	private defaultToolbar =
+		'undo redo | styleselect | bold italic | alignleft ' +
+		'aligncenter alignright alignjustify | ' +
+		'bullist numlist outdent indent | link image'
+
 	componentDidMount() {
 		const settings: Settings = {
 			selector: '#editor',
-			plugins: ['link', 'table'],
+			plugins: [
+				'link',
+				'table',
+				'image',
+				'code',
+				'imagetools',
+				'textcolor',
+				'lists',
+			],
 			skin_url: '/tinymce/skins/lightgray',
+			language_url: '/tinymce/langs/vi_VN.js',
+			statusbar: false,
+			toolbar: this.defaultToolbar + ' forecolor',
 		}
-
 		tinymce.init(settings)
-		const x = tinymce.get('editor') as Editor
-		console.log(x)
+		this.editor = tinymce.get('editor') as Editor
+		console.log(this.editor)
 	}
+	getContent() {}
 
 	async componentDidUpdate() {}
 
@@ -38,4 +59,6 @@ class TinyMceEditor extends React.PureComponent<{ currentLang: string }> {
 const mapStateToProps = (state: AppState) => ({
 	currentLang: state.locale.currentLang,
 })
-export default connect(mapStateToProps)(TinyMceEditor)
+export default connect(mapStateToProps, null, null, { forwardRef: true })(
+	TinyMceEditor
+)
