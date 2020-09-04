@@ -34,7 +34,7 @@
 		"redux-thunk": "^2.3.0",
 		"rxjs": "^6.6.2",
 		"suneditor": "^2.32.1",
-		"tinymce": "^4.5.0"
+		"tinymce": "^4.5.3"
 	},
 	"devDependencies": {
 		"@testing-library/jest-dom": "^4.2.4",

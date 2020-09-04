@@ -20,5 +20,5 @@
 		"baseUrl": "src", // absolute import path
 		"experimentalDecorators": true
 	},
-	"include": ["src"]
+	"include": ["src", "public/tinymce"]
 }
