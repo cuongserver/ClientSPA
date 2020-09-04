@@ -10,8 +10,10 @@ import 'tinymce/plugins/imagetools'
 import 'tinymce/plugins/textcolor'
 import 'tinymce/plugins/code'
 import 'tinymce/plugins/lists'
+import './tinymce-editor.scss'
 import { Settings, Editor } from 'tinymce'
 
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
 declare const tinymce: any
 export class TinyMceEditor extends React.PureComponent<{
 	currentLang: string
@@ -37,13 +39,25 @@ export class TinyMceEditor extends React.PureComponent<{
 			skin_url: '/tinymce/skins/lightgray',
 			language_url: '/tinymce/langs/vi_VN.js',
 			statusbar: false,
-			toolbar: this.defaultToolbar + ' forecolor',
+			toolbar: this.defaultToolbar + ' forecolor Gallery',
+			setup: (editor: Editor) => {
+				editor.addButton('Gallery', {
+					subtype: 'custom-class',
+					icon: 'image-gallery',
+					tooltip: 'Gallery',
+				})
+			},
 		}
 		tinymce.init(settings)
 		this.editor = tinymce.get('editor') as Editor
 		console.log(this.editor)
 	}
-	getContent() {}
+	getContent() {
+		const range = this.editor.selection.getRng(true)
+		const newNode = this.editor.getDoc().createElement('img')
+		newNode.src = 'http://suneditor.com/docs/cat.jpg'
+		range.insertNode(newNode)
+	}
 
 	async componentDidUpdate() {}
 
