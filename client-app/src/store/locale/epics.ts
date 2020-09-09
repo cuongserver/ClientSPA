@@ -2,7 +2,7 @@ import { AppState } from './../common';
 import { Epic } from 'redux-observable'
 import { KnownAction, ActionTypes } from './actions'
 import { filter, switchMap } from 'rxjs/operators'
-import i18n from 'i18n-config'
+import i18n from 'i18n'
 
 export const epics: Epic<KnownAction, KnownAction, AppState> = (action$, store) => {
 	return action$.pipe(

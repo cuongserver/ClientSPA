@@ -1,0 +1,13 @@
+{
+  "login-label-login-command": "Đăng nhập",
+  "login-label-password": "Mật khẩu",
+  "login-label-username": "Tài khoản",
+  "login-label-forgotpassword": "Quên mật khẩu?",
+  "login-label-available-language": "Ngôn ngữ hiển thị hiện có",
+  "login-label-email-for-password-recover": "Nhập tài khoản cần phục hồi mật khẩu",
+  "login-label-recover-password-command": "Phục hồi mật khẩu",
+  "login-label-goback": "Quay lại đăng nhập",
+  "login-error-username-required": "Tài khoản không được bỏ trống",
+  "login-error-password-required": "Mật khẩu không được bỏ trống",
+  "login-error-username-for-password-recover-required": "Tài khoản không được bỏ trống"
+}

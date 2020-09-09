@@ -1,4 +1,4 @@
-import { cacheLang, availableLang } from 'i18n-config'
+import { cacheLang, availableLang } from 'i18n'
 export interface State {
 	loadedTranPkg: string[]
 	currentLang: string

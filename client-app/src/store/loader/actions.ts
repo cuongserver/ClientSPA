@@ -10,7 +10,7 @@ export interface ToggleLoaderAction {
 }
 
 export const actionCreators = {
-	changeLanguage: (dispatch: Dispatch, status: boolean) => {
+	toggleLoader: (dispatch: Dispatch, status: boolean) => {
 		dispatch({
 			type: ActionTypes.ToggleLoader,
 			payload: status
