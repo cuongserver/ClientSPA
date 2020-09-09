@@ -7,11 +7,19 @@ export const reducer: Reducer<State, Action> = (state: State | undefined, incomi
 	if (state === undefined) {
 		return initialState
 	}
-	const action = incomingAction as KnownAction
-	switch (incomingAction.type) {
-		case ActionTypes.ToggleLoader:
-			return { loading: action.payload }
 
+	const action = incomingAction as KnownAction
+	switch (action.type) {
+		case ActionTypes.Show:
+			return {
+				open: true,
+				severity: action.payload.severity,
+				message: action.payload.message
+			}
+		case ActionTypes.Hide:
+			return {
+				...state, open: false
+			}
 		default:
 			return state
 	}

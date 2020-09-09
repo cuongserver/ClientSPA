@@ -7,11 +7,17 @@ export const reducer: Reducer<State, Action> = (state: State | undefined, incomi
 	if (state === undefined) {
 		return initialState
 	}
-	const action = incomingAction as KnownAction
-	switch (incomingAction.type) {
-		case ActionTypes.ToggleLoader:
-			return { loading: action.payload }
 
+	const action = incomingAction as KnownAction
+	switch (action.type) {
+		case ActionTypes.Login:
+			return {
+				isAuthenticated: true,
+			} as State
+		case ActionTypes.Logout:
+			return {
+				isAuthenticated: false,
+			} as State
 		default:
 			return state
 	}
