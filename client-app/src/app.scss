@@ -1,0 +1,25 @@
+#root,
+html,
+body {
+	height: 100%;
+	width: 100%;
+	background-color: rgb(255, 255, 255);
+	padding: 0px;
+	box-sizing: border-box;
+}
+
+*,
+*:before,
+*:after {
+	box-sizing: inherit;
+}
+.no-margin-collapse {
+	&:before {
+		content: ' ';
+		display: flex;
+	}
+	&:after {
+		content: ' ';
+		display: flex;
+	}
+}
