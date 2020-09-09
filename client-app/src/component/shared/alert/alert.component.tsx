@@ -19,7 +19,6 @@ class Alert extends React.PureComponent<
 		if (reason === 'clickaway') {
 			return
 		}
-		console.log(e)
 		AlertActions.actionCreators.hideAlert(this.props.dispatch)
 	}
 

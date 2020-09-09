@@ -12,5 +12,5 @@ export interface Identity {
 }
 
 export const initialState: State = {
-	isAuthenticated: false,
+	isAuthenticated: sessionStorage.getItem('isLoggedIn') ? true : false
 }

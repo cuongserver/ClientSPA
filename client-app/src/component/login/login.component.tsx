@@ -87,7 +87,10 @@ class Login extends React.PureComponent<IComponentProps, IComponentState> {
 		}
 	}
 
-	loginHandleClick = () => {
+	loginHandleClick = async () => {
+		const errors = await this.loginValidator.current?.validateForm()
+		if (JSON.stringify(errors) !== '{}') return
+
 		AlertActions.actionCreators.hideAlert(this.props.dispatch)
 		LoaderActions.actionCreators.toggleLoader(this.props.dispatch, true)
 		setTimeout(() => {
