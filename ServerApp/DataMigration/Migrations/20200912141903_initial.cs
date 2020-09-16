@@ -1,6 +1,7 @@
-﻿using Microsoft.EntityFrameworkCore.Migrations;
-using System;
+﻿using System;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Security;
+
 namespace DataMigration.Migrations
 {
     public partial class initial : Migration
@@ -11,7 +12,7 @@ namespace DataMigration.Migrations
                 name: "Users",
                 columns: table => new
                 {
-                    Id = table.Column<Guid>(nullable: false),
+                    Id = table.Column<Guid>(nullable: false, defaultValue: "newid()"),
                     UserName = table.Column<string>(nullable: true),
                     PasswordHash = table.Column<string>(nullable: true),
                     SecurityStamp = table.Column<string>(nullable: true),
@@ -25,11 +26,8 @@ namespace DataMigration.Migrations
             var superuser = "superuser";
             var initialPassword = "1234";
             var enhancer = new SecretEnhancer();
-            migrationBuilder.InsertData(
-                    table: "Users",
-                    columns: new string[] { "Id", "UserName", "PasswordHash", "MfaEnabled" },
-                    values: new object[] { Guid.NewGuid().ToString(), superuser, enhancer.GenerateHashedPassword(initialPassword, superuser, pepper), true }
-                );
+            var sql = $"insert into Users(Id, UserName, PasswordHash, MfaEnabled) values (newid(), '{superuser}', '{enhancer.GenerateHashedPassword(initialPassword, superuser, pepper)}', 1)";
+            migrationBuilder.Sql(sql);
         }
 
         protected override void Down(MigrationBuilder migrationBuilder)
