@@ -8,12 +8,13 @@ using System;
 
 namespace DataAccess.Repository
 {
-    public class AuthRepository : BaseRepository<User, Guid>
+    public class UserRepository : BaseRepository<User, Guid>
     {
-        public AuthRepository(CmsContext ctx)
+        public UserRepository(CmsContext ctx) : base(ctx)
         {
-            Context = ctx;
+
         }
+
 
     }
 }
