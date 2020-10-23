@@ -13,7 +13,8 @@ namespace DataAccess.Repository
     public abstract class BaseRepository<T, TId> where TId : struct where T : class, IEntityId<TId>
     {
         private readonly CmsContext _ctx;
-        public BaseRepository(CmsContext ctx)
+
+        protected BaseRepository(CmsContext ctx)
         {
             _ctx = ctx;
         }
