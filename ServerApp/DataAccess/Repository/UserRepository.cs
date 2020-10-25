@@ -8,11 +8,12 @@ using System;
 
 namespace DataAccess.Repository
 {
-    public class UserRepository : BaseRepository<User, Guid>, IUserRepository
+    public class UserRepository : IUserRepository<User, Guid>
     {
-        public UserRepository(CmsContext ctx) : base(ctx)
+        private readonly CmsContext _ctx;
+        public UserRepository(CmsContext ctx)
         {
-
+            _ctx = ctx;
         }
 
 

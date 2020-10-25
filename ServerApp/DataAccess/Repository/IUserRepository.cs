@@ -7,9 +7,9 @@ using System.Threading.Tasks;
 
 namespace DataAccess.Repository
 {
-    public interface IUserRepository
+    public interface IUserRepository<T, TId> : IBaseRepository<T, TId> where TId : struct where T : class, IEntityId<TId>
     {
-        Task<User> FindFirst(Expression<Func<User, bool>> predicate);
+
 
     }
 }
