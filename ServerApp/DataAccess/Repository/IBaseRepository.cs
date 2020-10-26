@@ -12,6 +12,7 @@ namespace DataAccess.Repository
 {
     public interface IBaseRepository<T, TId> where TId : struct where T : class, IEntityId<TId>
     {
+        public CmsContext Context { get; }
         public virtual Task<T> FindFirst(CmsContext ctx, Expression<Func<T, bool>> predicate)
         {
             return ctx.Set<T>().Where(predicate).FirstOrDefaultAsync();

@@ -10,10 +10,10 @@ namespace DataAccess.Repository
 {
     public class UserRepository : IUserRepository<User, Guid>
     {
-        private readonly CmsContext _ctx;
+        public CmsContext Context { get; }
         public UserRepository(CmsContext ctx)
         {
-            _ctx = ctx;
+            Context = ctx;
         }
 
 

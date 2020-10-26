@@ -13,7 +13,9 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Security", "Security\Securi
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SecurityTests", "SecurityTests\SecurityTests.csproj", "{CEAC8B58-9093-4758-B020-7724EAFC612A}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Service", "Service\Service.csproj", "{27A0CB41-9833-44E2-AE04-6CFB776FC39E}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Service", "Service\Service.csproj", "{27A0CB41-9833-44E2-AE04-6CFB776FC39E}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RestAPI", "RestAPI\RestAPI.csproj", "{F9078D60-9F47-4B96-96C4-81A80BEC21E9}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -45,6 +47,10 @@ Global
 		{27A0CB41-9833-44E2-AE04-6CFB776FC39E}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{27A0CB41-9833-44E2-AE04-6CFB776FC39E}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{27A0CB41-9833-44E2-AE04-6CFB776FC39E}.Release|Any CPU.Build.0 = Release|Any CPU
+		{F9078D60-9F47-4B96-96C4-81A80BEC21E9}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{F9078D60-9F47-4B96-96C4-81A80BEC21E9}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{F9078D60-9F47-4B96-96C4-81A80BEC21E9}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{F9078D60-9F47-4B96-96C4-81A80BEC21E9}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

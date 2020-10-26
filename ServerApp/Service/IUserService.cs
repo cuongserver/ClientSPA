@@ -7,6 +7,6 @@ namespace Service
 {
     public interface IUserService
     {
-        Task<OutputAuthentication> Authenticate(string userName, string password);
+        Task<OutputAuthentication> Authenticate(string password, string userName, string pepper);
     }
 }

@@ -5,7 +5,7 @@ import * as LoadingScreenStore from 'store/loading-screen'
 import * as AlertStore from 'store/alert'
 import * as IdentityStore from 'store/identity'
 import { createEpicMiddleware, combineEpics } from 'redux-observable'
-import { ignoreActions, filterActions } from 'redux-ignore'
+import { ignoreActions } from 'redux-ignore'
 
 const initialState: AppState = {
 	locale: LocaleStore.initialState,
