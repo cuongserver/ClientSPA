@@ -17,6 +17,7 @@ using DataAccess.Repository;
 using DataStorage;
 using Service;
 using Security;
+using AutoMapper;
 
 namespace RestAPI
 {
@@ -37,6 +38,7 @@ namespace RestAPI
             services.AddScoped<IUserRepository<User, Guid>, UserRepository>();
             services.AddScoped<IUserService, UserService>();
             services.AddScoped<SecretEnhancer>();
+            services.AddAutoMapper(typeof(Startup));
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
