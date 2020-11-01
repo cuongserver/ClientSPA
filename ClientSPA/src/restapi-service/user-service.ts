@@ -1,5 +1,5 @@
 import { Axios } from 'axios-observable'
-import { ApiMethod } from 'config/api-endpoints'
+import { ApiMethod } from 'configs/api-endpoints'
 
 interface User {
 
