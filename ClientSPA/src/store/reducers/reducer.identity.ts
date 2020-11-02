@@ -21,6 +21,6 @@ export const reducer: Reducer<StoreStateIdentity> = (
 				isAuthenticated: false,
 			} as StoreStateIdentity
 		default:
-			return { ...currentState }
+			return currentState
 	}
 }

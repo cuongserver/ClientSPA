@@ -21,6 +21,6 @@ export const reducer: Reducer<StoreStateLoading> = (
 				loading: false,
 			} as StoreStateLoading
 		default:
-			return { ...currentState }
+			return currentState
 	}
 }

@@ -1,26 +1,24 @@
 import { Reducer, Action } from 'redux'
 import { appStoreInitState } from 'constants/store-init-state'
-import { StoreStateLocale, StoreAc } from 'types/store.locale'
+import { StoreStateLocale, StoreActionChangeLocale } from 'types/store.locale'
 
-export const reducer: Reducer<StoreStateLoading> = (
-	currentState: StoreStateLoading | undefined,
+export const reducer: Reducer<StoreStateLocale> = (
+	currentState: StoreStateLocale | undefined,
 	incomingAction: Action
 ) => {
 	if (currentState === undefined) {
-		return appStoreInitState.loading
+		return appStoreInitState.locale
 	}
-	const action = incomingAction as StoreActionsLoading
-
+	const action = incomingAction as StoreActionChangeLocale
+	const newState = { ...currentState }
 	switch (action.type) {
-		case 'SHOW_LOADING':
-			return {
-				loading: true,
-			} as StoreStateLoading
-		case 'HIDE_LOADING':
-			return {
-				loading: false,
-			} as StoreStateLoading
+		case 'CHANGE_LOCALE__NORMAL':
+			const lang = action.payload
+			newState.currentLang = lang
+			if (!newState.loadedTranPkg.includes(lang))
+				newState.loadedTranPkg.push(lang)
+			return { ...newState }
 		default:
-			return { ...currentState }
+			return currentState
 	}
 }

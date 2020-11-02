@@ -1,6 +1,6 @@
 import { Reducer, Action } from 'redux'
-import {appStoreInitState} from 'constants/store-init-state'
-import {StoreStateAlert, StoreActionsAlert} from 'types/store.alert'
+import { appStoreInitState } from 'constants/store-init-state'
+import { StoreStateAlert, StoreActionsAlert } from 'types/store.alert'
 
 export const reducer: Reducer<StoreStateAlert> = (
 	currentState: StoreStateAlert | undefined,
@@ -23,6 +23,6 @@ export const reducer: Reducer<StoreStateAlert> = (
 				...currentState, open: false
 			} as StoreStateAlert
 		default:
-			return { ...currentState }
+			return currentState
 	}
 }
