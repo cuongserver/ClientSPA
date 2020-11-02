@@ -1,10 +1,6 @@
 import { Axios } from 'axios-observable'
 import { ApiMethod } from 'configs/api-endpoints'
 
-interface User {
+interface User {}
 
-}
-
-class UserApiService {
-
-}
+class UserApiService {}
