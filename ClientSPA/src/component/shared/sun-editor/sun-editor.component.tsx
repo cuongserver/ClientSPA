@@ -5,7 +5,7 @@ import plugins from 'suneditor/src/plugins'
 import { buttonList } from './options'
 import { Lang } from 'suneditor/src/lang/Lang'
 import { connect } from 'react-redux'
-import { AppState } from 'model/store-model'
+import { StoreStateApp } from 'types/store.app'
 import SunEditor from 'suneditor/src/lib/core'
 class SunEditorx extends React.PureComponent<{ currentLang: string }> {
 	private lang!: Lang
@@ -46,7 +46,7 @@ class SunEditorx extends React.PureComponent<{ currentLang: string }> {
 	}
 }
 
-const mapStateToProps = (state: AppState) => ({
+const mapStateToProps = (state: StoreStateApp) => ({
 	currentLang: state.locale.currentLang,
 })
 export default connect(mapStateToProps)(SunEditorx)

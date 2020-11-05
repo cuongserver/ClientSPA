@@ -6,7 +6,7 @@ import 'app.scss'
 import 'asset/style/utilities.css'
 import { AuthRoute } from 'routing-config/auth-route.component'
 import { connect } from 'react-redux'
-import { AppState } from 'model/store-model'
+import { StoreStateApp } from 'types/store.app'
 
 const Login = React.lazy(() => import('component/login/login.component'))
 const Home = React.lazy(() => import('component/home/home.component'))
@@ -41,7 +41,7 @@ class App extends React.Component<{ isAuthenticated: boolean }> {
 	}
 }
 
-const mapStateToProps = (state: AppState) => ({
+const mapStateToProps = (state: StoreStateApp) => ({
 	isAuthenticated: state.identity.isAuthenticated,
 })
 

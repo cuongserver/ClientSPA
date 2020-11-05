@@ -1,5 +1,5 @@
 import * as React from 'react'
-import { AppState } from 'model/store-model'
+import { StoreStateApp } from 'types/store.app'
 import { connect } from 'react-redux'
 import 'tinymce'
 import 'tinymce/themes/modern'
@@ -25,6 +25,7 @@ export class TinyMceEditor extends React.PureComponent<{
 		'bullist numlist outdent indent | link image'
 
 	componentDidMount() {
+		console.log(tinymce)
 		const settings: Settings = {
 			selector: '#editor',
 			plugins: [
@@ -70,7 +71,7 @@ export class TinyMceEditor extends React.PureComponent<{
 	}
 }
 
-const mapStateToProps = (state: AppState) => ({
+const mapStateToProps = (state: StoreStateApp) => ({
 	currentLang: state.locale.currentLang,
 })
 export default connect(mapStateToProps, null, null, { forwardRef: true })(

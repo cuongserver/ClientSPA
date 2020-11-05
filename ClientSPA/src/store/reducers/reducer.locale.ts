@@ -2,7 +2,7 @@ import { Reducer, Action } from 'redux'
 import { appStoreInitState } from 'constants/store-init-state'
 import { StoreStateLocale, StoreActionChangeLocale } from 'types/store.locale'
 
-export const reducer: Reducer<StoreStateLocale> = (
+export const reducerLocale: Reducer<StoreStateLocale> = (
 	currentState: StoreStateLocale | undefined,
 	incomingAction: Action
 ) => {

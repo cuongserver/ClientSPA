@@ -2,7 +2,7 @@ import { Reducer, Action } from 'redux'
 import { appStoreInitState } from 'constants/store-init-state'
 import { StoreStateAlert, StoreActionsAlert } from 'types/store.alert'
 
-export const reducer: Reducer<StoreStateAlert> = (
+export const reducerAlert: Reducer<StoreStateAlert> = (
 	currentState: StoreStateAlert | undefined,
 	incomingAction: Action
 ) => {

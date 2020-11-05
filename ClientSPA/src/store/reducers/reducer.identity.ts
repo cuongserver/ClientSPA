@@ -2,7 +2,7 @@ import { Reducer, Action } from 'redux'
 import { appStoreInitState } from 'constants/store-init-state'
 import { StoreStateIdentity, StoreActionsIdentity } from 'types/store.identity'
 
-export const reducer: Reducer<StoreStateIdentity> = (
+export const reducerIdentity: Reducer<StoreStateIdentity> = (
 	currentState: StoreStateIdentity | undefined,
 	incomingAction: Action
 ) => {

@@ -4,22 +4,23 @@ import React from 'react'
 import { Snackbar } from '@material-ui/core'
 import MuiAlert from '@material-ui/lab/Alert'
 /**import from inside project */
-import * as AlertModel from 'model/store-model/alert'
-import { AppState } from 'model/store-model'
+import { actionCreatorsAlert } from 'store/action-creators/action-creators.alert'
+import { StoreStateApp } from 'types/store.app'
+import { StoreStateAlert } from 'types/store.alert'
 import { connect } from 'react-redux'
 import { Dispatch } from 'redux'
 import Slide, { SlideProps } from '@material-ui/core/Slide'
 
 /**class declare */
 class Alert extends React.PureComponent<
-	AlertModel.State & { dispatch: Dispatch }
+	StoreStateAlert & { dispatch: Dispatch }
 > {
 	handleClose = (e: React.SyntheticEvent | MouseEvent, reason?: string) => {
 		if (reason === 'clickaway') {
 			return
 		}
 		console.log(e)
-		AlertModel.actionCreators.hideAlert(this.props.dispatch)
+		actionCreatorsAlert.hideAlert(this.props.dispatch)
 	}
 
 	transition = (props: SlideProps) => {
@@ -56,7 +57,7 @@ class Alert extends React.PureComponent<
 }
 
 /**HOC */
-const mapStateToProps = (state: AppState) => ({
+const mapStateToProps = (state: StoreStateApp) => ({
 	...state.alert,
 })
 export default connect(mapStateToProps)(Alert)

@@ -1,8 +1,9 @@
+import { AnyAction } from "redux";
 export interface StoreStateLoading {
 	loading: boolean
 }
 
-export interface StoreActionShowLoading {
+export interface StoreActionShowLoading extends AnyAction {
 	type: 'SHOW_LOADING'
 }
 

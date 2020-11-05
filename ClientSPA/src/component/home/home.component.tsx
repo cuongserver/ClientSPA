@@ -9,8 +9,8 @@ import Editor, {
 } from 'component/shared/tinymce-editor/tinymce-editor.component'
 import MUIRichTextEditor from 'component/shared/richtext-editor/MUIRichTextEditor.component'
 import { connect } from 'react-redux'
-import { AppState } from 'model/store-model'
-import * as LocaleModel from 'model/store-model/locale'
+import { StoreStateApp } from 'types/store.app'
+import { StoreStateLocale } from 'types/store.locale'
 import { Dispatch } from 'redux'
 
 class Home extends React.PureComponent<{
@@ -56,7 +56,7 @@ class Home extends React.PureComponent<{
 		)
 	}
 }
-const mapStateToProps = (state: AppState) => ({
+const mapStateToProps = (state: StoreStateApp) => ({
 	currentLang: state.locale.currentLang,
 })
 export default connect(mapStateToProps)(Home)

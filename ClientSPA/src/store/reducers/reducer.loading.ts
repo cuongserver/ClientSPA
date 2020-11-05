@@ -2,7 +2,7 @@ import { Reducer, Action } from 'redux'
 import { appStoreInitState } from 'constants/store-init-state'
 import { StoreStateLoading, StoreActionsLoading } from 'types/store.loading'
 
-export const reducer: Reducer<StoreStateLoading> = (
+export const reducerLoading: Reducer<StoreStateLoading> = (
 	currentState: StoreStateLoading | undefined,
 	incomingAction: Action
 ) => {

@@ -20,22 +20,41 @@ import { withTranslation } from 'react-i18next'
 import { connect } from 'react-redux'
 import { Formik, FormikProps, FormikErrors } from 'formik'
 import { withRouter } from 'react-router'
+import { WithTranslation } from 'react-i18next'
 
 /**import from inside project */
-import { AppState } from 'model/store-model'
-import * as AlertModel from 'model/store-model/alert'
-import * as LocaleModel from 'model/store-model/locale'
-import * as LoadingScreenModel from 'model/store-model/loading-screen'
-import * as IndentityModel from 'model/store-model/identity'
-import { GeneralModel } from 'model/common'
+import { StoreStateApp } from 'types/store.app'
+import { GenericObject } from 'types/common'
+import { actionCreatorsAlert } from 'store/action-creators/action-creators.alert'
+import { actionCreatorsLocale } from 'store/action-creators/action-creators.locale'
+import { actionCreatorsLoading } from 'store/action-creators/action-creators.loading'
+import { actionCreatorsIdentity } from 'store/action-creators/action-creators.identity'
 import background from 'asset/image/login-background.jpg'
-import {
-	IComponentProps,
-	IComponentState,
-	ILogin,
-	IRecoverPassword,
-} from 'component/login/login.model'
 import 'component/login/login.scss'
+import { RouteComponentProps } from 'react-router-dom'
+import { StaticContext } from 'react-router'
+import { Dispatch } from 'redux'
+
+export interface IComponentProps
+	extends WithTranslation,
+		RouteComponentProps<{}, StaticContext, { from: string }> {
+	dispatch: Dispatch
+	alertOpen: boolean
+}
+
+interface IComponentState {
+	mode: string
+	showPassword: boolean
+}
+
+interface ILogin {
+	username: string
+	password: string
+}
+
+interface IRecoverPassword {
+	usernameForPasswordRecovery: string
+}
 
 /**class declare */
 class Login extends React.PureComponent<IComponentProps, IComponentState> {
@@ -65,7 +84,7 @@ class Login extends React.PureComponent<IComponentProps, IComponentState> {
 		const target = e.currentTarget
 		const newLang = target.getAttribute('alt') as string
 		if (this.props.i18n.language === newLang) return
-		LocaleModel.actionCreators.changeLanguage(this.props.dispatch, newLang)
+		actionCreatorsLocale.changeLocale(this.props.dispatch, newLang)
 	}
 	handleClickShowPassword = () => {
 		this.setState({
@@ -89,20 +108,17 @@ class Login extends React.PureComponent<IComponentProps, IComponentState> {
 	}
 
 	loginHandleClick = () => {
-		AlertModel.actionCreators.hideAlert(this.props.dispatch)
-		LoadingScreenModel.actionCreators.activateLoader(this.props.dispatch, true)
+		actionCreatorsAlert.hideAlert(this.props.dispatch)
+		actionCreatorsLoading.activateLoader(this.props.dispatch)
 		setTimeout(() => {
-			LoadingScreenModel.actionCreators.activateLoader(
-				this.props.dispatch,
-				false
-			)
+			actionCreatorsLoading.deactivateLoader(this.props.dispatch)
 
-			AlertModel.actionCreators.showAlert(
+			actionCreatorsAlert.showAlert(
 				this.props.dispatch,
 				new Date().toJSON(),
 				'success'
 			)
-			IndentityModel.actionCreators.login(this.props.dispatch)
+			actionCreatorsIdentity.login(this.props.dispatch)
 
 			// const redirectURL = this.props.location.state?.from
 			// if (redirectURL !== undefined) {
@@ -120,9 +136,9 @@ class Login extends React.PureComponent<IComponentProps, IComponentState> {
 		const validator = this.loginValidator
 		if (
 			validator.current?.errors &&
-			(validator.current?.errors as GeneralModel)[target.name]
+			(validator.current?.errors as GenericObject)[target.name]
 		) {
-			const err = validator.current?.errors as GeneralModel
+			const err = validator.current?.errors as GenericObject
 			validator.current?.setErrors({
 				...err,
 				[target.name]: undefined,
@@ -142,9 +158,9 @@ class Login extends React.PureComponent<IComponentProps, IComponentState> {
 		const validator = this.recoverPasswordValidator
 		if (
 			validator.current?.errors &&
-			(validator.current?.errors as GeneralModel)[target.name]
+			(validator.current?.errors as GenericObject)[target.name]
 		) {
-			const err = validator.current?.errors as GeneralModel
+			const err = validator.current?.errors as GenericObject
 			validator.current?.setErrors({
 				...err,
 				[target.name]: undefined,
@@ -394,7 +410,7 @@ class Login extends React.PureComponent<IComponentProps, IComponentState> {
 
 /**HOC */
 const LoginWithTranslation = withRouter(withTranslation()(Login))
-const mapStateToProps = (state: AppState) => ({
+const mapStateToProps = (state: StoreStateApp) => ({
 	alertOpen: state.alert.open,
 })
 const LoginWithStore = connect(mapStateToProps)(LoginWithTranslation)

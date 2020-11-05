@@ -1,4 +1,4 @@
-
+import { AnyAction } from "redux";
 export interface Identity {
 	id: string
 	accessRights?: string[]
@@ -11,11 +11,11 @@ export interface StoreStateIdentity {
 	identity?: Identity
 }
 
-export interface StoreActionLogin {
+export interface StoreActionLogin extends AnyAction {
 	type: 'LOGIN'
 }
 
-export interface StoreActionLogout {
+export interface StoreActionLogout extends AnyAction {
 	type: 'LOGOUT'
 }
 
