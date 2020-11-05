@@ -25,7 +25,6 @@ export class TinyMceEditor extends React.PureComponent<{
 		'bullist numlist outdent indent | link image'
 
 	componentDidMount() {
-		console.log(tinymce)
 		const settings: Settings = {
 			selector: '#editor',
 			plugins: [
