@@ -24,16 +24,16 @@ import { WithTranslation } from 'react-i18next'
 
 /**import from inside project */
 import { StoreStateApp } from 'types/store.app'
-import { GenericObject } from 'types/common'
+import { GenericObject, LoadingProps } from 'types/common'
 import { actionCreatorsAlert } from 'store/action-creators/action-creators.alert'
 import { actionCreatorsLocale } from 'store/action-creators/action-creators.locale'
-import { actionCreatorsLoading } from 'store/action-creators/action-creators.loading'
 import { actionCreatorsIdentity } from 'store/action-creators/action-creators.identity'
 import background from 'asset/image/login-background.jpg'
 import 'component/login/login.scss'
 import { RouteComponentProps } from 'react-router-dom'
 import { StaticContext } from 'react-router'
 import { Dispatch } from 'redux'
+import { WrapperWithLoading } from 'utils/wrapper-with-loading'
 
 export interface IComponentProps
 	extends WithTranslation,
@@ -42,7 +42,7 @@ export interface IComponentProps
 	alertOpen: boolean
 }
 
-interface IComponentState {
+interface IComponentState extends LoadingProps {
 	mode: string
 	showPassword: boolean
 }
@@ -58,7 +58,7 @@ interface IRecoverPassword {
 
 /**class declare */
 class Login extends React.PureComponent<IComponentProps, IComponentState> {
-	/**field */
+	//#region field
 	initialLogin: ILogin = {
 		username: '',
 		password: '',
@@ -68,18 +68,21 @@ class Login extends React.PureComponent<IComponentProps, IComponentState> {
 	}
 	loginValidator: React.RefObject<FormikProps<ILogin>>
 	recoverPasswordValidator: React.RefObject<FormikProps<IRecoverPassword>>
-	/**life cycle hook */
+	//#endregion
+	//#region lifecycle hook
 	constructor(props: IComponentProps) {
 		super(props)
 		this.state = {
 			mode: 'login',
 			showPassword: false,
+			loading: false,
 		}
 		this.loginValidator = React.createRef()
 		this.recoverPasswordValidator = React.createRef()
 	}
 
-	/**event handler */
+	//#endregion
+	//#region event handler
 	changeLanguage = (e: React.MouseEvent): void => {
 		const target = e.currentTarget
 		const newLang = target.getAttribute('alt') as string
@@ -109,9 +112,13 @@ class Login extends React.PureComponent<IComponentProps, IComponentState> {
 
 	loginHandleClick = () => {
 		actionCreatorsAlert.hideAlert(this.props.dispatch)
-		actionCreatorsLoading.activateLoader(this.props.dispatch)
+		this.setState({
+			loading: true,
+		})
 		setTimeout(() => {
-			actionCreatorsLoading.deactivateLoader(this.props.dispatch)
+			this.setState({
+				loading: false,
+			})
 
 			actionCreatorsAlert.showAlert(
 				this.props.dispatch,
@@ -126,8 +133,6 @@ class Login extends React.PureComponent<IComponentProps, IComponentState> {
 			// } else {
 			// 	this.props.history.push('/login')
 			// }
-
-			console.log(process.env.REACT_APP_API_URL)
 		}, 2000)
 	}
 
@@ -168,8 +173,9 @@ class Login extends React.PureComponent<IComponentProps, IComponentState> {
 		}
 		validator.current?.handleChange(e)
 	}
+	//#endregion
 
-	/**ordinary function */
+	//#region normal function
 
 	loginValidateForm = (values: ILogin): Promise<FormikErrors<ILogin>> => {
 		let err: FormikErrors<ILogin> = {}
@@ -192,8 +198,9 @@ class Login extends React.PureComponent<IComponentProps, IComponentState> {
 				'login-error-username-for-password-recover-required'
 		return Promise.resolve(err)
 	}
+	//#endregion
 
-	/**render function */
+	//#region render
 	layoutLogin(): JSX.Element {
 		const { t } = this.props
 		const passwordInputProps: InputProps = {
@@ -363,49 +370,52 @@ class Login extends React.PureComponent<IComponentProps, IComponentState> {
 						background: `url("${background}") no-repeat fixed center`,
 					}}
 				>
-					<Card classes={classList} raised>
-						<div className="m-t-auto" />
+					<WrapperWithLoading loading={this.state.loading}>
+						<Card classes={classList} raised>
+							<div className="m-t-auto" />
 
-						{this.state.mode === 'login' ? this.layoutLogin() : null}
-						{this.state.mode === 'passwordRecovery'
-							? this.layoutRecoverPassword()
-							: null}
+							{this.state.mode === 'login' ? this.layoutLogin() : null}
+							{this.state.mode === 'passwordRecovery'
+								? this.layoutRecoverPassword()
+								: null}
 
-						<div className="m-t-auto"></div>
-						<Divider orientation="horizontal" className="w-full" />
-						<div className="m-t-10"></div>
-						<Typography color="secondary">
-							<InputLabel>{t('login-label-available-language')}</InputLabel>
-						</Typography>
-						<div className="m-t-5"></div>
-						<div className="dis-flex">
-							<img
-								alt="en"
-								title="en"
-								src="/image/flag/uk.png"
-								onClick={this.changeLanguage}
-								height="32px"
-								width="32px"
-								className="p-t-1 p-b-1 p-l-1 p-r-1 hov-pointer login-lang-switch"
-							/>
-							<div className="m-l-5 m-r-5"></div>
-							<img
-								alt="vi"
-								title="vi"
-								src="/image/flag/vietnam.png"
-								onClick={this.changeLanguage}
-								height="32px"
-								width="32px"
-								className="p-t-1 p-b-1 p-l-1 p-r-1 hov-pointer login-lang-switch"
-							/>
-						</div>
-						<div className="m-t-10"></div>
-					</Card>
+							<div className="m-t-auto"></div>
+							<Divider orientation="horizontal" className="w-full" />
+							<div className="m-t-10"></div>
+							<Typography color="secondary">
+								<InputLabel>{t('login-label-available-language')}</InputLabel>
+							</Typography>
+							<div className="m-t-5"></div>
+							<div className="dis-flex">
+								<img
+									alt="en"
+									title="en"
+									src="/image/flag/uk.png"
+									onClick={this.changeLanguage}
+									height="32px"
+									width="32px"
+									className="p-t-1 p-b-1 p-l-1 p-r-1 hov-pointer login-lang-switch"
+								/>
+								<div className="m-l-5 m-r-5"></div>
+								<img
+									alt="vi"
+									title="vi"
+									src="/image/flag/vietnam.png"
+									onClick={this.changeLanguage}
+									height="32px"
+									width="32px"
+									className="p-t-1 p-b-1 p-l-1 p-r-1 hov-pointer login-lang-switch"
+								/>
+							</div>
+							<div className="m-t-10"></div>
+						</Card>
+					</WrapperWithLoading>
 				</div>
 			</React.Fragment>
 		)
 		return component
 	}
+	//#endregion render
 }
 
 /**HOC */

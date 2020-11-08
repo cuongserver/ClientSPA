@@ -1,6 +1,4 @@
-/*[ FONT SIZE ]
-///////////////////////////////////////////////////////////
-*/
+/*#region fontsize*/
 .fs-1 {font-size: 1px;}
 .fs-2 {font-size: 2px;}
 .fs-3 {font-size: 3px;}
@@ -201,10 +199,10 @@
 .fs-198 {font-size: 198px;}
 .fs-199 {font-size: 199px;}
 .fs-200 {font-size: 200px;}
+/*#endregion*/
 
-/*[ PADDING ]
-///////////////////////////////////////////////////////////
-*/
+
+/*#region padding*/
 .p-t-0 {padding-top: 0px;}
 .p-t-1 {padding-top: 1px;}
 .p-t-2 {padding-top: 2px;}
@@ -1209,10 +1207,9 @@
 .p-r-248 {padding-right: 248px;}
 .p-r-249 {padding-right: 249px;}
 .p-r-250 {padding-right: 250px;}
+/*#endregion*/
 
-/*[ MARGIN ]
-///////////////////////////////////////////////////////////
-*/
+/*#region margin*/
 .m-t-0 {margin-top: 0px;}
 .m-t-1 {margin-top: 1px;}
 .m-t-2 {margin-top: 2px;}
@@ -2223,7 +2220,7 @@
 .m-t-b-auto{margin-top: auto;	margin-bottom: auto;}
 .m-t-auto{margin-top:auto;}
 .m-b-auto{margin-bottom:auto;}
-
+/*#endregion*/
 
 /*[ TEXT ]
 ///////////////////////////////////////////////////////////
