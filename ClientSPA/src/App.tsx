@@ -9,10 +9,9 @@ import { connect } from 'react-redux'
 import { StoreStateApp } from 'types/store.app'
 
 const Login = React.lazy(() => import('component/login/login.component'))
-const Home = React.lazy(() => import('component/home/home.component'))
+const Main = React.lazy(() => import('component/main/main.component'))
 
 class App extends React.Component<{ isAuthenticated: boolean }> {
-	private logo = `${process.env.PUBLIC_URL}/logo192.png`
 	render() {
 		return (
 			<div className="sizefull">
@@ -21,18 +20,18 @@ class App extends React.Component<{ isAuthenticated: boolean }> {
 				<React.Suspense fallback="">
 					<Switch>
 						<AuthRoute
-							path="/"
+							path="/login"
 							exact
 							isAuthenticated={this.props.isAuthenticated}
-							authenticationPath="/"
+							authenticationPath="/login"
 							render={() => <Login />}
 						/>
 						<AuthRoute
-							path="/login"
+							path="/"
 							isAuthenticated={this.props.isAuthenticated}
-							authenticationPath="/"
+							authenticationPath="/login"
 							exact
-							render={() => <Home />}
+							render={() => <Main />}
 						/>
 					</Switch>
 				</React.Suspense>

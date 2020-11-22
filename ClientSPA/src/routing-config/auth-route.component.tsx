@@ -8,18 +8,20 @@ export interface IAuthRouteProps extends RouteProps {
 
 export class AuthRoute extends Route<IAuthRouteProps> {
 	render() {
-		if (!this.props.isAuthenticated && this.props.path === '/') {
+		//not authenticated and path is "/login" then do nothing
+		if (!this.props.isAuthenticated && this.props.path === '/login') {
 			return <Route {...this.props} />
 		}
 
-		if (this.props.isAuthenticated && this.props.path === '/') {
+		//already authenticated and path is "/login" then redirect to main
+		if (this.props.isAuthenticated && this.props.path === '/login') {
 			return (
 				<Route
 					{...this.props}
 					render={() => (
 						<Redirect
 							to={{
-								pathname: '/login',
+								pathname: '/',
 							}}
 						/>
 					)}
@@ -27,11 +29,12 @@ export class AuthRoute extends Route<IAuthRouteProps> {
 			)
 		}
 
-		if (!this.props.isAuthenticated && this.props.path !== '/') {
+		//not authenticated and path is not "/login" then redirect to login
+		if (!this.props.isAuthenticated && this.props.path !== '/login') {
 			const renderComponent = () => (
 				<Redirect
 					to={{
-						pathname: '/',
+						pathname: '/login',
 						state: {
 							from: this.props.path,
 						},

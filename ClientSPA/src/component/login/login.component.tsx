@@ -125,14 +125,14 @@ class Login extends React.PureComponent<IComponentProps, IComponentState> {
 				new Date().toJSON(),
 				'success'
 			)
-			actionCreatorsIdentity.login(this.props.dispatch)
 
-			// const redirectURL = this.props.location.state?.from
-			// if (redirectURL !== undefined) {
-			// 	this.props.history.push(redirectURL)
-			// } else {
-			// 	this.props.history.push('/login')
-			// }
+			const redirectURL = this.props.location.state?.from
+			if (redirectURL !== undefined) {
+				this.props.history.push(redirectURL)
+				actionCreatorsIdentity.login(this.props.dispatch)
+			} else {
+				this.props.history.push('/login')
+			}
 		}, 2000)
 	}
 
