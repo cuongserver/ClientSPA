@@ -7,7 +7,7 @@ export class WrapperWithLoading extends React.PureComponent<
 	LoadingProps & React.HTMLAttributes<HTMLElement> & { progressColor?: string }
 > {
 	render() {
-		const GreenCircularProgress = styled(CircularProgress)({
+		const CustomCircularProgress = styled(CircularProgress)({
 			color: this.props.progressColor ?? 'primary',
 		})
 		let Wrapper = (
@@ -39,12 +39,12 @@ export class WrapperWithLoading extends React.PureComponent<
 							justifyContent: 'center',
 						}}
 					>
-						<GreenCircularProgress
+						<CustomCircularProgress
 							variant="indeterminate"
 							style={{
 								position: 'relative',
 							}}
-						></GreenCircularProgress>
+						></CustomCircularProgress>
 					</div>
 				)}
 

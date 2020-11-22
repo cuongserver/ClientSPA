@@ -18,6 +18,10 @@ using DataStorage;
 using Service;
 using Security;
 using AutoMapper;
+using Microsoft.AspNetCore.Http.Features;
+using Microsoft.Extensions.FileProviders;
+using System.IO;
+using Microsoft.AspNetCore.Http;
 
 namespace RestAPI
 {
@@ -39,6 +43,14 @@ namespace RestAPI
             services.AddScoped<IUserService, UserService>();
             services.AddScoped<SecretEnhancer>();
             services.AddAutoMapper(typeof(Startup));
+
+            //avoid the MultiPartBodyLength error
+            services.Configure<FormOptions>(options =>
+            {
+                options.ValueLengthLimit = int.MaxValue;
+                options.MultipartBodyLengthLimit = int.MaxValue;
+                options.MemoryBufferThreshold = int.MaxValue;
+            });
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -48,6 +60,15 @@ namespace RestAPI
             {
                 app.UseDeveloperExceptionPage();
             }
+
+            //serve static file from Resources folder
+            app.UseStaticFiles();
+            app.UseStaticFiles(new StaticFileOptions()
+            {
+                FileProvider = new PhysicalFileProvider(Path.Combine(Directory.GetCurrentDirectory(), @"Resources")),
+                RequestPath = new PathString("/Resources")
+            });
+
 
             app.UseHttpsRedirection();
 

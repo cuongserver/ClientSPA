@@ -1,5 +1,12 @@
+@font-face {
+	font-family: 'FontAwesome';
+	src: url('./fontawesome-webfont.ttf?v=4.7.0') format('truetype');
+	font-weight: normal;
+	font-style: normal;
+}
 .mce-i-image-gallery {
 	&:before {
-		content: '\1f5bc';
+		font-family: 'FontAwesome';
+		content: '\f03e';
 	}
 }

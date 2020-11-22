@@ -3,6 +3,7 @@ import { StoreStateApp } from 'types/store.app'
 import { connect } from 'react-redux'
 import 'tinymce'
 import 'tinymce/themes/modern'
+import 'tinymce/plugins/fullscreen'
 import 'tinymce/plugins/table'
 import 'tinymce/plugins/link'
 import 'tinymce/plugins/image'
@@ -20,7 +21,7 @@ export class TinyMceEditor extends React.PureComponent<{
 }> {
 	private editor!: Editor
 	private defaultToolbar =
-		'undo redo | styleselect | bold italic | alignleft ' +
+		'fullscreen | undo redo | styleselect | bold italic | alignleft ' +
 		'aligncenter alignright alignjustify | ' +
 		'bullist numlist outdent indent | link image'
 
@@ -28,6 +29,7 @@ export class TinyMceEditor extends React.PureComponent<{
 		const settings: Settings = {
 			selector: '#editor',
 			plugins: [
+				'fullscreen',
 				'link',
 				'table',
 				'image',
@@ -39,6 +41,7 @@ export class TinyMceEditor extends React.PureComponent<{
 			skin_url: '/tinymce/skins/lightgray',
 			language_url: '/tinymce/langs/vi_VN.js',
 			statusbar: false,
+			menubar: false,
 			toolbar: this.defaultToolbar + ' forecolor Gallery',
 			setup: (editor: Editor) => {
 				editor.addButton('Gallery', {
@@ -50,7 +53,6 @@ export class TinyMceEditor extends React.PureComponent<{
 		}
 		tinymce.init(settings)
 		this.editor = tinymce.get('editor') as Editor
-		console.log(this.editor)
 	}
 	getContent() {
 		const range = this.editor.selection.getRng(true)
