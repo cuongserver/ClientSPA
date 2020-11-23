@@ -10,14 +10,26 @@ import {
 	ListItemText,
 	Divider,
 	Collapse,
+	IconButton,
 } from '@material-ui/core'
-import { Inbox, Mail, ExpandLess, ExpandMore } from '@material-ui/icons'
+import {
+	Inbox,
+	Mail,
+	ExpandLess,
+	ExpandMore,
+	Menu,
+	Clear,
+} from '@material-ui/icons'
 
-class Main extends React.PureComponent<{}, { open: boolean }> {
+class Main extends React.PureComponent<
+	{},
+	{ open: boolean; toggleOpen: boolean }
+> {
 	constructor(props: {}) {
 		super(props)
 		this.state = {
 			open: false,
+			toggleOpen: false,
 		}
 	}
 
@@ -27,18 +39,44 @@ class Main extends React.PureComponent<{}, { open: boolean }> {
 		})
 	}
 
+	toggleDrawer = () => {
+		this.setState({
+			toggleOpen: !this.state.toggleOpen,
+		})
+	}
 	render() {
 		return (
 			<div className="App">
-				<AppBar position="fixed">
-					<Toolbar>
+				<AppBar position="fixed" className="elevation-appbar">
+					<Toolbar disableGutters={true}>
+						<div className="p-l-10 p-r-5">
+							<IconButton onClick={this.toggleDrawer} color="inherit">
+								{this.state.toggleOpen ? null : <Menu />}
+							</IconButton>
+						</div>
 						<Typography variant="h6" noWrap>
 							Clipped drawer
 						</Typography>
 					</Toolbar>
 				</AppBar>
-				<Drawer variant="persistent" open={true}>
+
+				<Drawer
+					variant="persistent"
+					open={this.state.toggleOpen}
+					PaperProps={{
+						variant: 'elevation',
+						className: 'elevation-drawer',
+						style: { width: '240px' },
+					}}
+				>
 					<Toolbar />
+					<div className="dis-flex">
+						<div className="m-l-auto m-t-5">
+							<IconButton size="small" onClick={this.toggleDrawer}>
+								<Clear />
+							</IconButton>
+						</div>
+					</div>
 					<div>
 						<List>
 							{['Inbox', 'Starred', 'Send email', 'Drafts'].map(
