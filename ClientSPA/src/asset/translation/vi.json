@@ -9,5 +9,7 @@
   "login-label-goback": "Quay lại đăng nhập",
   "login-error-username-required": "Tài khoản không được bỏ trống",
   "login-error-password-required": "Mật khẩu không được bỏ trống",
-  "login-error-username-for-password-recover-required": "Tài khoản không được bỏ trống"
+  "login-error-username-for-password-recover-required": "Tài khoản không được bỏ trống",
+  "main-drawer-menugroup-content": "Nội dung",
+  "main-drawer-menugroup-item-image": "Hình ảnh"
 }
