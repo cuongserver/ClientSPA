@@ -1,8 +1,9 @@
-type ApiMethod = 'GET' | 'POST'
+
+import { Method } from 'axios'
 
 interface Endpoint {
 	path: string
-	method: ApiMethod
+	method: Method
 }
 
 interface Endpoints {
@@ -17,4 +18,4 @@ const userEndpoints: Endpoints = {
 }
 
 export { userEndpoints }
-export type { ApiMethod, Endpoints }
+export type { Endpoints }

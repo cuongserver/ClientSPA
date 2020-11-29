@@ -13,6 +13,8 @@ import {
 	InputAdornment,
 	InputProps,
 	IconButton,
+	Radio,
+	PaletteType,
 } from '@material-ui/core'
 import Visibility from '@material-ui/icons/Visibility'
 import VisibilityOff from '@material-ui/icons/VisibilityOff'
@@ -34,7 +36,8 @@ import { RouteComponentProps } from 'react-router-dom'
 import { StaticContext } from 'react-router'
 import { Dispatch } from 'redux'
 import { WrapperWithLoading } from 'utils/wrapper-with-loading'
-
+import { RootContext } from 'context/context.app'
+import { Brightness4, BrightnessHigh } from '@material-ui/icons'
 export interface IComponentProps
 	extends WithTranslation,
 		RouteComponentProps<{}, StaticContext, { from: string }> {
@@ -43,7 +46,7 @@ export interface IComponentProps
 }
 
 interface IComponentState extends LoadingProps {
-	mode: string
+	mode: 'login' | 'passwordRecovery'
 	showPassword: boolean
 }
 
@@ -57,7 +60,11 @@ interface IRecoverPassword {
 }
 
 /**class declare */
-class Login extends React.PureComponent<IComponentProps, IComponentState> {
+class Login extends React.PureComponent<
+	IComponentProps,
+	IComponentState,
+	ILogin | IRecoverPassword
+> {
 	//#region field
 	initialLogin: ILogin = {
 		username: '',
@@ -68,6 +75,8 @@ class Login extends React.PureComponent<IComponentProps, IComponentState> {
 	}
 	loginValidator: React.RefObject<FormikProps<ILogin>>
 	recoverPasswordValidator: React.RefObject<FormikProps<IRecoverPassword>>
+	static contextType = RootContext
+	context!: React.ContextType<typeof RootContext>
 	//#endregion
 	//#region lifecycle hook
 	constructor(props: IComponentProps) {
@@ -79,6 +88,33 @@ class Login extends React.PureComponent<IComponentProps, IComponentState> {
 		}
 		this.loginValidator = React.createRef()
 		this.recoverPasswordValidator = React.createRef()
+	}
+
+	// eslint-disable-next-line @typescript-eslint/no-unused-vars
+	getSnapshotBeforeUpdate(
+		prevProps: IComponentProps,
+		prevState: IComponentState
+	) {
+		if (this.state.mode !== prevState.mode) return null
+		if (this.state.mode === 'login')
+			return this.loginValidator.current?.values as ILogin
+		return this.recoverPasswordValidator.current?.values as IRecoverPassword
+	}
+
+	// eslint-disable-next-line @typescript-eslint/no-unused-vars
+	componentDidUpdate(
+		prevProps: IComponentProps,
+		prevState: IComponentState,
+		snapshot: ILogin | IRecoverPassword
+	) {
+		if (snapshot === null) return
+		if (this.state.mode === 'login')
+			this.loginValidator.current?.setValues(snapshot as ILogin, true)
+		if (this.state.mode === 'passwordRecovery')
+			this.recoverPasswordValidator.current?.setValues(
+				snapshot as IRecoverPassword,
+				true
+			)
 	}
 
 	//#endregion
@@ -172,6 +208,11 @@ class Login extends React.PureComponent<IComponentProps, IComponentState> {
 			})
 		}
 		validator.current?.handleChange(e)
+	}
+
+	handleDisplayModeChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+		const value = e.target.value as PaletteType
+		this.context?.theme.setTheme(value)
 	}
 	//#endregion
 
@@ -357,7 +398,7 @@ class Login extends React.PureComponent<IComponentProps, IComponentState> {
 
 	render() {
 		const { t } = this.props
-
+		const ctx = this.context!
 		const classList = {
 			root: 'login-card flex-col-c-m p-l-10 p-r-10',
 		}
@@ -381,11 +422,34 @@ class Login extends React.PureComponent<IComponentProps, IComponentState> {
 
 							<div className="m-t-auto"></div>
 							<Divider orientation="horizontal" className="w-full" />
-							<div className="m-t-10"></div>
+							<div className="flex-m">
+								<Typography color="secondary">
+									<InputLabel>{t('login-label-display-mode')}:</InputLabel>
+								</Typography>
+								&nbsp;&nbsp;&nbsp;&nbsp;
+								<Radio
+									checked={ctx.theme.value === 'light'}
+									value="light"
+									onChange={this.handleDisplayModeChange}
+									size="small"
+									color="default"
+								/>
+								<BrightnessHigh />
+								&nbsp;&nbsp;
+								<Radio
+									checked={ctx.theme.value === 'dark'}
+									value="dark"
+									onChange={this.handleDisplayModeChange}
+									size="small"
+									color="default"
+								/>
+								<Brightness4 />
+							</div>
 							<Typography color="secondary">
 								<InputLabel>{t('login-label-available-language')}</InputLabel>
 							</Typography>
 							<div className="m-t-5"></div>
+
 							<div className="dis-flex">
 								<img
 									alt="en"

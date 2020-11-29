@@ -11,5 +11,6 @@
   "login-error-password-required": "Mật khẩu không được bỏ trống",
   "login-error-username-for-password-recover-required": "Tài khoản không được bỏ trống",
   "main-drawer-menugroup-content": "Nội dung",
-  "main-drawer-menugroup-item-image": "Hình ảnh"
+  "main-drawer-menugroup-item-image": "Hình ảnh",
+  "login-label-display-mode": "Chế độ hiển thị"
 }

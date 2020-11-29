@@ -29,17 +29,13 @@ namespace Service
             {
                 return new OutputAuthentication
                 {
-                    AuthToken = "",
-                    Success = true,
-                    ErrorCode = "",
+                    Result = AuthenticationResult.Success,
                     UserDetail = _mapper.Map<UserDetail>(userDetail)
                 };
             }
             return new OutputAuthentication
             {
-                AuthToken = "",
-                Success = false,
-                ErrorCode = ""
+                Result = AuthenticationResult.WrongCredential
             };
         }
     }

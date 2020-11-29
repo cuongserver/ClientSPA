@@ -2962,11 +2962,11 @@
 /*#endregion*/
 
 /*#region elevation*/
-.elevation-normal{z-index: 0;}
-.elevation-appbar{z-index: 200 !important;}
-.elevation-drawer{z-index: 100 !important;}
-.elevation-modal{z-index: 500;}
-.elevation-snackbar{z-index: 300;}
-.elevation-tooltip{z-index: 400;}
+
 /*#endregion*/
 
+/*#region elevation*/
+.break-word {
+	word-break: break-word;
+}
+/*#endregion*/

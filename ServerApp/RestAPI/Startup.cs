@@ -42,6 +42,7 @@ namespace RestAPI
             services.AddScoped<IUserRepository<User, Guid>, UserRepository>();
             services.AddScoped<IUserService, UserService>();
             services.AddScoped<SecretEnhancer>();
+            services.AddScoped<IJwtTokenHelper, JwtTokenHelper>();
             services.AddAutoMapper(typeof(Startup));
 
             //avoid the MultiPartBodyLength error

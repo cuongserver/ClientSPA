@@ -6,11 +6,17 @@ import { Provider } from 'react-redux'
 import * as serviceWorker from 'serviceWorker'
 import { BrowserRouter } from 'react-router-dom'
 import { store } from 'configs/config.store'
+import { Context } from 'context/context.app'
+import { AppTheme } from 'theme/app-theme'
 
 ReactDOM.render(
 	<Provider store={store}>
 		<BrowserRouter>
-			<App />
+			<Context>
+				<AppTheme>
+					<App />
+				</AppTheme>
+			</Context>
 		</BrowserRouter>
 	</Provider>,
 	document.getElementById('root')

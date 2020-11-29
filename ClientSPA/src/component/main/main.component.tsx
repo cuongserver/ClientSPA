@@ -10,7 +10,13 @@ import {
 	Divider,
 	IconButton,
 } from '@material-ui/core'
-import { Image, Menu, Clear } from '@material-ui/icons'
+import {
+	Image,
+	Menu,
+	Clear,
+	BrightnessHigh,
+	Brightness4,
+} from '@material-ui/icons'
 import { DrawerMenuGroup } from 'component/main/main.drawer.menugroup.component'
 import { withTranslation, WithTranslation } from 'react-i18next'
 import {
@@ -18,10 +24,13 @@ import {
 	Theme,
 	withStyles,
 	WithStyles,
+	WithTheme,
+	withTheme,
 } from '@material-ui/core/styles'
+import { RootContext } from 'context/context.app'
 
 const drawerWidth = 240
-const cssClases = (theme: Theme) => {
+const cssClasses = (theme: Theme) => {
 	return createStyles({
 		root: {
 			display: 'flex',
@@ -46,15 +55,23 @@ const cssClases = (theme: Theme) => {
 				duration: theme.transitions.duration.enteringScreen,
 			}),
 		},
+		toolBarHeight: {
+			...theme.mixins.toolbar,
+		},
 	})
 }
 
-interface MainProps extends WithTranslation, WithStyles<typeof cssClases> {}
+interface MainProps
+	extends WithTranslation,
+		WithStyles<typeof cssClasses>,
+		WithTheme {}
 
 interface MainState {
 	drawerOpen: boolean
 }
-class Main extends React.PureComponent<MainProps, MainState> {
+class UIComponent extends React.PureComponent<MainProps, MainState> {
+	static contextType = RootContext
+	context!: React.ContextType<typeof RootContext>
 	constructor(props: MainProps) {
 		super(props)
 		this.state = {
@@ -68,22 +85,47 @@ class Main extends React.PureComponent<MainProps, MainState> {
 		})
 	}
 
+	setTheme = () => {
+		if (this.context?.theme.value === 'dark')
+			this.context?.theme.setTheme('light')
+		if (this.context?.theme.value === 'light')
+			this.context?.theme.setTheme('dark')
+	}
+
 	render() {
-		const { classes } = this.props
+		const { classes, theme } = this.props
+		const ctx = this.context!
 		return (
-			<div className="dis-flex">
-				<AppBar position="fixed" className="elevation-appbar">
+			<div className="dis-flex sizefull">
+				<AppBar
+					position="fixed"
+					classes={{ root: classes.appBar }}
+					color="primary"
+				>
 					<Toolbar disableGutters={true}>
-						<div className="p-l-10 p-r-5" style={{ width: '63px' }}>
-							{this.state.drawerOpen ? null : (
-								<IconButton onClick={this.toggleDrawer} color="inherit">
-									<Menu />
-								</IconButton>
-							)}
-						</div>
+						<IconButton
+							onClick={this.toggleDrawer}
+							color="inherit"
+							style={
+								this.state.drawerOpen
+									? {
+											zIndex: -1,
+											opacity: 0,
+									  }
+									: undefined
+							}
+						>
+							<Menu />
+						</IconButton>
 						<Typography variant="h6" noWrap>
 							Clipped drawer
 						</Typography>
+						<div className="m-l-auto m-r-5">
+							<IconButton onClick={this.setTheme} color="inherit">
+								{ctx.theme.value === 'dark' && <BrightnessHigh />}
+								{ctx.theme.value === 'light' && <Brightness4 />}
+							</IconButton>
+						</div>
 					</Toolbar>
 				</AppBar>
 
@@ -121,28 +163,25 @@ class Main extends React.PureComponent<MainProps, MainState> {
 						</DrawerMenuGroup>
 					</div>
 				</Drawer>
-				<main
-					className={`${
+				<div
+					className={`w-full min-h-full ${
 						this.state.drawerOpen ? classes.contentShift : classes.content
 					} ${classes.content}`}
+					style={{
+						background:
+							ctx.theme.value === 'dark'
+								? theme.palette.background.paper
+								: theme.palette.background.default,
+					}}
 				>
-					<div style={{ height: '64px' }} />
-					<Typography paragraph>
-						Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do
-						eiusmod tempor incididunt ut labore et dolore magna aliqua. Rhoncus
-						dolor purus non enim praesent elementum facilisis leo vel. Risus at
-						ultrices mi tempus imperdiet. Semper risus in hendrerit gravida
-						rutrum quisque non tellus. Convallis convallis tellus id interdum
-						velit laoreet id donec ultrices. Odio morbi quis commodo odio aenean
-						sed adipiscing. Amet nisl suscipit adipiscing bibendum est ultricies
-						integer quis. Cursus euismod quis viverra nibh cras. Metus vulputate
-						eu scelerisque felis imperdiet proin fermentum leo. Mauris commodo
-						quis imperdiet massa tincidunt. Cras tincidunt lobortis feugiat
-						vivamus at augue. At augue eget arcu dictum varius duis at
-						consectetur lorem. Velit sed ullamcorper morbi tincidunt. Lorem
-						donec massa sapien faucibus et molestie ac.
+					<div className={classes.toolBarHeight} />
+					<Typography paragraph className="break-word p-l-3 p-r-3">
+						{JSON.stringify(theme)}
 					</Typography>
-					<Typography paragraph>
+					<Typography paragraph className="break-word p-l-3 p-r-3">
+						{ctx.theme.value}
+					</Typography>
+					<Typography paragraph className="break-word p-l-3 p-r-3">
 						Consequat mauris nunc congue nisi vitae suscipit. Fringilla est
 						ullamcorper eget nulla facilisi etiam dignissim diam. Pulvinar
 						elementum integer enim neque volutpat ac tincidunt. Ornare
@@ -157,10 +196,13 @@ class Main extends React.PureComponent<MainProps, MainState> {
 						accumsan lacus vel facilisis. Nulla posuere sollicitudin aliquam
 						ultrices sagittis orci a.
 					</Typography>
-				</main>
+				</div>
 			</div>
 		)
 	}
 }
 
-export default withStyles(cssClases)(withTranslation()(Main))
+const AddTranslation = withTranslation()(UIComponent)
+const AddStyle = withStyles(cssClasses)(AddTranslation)
+const Main = withTheme(AddStyle)
+export default Main
