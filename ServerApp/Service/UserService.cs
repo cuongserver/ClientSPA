@@ -24,6 +24,12 @@ namespace Service
         public async Task<OutputAuthentication> Authenticate(string password, string userName, string pepper)
         {
             var userDetail = await _userRepo.FindFirst(_userRepo.Context, user => user.UserName == userName);
+            var defaultOutput = new OutputAuthentication
+            {
+                Result = AuthenticationResult.WrongCredential
+            };
+
+            if (userDetail == null) return defaultOutput;
 
             if (_enhancer.GenerateHashedPassword(password, userName, pepper) == userDetail.PasswordHash)
             {
@@ -33,10 +39,11 @@ namespace Service
                     UserDetail = _mapper.Map<UserDetail>(userDetail)
                 };
             }
-            return new OutputAuthentication
+            else
             {
-                Result = AuthenticationResult.WrongCredential
-            };
+                return defaultOutput;
+            }
+
         }
     }
 }

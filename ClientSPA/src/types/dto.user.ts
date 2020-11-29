@@ -21,6 +21,9 @@ interface UserLoginResponse extends OutputAuthentication {
  ** 0: success
  ** 1: wrong credential
  */
-type AuthenticationResult = 0 | 1
-
-export type { UserLoginRequest, UserDetail, OutputAuthentication, UserLoginResponse, AuthenticationResult }
+enum AuthenticationResult {
+	Success,
+	WrongCredential
+}
+export { AuthenticationResult }
+export type { UserLoginRequest, UserDetail, OutputAuthentication, UserLoginResponse }

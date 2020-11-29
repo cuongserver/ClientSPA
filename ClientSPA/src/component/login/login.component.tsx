@@ -16,13 +16,10 @@ import {
 	Radio,
 	PaletteType,
 } from '@material-ui/core'
-import Visibility from '@material-ui/icons/Visibility'
-import VisibilityOff from '@material-ui/icons/VisibilityOff'
-import { withTranslation } from 'react-i18next'
 import { connect } from 'react-redux'
 import { Formik, FormikProps, FormikErrors } from 'formik'
 import { withRouter } from 'react-router'
-import { WithTranslation } from 'react-i18next'
+import { WithTranslation, withTranslation } from 'react-i18next'
 
 /**import from inside project */
 import { StoreStateApp } from 'types/store.app'
@@ -37,7 +34,15 @@ import { StaticContext } from 'react-router'
 import { Dispatch } from 'redux'
 import { WrapperWithLoading } from 'utils/wrapper-with-loading'
 import { RootContext } from 'context/context.app'
-import { Brightness4, BrightnessHigh } from '@material-ui/icons'
+import {
+	Brightness4,
+	BrightnessHigh,
+	Visibility,
+	VisibilityOff,
+} from '@material-ui/icons'
+import { UserApiService } from 'api/api.user'
+import { UserLoginRequest, AuthenticationResult } from 'types/dto.user'
+
 export interface IComponentProps
 	extends WithTranslation,
 		RouteComponentProps<{}, StaticContext, { from: string }> {
@@ -77,6 +82,7 @@ class Login extends React.PureComponent<
 	recoverPasswordValidator: React.RefObject<FormikProps<IRecoverPassword>>
 	static contextType = RootContext
 	context!: React.ContextType<typeof RootContext>
+	userApi: UserApiService = new UserApiService()
 	//#endregion
 	//#region lifecycle hook
 	constructor(props: IComponentProps) {
@@ -148,28 +154,45 @@ class Login extends React.PureComponent<
 
 	loginHandleClick = () => {
 		actionCreatorsAlert.hideAlert(this.props.dispatch)
+
+		let data: UserLoginRequest = {
+			...(this.loginValidator.current?.values as UserLoginRequest),
+		}
+
 		this.setState({
 			loading: true,
 		})
-		setTimeout(() => {
-			this.setState({
-				loading: false,
-			})
 
-			actionCreatorsAlert.showAlert(
-				this.props.dispatch,
-				new Date().toJSON(),
-				'success'
-			)
-
-			const redirectURL = this.props.location.state?.from
-			if (redirectURL !== undefined) {
-				this.props.history.push(redirectURL)
-				actionCreatorsIdentity.login(this.props.dispatch)
-			} else {
-				this.props.history.push('/login')
-			}
-		}, 2000)
+		let result = this.userApi.doLogin(data)
+		result.subscribe({
+			next: (value) => {
+				if (value.data.result === AuthenticationResult.Success) {
+					const redirectURL = this.props.location.state?.from
+					if (redirectURL !== undefined) {
+						this.props.history.push(redirectURL)
+						actionCreatorsIdentity.login(this.props.dispatch)
+						actionCreatorsAlert.showAlert(
+							this.props.dispatch,
+							new Date().toJSON(),
+							'success'
+						)
+					} else {
+						this.props.history.push('/login')
+					}
+				} else {
+					actionCreatorsAlert.showAlert(
+						this.props.dispatch,
+						new Date().toJSON(),
+						'error'
+					)
+				}
+			},
+			complete: () => {
+				this.setState({
+					loading: false,
+				})
+			},
+		})
 	}
 
 	loginHandleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
