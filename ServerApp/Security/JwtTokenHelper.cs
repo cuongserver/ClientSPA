@@ -11,7 +11,10 @@ namespace Security
     {
         public string GenerateJwtToken(Guid id, string secretKey, int validPeriodInMinutes)
         {
-            var tokenHandler = new JwtSecurityTokenHandler();
+            var tokenHandler = new JwtSecurityTokenHandler
+            {
+                SetDefaultTimesOnTokenCreation = false
+            };
             var key = Encoding.ASCII.GetBytes(secretKey);
             var tokenDescriptor = new SecurityTokenDescriptor
             {

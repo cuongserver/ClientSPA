@@ -1,0 +1,48 @@
+<html>
+	<input id="input" />
+	<button>Clear</button>
+	<p>
+		<textarea id="textArea" style="width: 400px; height: 400px"></textarea>
+	</p>
+	<script>
+		let input = document.getElementById('input')
+		let textArea = document.getElementById('textArea')
+		let cancelPromise = null
+		const search = (term, timeout) => {
+			return new Promise((resolve) => {
+				setTimeout(() => {
+					resolve(term)
+				}, timeout)
+			})
+		}
+
+		const x = (term, timeout) => {
+			if (cancelPromise !== null) cancelPromise()
+			let flag = new Promise((resolve) => {
+				cancelPromise = () => {
+					resolve('cancelled')
+				}
+			})
+			const promise = search(term, timeout)
+		}
+
+		input.addEventListener('input', (e) => {
+			let term = e.target.value
+			textArea.value += `\nSearch for: ${term}`
+			if (cancelPromise !== null) cancelPromise()
+			let flagCancel = new Promise((resolve) => {
+				cancelPromise = () => {
+					resolve(['cancelled', term])
+				}
+			})
+
+			Promise.race([flagCancel, search(term, 2000)]).then((result) => {
+				if (Array.isArray(result) === true) {
+					textArea.value += `\nCancel search for: ${result[1]}`
+				} else {
+					textArea.value += `\nComplete search for: ${term}`
+				}
+			})
+		})
+	</script>
+</html>
