@@ -15,6 +15,7 @@ using Security;
 using Service;
 using System;
 using System.IO;
+using RestAPI.Middleware;
 
 namespace RestAPI
 {
@@ -71,6 +72,7 @@ namespace RestAPI
 
             app.UseCors(policy => policy.AllowAnyMethod().AllowAnyHeader().SetIsOriginAllowed(origin => true));
 
+            app.UseMiddleware<JwtMiddleware>();
             app.UseAuthorization();
 
             app.UseEndpoints(endpoints =>

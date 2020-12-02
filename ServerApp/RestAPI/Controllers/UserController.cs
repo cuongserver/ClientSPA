@@ -7,6 +7,8 @@ using Service.DTO.Output.Authentication;
 using Security;
 using System.Threading.Tasks;
 using AutoMapper;
+using Microsoft.AspNetCore.Authorization;
+
 namespace RestAPI.Controllers
 {
     [ApiController]

@@ -8,6 +8,9 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Collections.Generic;
 using System.Security.Claims;
+using Microsoft.AspNetCore.Authorization;
+using Newtonsoft.Json;
+using Newtonsoft.Json.Serialization;
 
 namespace RestAPI.Middleware
 {
@@ -23,6 +26,16 @@ namespace RestAPI.Middleware
 
         public async Task Invoke(HttpContext context)
         {
+            var endpoint = context.GetEndpoint();
+            if (endpoint != null)
+            {
+                var isAllowAnonymous = endpoint.Metadata.OfType<AllowAnonymousAttribute>().Count() > 0;
+                if (isAllowAnonymous)
+                {
+                    await _next.Invoke(context);
+                    return;
+                }
+            }
             var token = context.Request.Headers["Authorization"].FirstOrDefault()?.Split(" ").Last();
             if (token == null)
             {
@@ -34,7 +47,7 @@ namespace RestAPI.Middleware
             if (!isTokenValid)
             {
                 context.Response.StatusCode = StatusCodes.Status401Unauthorized;
-                await context.Response.WriteAsync("");
+                await context.Response.WriteAsync(JsonConvert.SerializeObject(new { Message = "Unknown Authentication" }));
                 return;
             }
             foreach (var claim in claims) context.User.Claims.Append(claim);
@@ -64,8 +77,8 @@ namespace RestAPI.Middleware
                 }, out SecurityToken validatedToken);
 
                 var jwtToken = (JwtSecurityToken)validatedToken;
-                var expiredAt = Convert.ToInt64(jwtToken.Claims.First(x => x.Type == ClaimTypes.Expiration).Value);
-                var now = (Int64)(DateTime.UtcNow.Subtract(new DateTime(1970, 1, 1))).TotalSeconds + 0;
+                var expiredAt = Convert.ToInt64(jwtToken.Claims.First(x => x.Type == JwtRegisteredClaimNames.Exp).Value);
+                var now = (Int64)(DateTime.UtcNow.Subtract(new DateTime(1970, 1, 1))).TotalSeconds + 3600;
                 if (now > expiredAt)
                 {
                     claims = null;
