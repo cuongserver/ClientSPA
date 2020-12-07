@@ -1,6 +1,5 @@
 ﻿using Microsoft.Extensions.DependencyInjection;
 using Serilog;
-using Serilog.Core;
 
 namespace RestAPI.ServiceExtensions
 {
@@ -11,7 +10,7 @@ namespace RestAPI.ServiceExtensions
             services.AddScoped(provider =>
             {
 
-                var logger = new LoggerConfiguration()
+                return new LoggerConfiguration()
                 .Enrich.FromLogContext()
                 .WriteTo.File(
                     path: "Logs/log_.txt",
@@ -19,8 +18,7 @@ namespace RestAPI.ServiceExtensions
                     shared: true
                 )
                 .CreateLogger();
-                Log.Logger = logger;
-                return logger;
+                Log
             });
         }
     }

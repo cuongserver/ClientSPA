@@ -11,15 +11,12 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.FileProviders;
 using Microsoft.Extensions.Hosting;
+using RestAPI.Middleware;
+using RestAPI.ServiceExtensions;
 using Security;
 using Service;
 using System;
 using System.IO;
-using RestAPI.Middleware;
-using RestAPI.ServiceExtensions;
-using Serilog;
-using Microsoft.Extensions.Logging;
-using Serilog.Core;
 
 namespace RestAPI
 {
@@ -59,12 +56,9 @@ namespace RestAPI
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
         public void Configure(
             IApplicationBuilder app,
-            IWebHostEnvironment env,
-            ILoggerFactory loggerFactory,
-            IServiceProvider serviceProvider
+            IWebHostEnvironment env
         )
         {
-            loggerFactory.AddSerilog();
             if (env.IsDevelopment())
             {
                 app.UseDeveloperExceptionPage();
