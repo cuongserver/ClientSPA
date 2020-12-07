@@ -28,6 +28,7 @@ namespace RestAPI.Controllers
         }
 
         [HttpPost("authenticate")]
+        [AllowAnonymous]
         public async Task<IActionResult> Authenticate([FromBody] UserLoginRequest credential)
         {
             var pepper = _configuration.GetValue<string>("Security:Pepper");

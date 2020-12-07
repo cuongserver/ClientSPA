@@ -16,6 +16,10 @@ using Service;
 using System;
 using System.IO;
 using RestAPI.Middleware;
+using RestAPI.ServiceExtensions;
+using Serilog;
+using Microsoft.Extensions.Logging;
+using Serilog.Core;
 
 namespace RestAPI
 {
@@ -31,6 +35,7 @@ namespace RestAPI
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
+
             services.AddControllers();
             services.AddDbContext<CmsContext>(options => options.UseSqlServer(Configuration.GetValue<string>("DbConnection:Default")));
             services.AddScoped<IUserRepository<User, Guid>, UserRepository>();
@@ -47,11 +52,19 @@ namespace RestAPI
                 options.MemoryBufferThreshold = int.MaxValue;
             });
 
+            services.AddSerilogLogging();
+            services.AddLogging();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
-        public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
+        public void Configure(
+            IApplicationBuilder app,
+            IWebHostEnvironment env,
+            ILoggerFactory loggerFactory,
+            IServiceProvider serviceProvider
+        )
         {
+            loggerFactory.AddSerilog();
             if (env.IsDevelopment())
             {
                 app.UseDeveloperExceptionPage();
@@ -69,6 +82,8 @@ namespace RestAPI
             app.UseHttpsRedirection();
 
             app.UseRouting();
+
+            app.UseMiddleware<SerilogMiddleware>();
 
             app.UseCors(policy => policy.AllowAnyMethod().AllowAnyHeader().SetIsOriginAllowed(origin => true));
 
