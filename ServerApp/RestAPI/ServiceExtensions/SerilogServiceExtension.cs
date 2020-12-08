@@ -1,4 +1,5 @@
 ﻿using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Logging;
 using Serilog;
 
 namespace RestAPI.ServiceExtensions
@@ -7,10 +8,7 @@ namespace RestAPI.ServiceExtensions
     {
         public static void AddSerilogLogging(this IServiceCollection services)
         {
-            services.AddScoped(provider =>
-            {
-
-                return new LoggerConfiguration()
+            Log.Logger = new LoggerConfiguration()
                 .Enrich.FromLogContext()
                 .WriteTo.File(
                     path: "Logs/log_.txt",
@@ -18,7 +16,10 @@ namespace RestAPI.ServiceExtensions
                     shared: true
                 )
                 .CreateLogger();
-                Log
+            services.AddLogging(loggingBuilder =>
+            {
+                loggingBuilder.ClearProviders();
+                loggingBuilder.AddSerilog(dispose: true);
             });
         }
     }

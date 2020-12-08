@@ -11,9 +11,11 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.FileProviders;
 using Microsoft.Extensions.Hosting;
+using Microsoft.Extensions.Logging;
 using RestAPI.Middleware;
 using RestAPI.ServiceExtensions;
 using Security;
+using Serilog;
 using Service;
 using System;
 using System.IO;
@@ -50,15 +52,17 @@ namespace RestAPI
             });
 
             services.AddSerilogLogging();
-            services.AddLogging();
+
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
         public void Configure(
             IApplicationBuilder app,
-            IWebHostEnvironment env
+            IWebHostEnvironment env,
+            ILoggerFactory loggerFactory
         )
         {
+            loggerFactory.AddSerilog(dispose: true);
             if (env.IsDevelopment())
             {
                 app.UseDeveloperExceptionPage();
