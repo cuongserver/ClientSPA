@@ -30,7 +30,6 @@ class App extends React.Component<{ isAuthenticated: boolean }> {
 							path="/"
 							isAuthenticated={this.props.isAuthenticated}
 							authenticationPath="/login"
-							exact
 							render={() => <Main />}
 						/>
 					</Switch>

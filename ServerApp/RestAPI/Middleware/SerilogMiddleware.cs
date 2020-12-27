@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Http;
 using Serilog;
+using Serilog.Context;
 using System.Threading.Tasks;
 
 namespace RestAPI.Middleware
@@ -13,9 +14,13 @@ namespace RestAPI.Middleware
         }
         public async Task Invoke(HttpContext context)
         {
-            Log.Information("Start request");
-            await _next(context);
-            Log.Information("Finished");
+            using (LogContext.PushProperty("RequestTraceId", context.TraceIdentifier))
+            {
+                Log.Information("Start request");
+                await _next(context);
+                Log.Information("Finished");
+            }
+
         }
     }
 }

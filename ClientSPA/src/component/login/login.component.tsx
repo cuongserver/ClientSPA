@@ -13,7 +13,7 @@ import {
 	InputAdornment,
 	InputProps,
 	IconButton,
-	Radio,
+	//Radio,
 	PaletteType,
 } from '@material-ui/core'
 import { connect } from 'react-redux'
@@ -35,8 +35,8 @@ import { Dispatch } from 'redux'
 import { WrapperWithLoading } from 'utils/wrapper-with-loading'
 import { RootContext } from 'context/context.app'
 import {
-	Brightness4,
-	BrightnessHigh,
+	//Brightness4,
+	//BrightnessHigh,
 	Visibility,
 	VisibilityOff,
 } from '@material-ui/icons'
@@ -115,11 +115,11 @@ class Login extends React.PureComponent<
 	) {
 		if (snapshot === null) return
 		if (this.state.mode === 'login')
-			this.loginValidator.current?.setValues(snapshot as ILogin, true)
+			this.loginValidator.current?.setValues(snapshot as ILogin, false)
 		if (this.state.mode === 'passwordRecovery')
 			this.recoverPasswordValidator.current?.setValues(
 				snapshot as IRecoverPassword,
-				true
+				false
 			)
 	}
 
@@ -171,18 +171,13 @@ class Login extends React.PureComponent<
 					if (redirectURL !== undefined) {
 						this.props.history.push(redirectURL)
 						actionCreatorsIdentity.login(this.props.dispatch)
-						actionCreatorsAlert.showAlert(
-							this.props.dispatch,
-							new Date().toJSON(),
-							'success'
-						)
 					} else {
 						this.props.history.push('/login')
 					}
 				} else {
 					actionCreatorsAlert.showAlert(
 						this.props.dispatch,
-						new Date().toJSON(),
+						this.props.t('api-message-auth-' + value.data.result),
 						'error'
 					)
 				}
@@ -421,7 +416,7 @@ class Login extends React.PureComponent<
 
 	render() {
 		const { t } = this.props
-		const ctx = this.context!
+		//const ctx = this.context!
 		const classList = {
 			root: 'login-card flex-col-c-m p-l-10 p-r-10',
 		}
@@ -445,7 +440,7 @@ class Login extends React.PureComponent<
 
 							<div className="m-t-auto"></div>
 							<Divider orientation="horizontal" className="w-full" />
-							<div className="flex-m">
+							{/*<div className="flex-m">
 								<Typography color="secondary">
 									<InputLabel>{t('login-label-display-mode')}:</InputLabel>
 								</Typography>
@@ -467,7 +462,8 @@ class Login extends React.PureComponent<
 									color="default"
 								/>
 								<Brightness4 />
-							</div>
+				</div>*/}
+							<div className="m-t-5"></div>
 							<Typography color="secondary">
 								<InputLabel>{t('login-label-available-language')}</InputLabel>
 							</Typography>

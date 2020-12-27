@@ -12,5 +12,8 @@
   "login-error-username-for-password-recover-required": "Username is required",
   "main-drawer-menugroup-content": "Content",
   "main-drawer-menugroup-item-image": "Image",
-  "login-label-display-mode": "Display mode"
+  "login-label-display-mode": "Display mode",
+  "api-message-auth-1": "Wrong Credential",
+  "main-drawer-menugroup-members": "Member management",
+  "main-drawer-menugroup-item-addmember": "Add member"
 }

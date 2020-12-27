@@ -78,7 +78,7 @@ class Home extends React.PureComponent<{
 						onSave={this.handleSave}
 					/> */}
 					<img
-						src={process.env.REACT_APP_API_URL + '/Resources/Images/star.png'}
+						src={process.env.REACT_APP_API_URL + '/Resources/Images/star.png'} alt="x"
 					/>
 				</header>
 			</div>

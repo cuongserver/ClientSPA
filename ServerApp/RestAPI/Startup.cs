@@ -10,7 +10,6 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.FileProviders;
-using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 using RestAPI.Middleware;
 using RestAPI.ServiceExtensions;
@@ -63,10 +62,8 @@ namespace RestAPI
         )
         {
             loggerFactory.AddSerilog(dispose: true);
-            if (env.IsDevelopment())
-            {
-                app.UseDeveloperExceptionPage();
-            }
+            app.UseMiddleware<SerilogMiddleware>();
+            app.UseMiddleware<ExceptionMiddleware>();
 
             //serve static file from Resources folder
             app.UseStaticFiles();
@@ -76,12 +73,9 @@ namespace RestAPI
                 RequestPath = new PathString("/Resources")
             });
 
-
             app.UseHttpsRedirection();
 
             app.UseRouting();
-
-            app.UseMiddleware<SerilogMiddleware>();
 
             app.UseCors(policy => policy.AllowAnyMethod().AllowAnyHeader().SetIsOriginAllowed(origin => true));
 

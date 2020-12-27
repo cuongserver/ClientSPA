@@ -2,6 +2,7 @@ import {
 	createStore,
 	combineReducers,
 	applyMiddleware,
+	compose,
 	Reducer,
 	AnyAction,
 } from 'redux'
@@ -30,11 +31,17 @@ const epicMiddleware = createEpicMiddleware<
 	AnyAction,
 	StoreStateApp
 >()
+const enhancers = [];
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+const windowIfDefined = typeof window === 'undefined' ? null : window as any;
 
+if (windowIfDefined && windowIfDefined.__REDUX_DEVTOOLS_EXTENSION__) {
+	enhancers.push(windowIfDefined.__REDUX_DEVTOOLS_EXTENSION__());
+}
 const store = createStore(
 	reducers,
 	appStoreInitState,
-	applyMiddleware(epicMiddleware)
+	compose(applyMiddleware(epicMiddleware), ...enhancers)
 )
 
 epicMiddleware.run(combineEpics(localeEpic))

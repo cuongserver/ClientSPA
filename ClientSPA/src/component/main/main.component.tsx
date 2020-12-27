@@ -9,13 +9,16 @@ import {
 	ListItemText,
 	Divider,
 	IconButton,
+	TextField,
+	MenuItem,
 } from '@material-ui/core'
 import {
 	Image,
 	Menu,
 	Clear,
-	BrightnessHigh,
-	Brightness4,
+	PersonAdd,
+	//BrightnessHigh,
+	//Brightness4,
 } from '@material-ui/icons'
 import { DrawerMenuGroup } from 'component/main/main.drawer.menugroup.component'
 import { withTranslation, WithTranslation } from 'react-i18next'
@@ -28,6 +31,16 @@ import {
 	withTheme,
 } from '@material-ui/core/styles'
 import { RootContext } from 'context/context.app'
+import { StoreStateLocale } from 'types/store.locale'
+import { StoreStateApp } from 'types/store.app'
+import { connect } from 'react-redux'
+import { actionCreatorsLocale } from 'store/action-creators/action-creators.locale'
+import { Dispatch } from 'redux'
+import { StoreStateIdentity } from 'types/store.identity'
+import { AuthRoute } from 'routing-config/auth-route.component'
+import { RouteComponentProps, Switch, Route } from 'react-router-dom'
+import { StaticContext, withRouter } from 'react-router'
+import { MainBreadcrumbs } from 'component/main/main.breadcrumbs.component'
 
 const drawerWidth = 240
 const cssClasses = (theme: Theme) => {
@@ -64,11 +77,19 @@ const cssClasses = (theme: Theme) => {
 interface MainProps
 	extends WithTranslation,
 		WithStyles<typeof cssClasses>,
-		WithTheme {}
+		WithTheme,
+		Partial<StoreStateLocale>,
+		Partial<StoreStateIdentity>,
+		RouteComponentProps<{}, StaticContext, { from: string }> {
+	dispatch: Dispatch
+}
 
 interface MainState {
 	drawerOpen: boolean
 }
+
+const Home = React.lazy(() => import('component/home/home.component'))
+
 class UIComponent extends React.PureComponent<MainProps, MainState> {
 	static contextType = RootContext
 	context!: React.ContextType<typeof RootContext>
@@ -90,6 +111,12 @@ class UIComponent extends React.PureComponent<MainProps, MainState> {
 			this.context?.theme.setTheme('light')
 		if (this.context?.theme.value === 'light')
 			this.context?.theme.setTheme('dark')
+	}
+
+	handleLangChange = (
+		e: React.ChangeEvent<HTMLTextAreaElement | HTMLInputElement>
+	) => {
+		actionCreatorsLocale.changeLocale(this.props.dispatch, e.target.value)
 	}
 
 	render() {
@@ -120,12 +147,12 @@ class UIComponent extends React.PureComponent<MainProps, MainState> {
 						<Typography variant="h6" noWrap>
 							Clipped drawer
 						</Typography>
-						<div className="m-l-auto m-r-5">
+						{/* <div className="m-l-auto m-r-5">
 							<IconButton onClick={this.setTheme} color="inherit">
 								{ctx.theme.value === 'dark' && <BrightnessHigh />}
 								{ctx.theme.value === 'light' && <Brightness4 />}
 							</IconButton>
-						</div>
+						</div> */}
 					</Toolbar>
 				</AppBar>
 
@@ -146,13 +173,13 @@ class UIComponent extends React.PureComponent<MainProps, MainState> {
 							</IconButton>
 						</div>
 					</div>
-					<div>
-						<Divider />
+					<Divider />
+					<div className="of-auto">
 						<DrawerMenuGroup
 							groupName={this.props.t('main-drawer-menugroup-content')}
 							groupNameTextVariant="secondary"
 						>
-							<ListItem button>
+							<ListItem button onClick={() => this.props.history.push('/')}>
 								<ListItemIcon>
 									<Image />
 								</ListItemIcon>
@@ -161,6 +188,58 @@ class UIComponent extends React.PureComponent<MainProps, MainState> {
 								/>
 							</ListItem>
 						</DrawerMenuGroup>
+						<DrawerMenuGroup
+							groupName={this.props.t('main-drawer-menugroup-members')}
+							groupNameTextVariant="secondary"
+						>
+							<ListItem button onClick={() => this.props.history.push('/home')}>
+								<ListItemIcon>
+									<PersonAdd />
+								</ListItemIcon>
+								<ListItemText
+									primary={this.props.t('main-drawer-menugroup-item-addmember')}
+								/>
+							</ListItem>
+						</DrawerMenuGroup>
+					</div>
+					<div className="m-t-auto">
+						<Divider />
+					</div>
+
+					<div className="w-full p-l-5 p-r-5 p-b-5 p-t-15">
+						<TextField
+							variant="outlined"
+							className="w-full"
+							select
+							size="small"
+							label={this.props.t('login-label-available-language')}
+							InputLabelProps={{
+								shrink: true,
+							}}
+							value={this.props.currentLang!}
+							onChange={this.handleLangChange}
+						>
+							<MenuItem value={'vi'}>
+								<img
+									alt="vi"
+									title="vi"
+									src="/image/flag/vietnam.png"
+									height="18px"
+									width="18px"
+								/>
+								&nbsp; Tiếng Việt
+							</MenuItem>
+							<MenuItem value={'en'}>
+								<img
+									alt="en"
+									title="en"
+									src="/image/flag/uk.png"
+									height="18px"
+									width="18px"
+								/>
+								&nbsp; English
+							</MenuItem>
+						</TextField>
 					</div>
 				</Drawer>
 				<div
@@ -175,34 +254,65 @@ class UIComponent extends React.PureComponent<MainProps, MainState> {
 					}}
 				>
 					<div className={classes.toolBarHeight} />
-					<Typography paragraph className="break-word p-l-3 p-r-3">
-						{JSON.stringify(theme)}
-					</Typography>
-					<Typography paragraph className="break-word p-l-3 p-r-3">
-						{ctx.theme.value}
-					</Typography>
-					<Typography paragraph className="break-word p-l-3 p-r-3">
-						Consequat mauris nunc congue nisi vitae suscipit. Fringilla est
-						ullamcorper eget nulla facilisi etiam dignissim diam. Pulvinar
-						elementum integer enim neque volutpat ac tincidunt. Ornare
-						suspendisse sed nisi lacus sed viverra tellus. Purus sit amet
-						volutpat consequat mauris. Elementum eu facilisis sed odio morbi.
-						Euismod lacinia at quis risus sed vulputate odio. Morbi tincidunt
-						ornare massa eget egestas purus viverra accumsan in. In hendrerit
-						gravida rutrum quisque non tellus orci ac. Pellentesque nec nam
-						aliquam sem et tortor. Habitant morbi tristique senectus et.
-						Adipiscing elit duis tristique sollicitudin nibh sit. Ornare aenean
-						euismod elementum nisi quis eleifend. Commodo viverra maecenas
-						accumsan lacus vel facilisis. Nulla posuere sollicitudin aliquam
-						ultrices sagittis orci a.
-					</Typography>
+					<div>
+						<MainBreadcrumbs />
+					</div>
+					<React.Suspense fallback="">
+						<Switch>
+							<AuthRoute
+								path="/home"
+								isAuthenticated={this.props.isAuthenticated!}
+								authenticationPath="/login"
+								exact
+								render={() => <Home />}
+							/>
+							<Route
+								render={() => (
+									<div>
+										<Typography paragraph className="break-word p-l-3 p-r-3">
+											{JSON.stringify(theme)}
+										</Typography>
+										<Typography paragraph className="break-word p-l-3 p-r-3">
+											{ctx.theme.value}
+										</Typography>
+										<Typography paragraph className="break-word p-l-3 p-r-3">
+											Consequat mauris nunc congue nisi vitae suscipit.
+											Fringilla est ullamcorper eget nulla facilisi etiam
+											dignissim diam. Pulvinar elementum integer enim neque
+											volutpat ac tincidunt. Ornare suspendisse sed nisi lacus
+											sed viverra tellus. Purus sit amet volutpat consequat
+											mauris. Elementum eu facilisis sed odio morbi. Euismod
+											lacinia at quis risus sed vulputate odio. Morbi tincidunt
+											ornare massa eget egestas purus viverra accumsan in. In
+											hendrerit gravida rutrum quisque non tellus orci ac.
+											Pellentesque nec nam aliquam sem et tortor. Habitant morbi
+											tristique senectus et. Adipiscing elit duis tristique
+											sollicitudin nibh sit. Ornare aenean euismod elementum
+											nisi quis eleifend. Commodo viverra maecenas accumsan
+											lacus vel facilisis. Nulla posuere sollicitudin aliquam
+											ultrices sagittis orci a.
+										</Typography>
+									</div>
+								)}
+							/>
+						</Switch>
+					</React.Suspense>
 				</div>
 			</div>
 		)
 	}
 }
 
-const AddTranslation = withTranslation()(UIComponent)
+const AddTranslation = withTranslation(undefined, { withRef: true })(
+	UIComponent
+)
 const AddStyle = withStyles(cssClasses)(AddTranslation)
-const Main = withTheme(AddStyle)
+const mapStateToProps = (store: StoreStateApp): StoreStateLocale => {
+	return { ...store.locale, ...store.identity }
+}
+const AddStore = connect(mapStateToProps, null, null, { forwardRef: true })(
+	AddStyle
+)
+const AddRouter = withRouter(AddStore)
+const Main = withTheme(AddRouter)
 export default Main
