@@ -220,7 +220,8 @@ class UIComponent extends React.PureComponent<MainProps, MainState> {
 							onChange={this.handleLangChange}
 							SelectProps={{
 								MenuProps: {
-									disableScrollLock: true
+									disableScrollLock: true,
+									id: 'custom'
 								}
 							}}
 						>
