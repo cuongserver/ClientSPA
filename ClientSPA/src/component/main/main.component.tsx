@@ -218,6 +218,11 @@ class UIComponent extends React.PureComponent<MainProps, MainState> {
 							}}
 							value={this.props.currentLang!}
 							onChange={this.handleLangChange}
+							SelectProps={{
+								MenuProps: {
+									disableScrollLock: true
+								}
+							}}
 						>
 							<MenuItem value={'vi'}>
 								<img
