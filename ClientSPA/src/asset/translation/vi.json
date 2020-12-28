@@ -15,5 +15,7 @@
   "login-label-display-mode": "Chế độ hiển thị",
   "api-message-auth-1": "Thông tin đăng nhập sai",
   "main-drawer-menugroup-members": "Quản lý thành viên",
-  "main-drawer-menugroup-item-addmember": "Thêm thành viên"
+  "main-drawer-menugroup-item-addmember": "Thêm thành viên",
+  "main-breadcrumbs-pathname-home": "Trang chính",
+  "main-breadcrumbs-pathname-addmember": "Thêm thành viên"
 }

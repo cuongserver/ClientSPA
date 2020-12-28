@@ -15,5 +15,7 @@
   "login-label-display-mode": "Display mode",
   "api-message-auth-1": "Wrong Credential",
   "main-drawer-menugroup-members": "Member management",
-  "main-drawer-menugroup-item-addmember": "Add member"
+  "main-drawer-menugroup-item-addmember": "Add member",
+  "main-breadcrumbs-pathname-home": "Home",
+  "main-breadcrumbs-pathname-addmember": "Add member"
 }

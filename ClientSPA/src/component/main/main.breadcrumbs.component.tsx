@@ -3,14 +3,18 @@ import { RouteComponentProps } from 'react-router-dom'
 import { StaticContext, withRouter } from 'react-router'
 import { Breadcrumbs, Typography, Link } from '@material-ui/core'
 import { NavigateNext } from '@material-ui/icons'
-const breadcrumbNameMap: { [key: string]: string } = {
-	'/': 'Home',
-	'/home': 'Editor',
-}
+import { withTranslation, WithTranslation } from 'react-i18next'
+import { breadcrumbNameMap } from 'configs/config.routes'
 
-interface MainBreadcrumbsProps extends RouteComponentProps<{}>, StaticContext {}
+interface MainBreadcrumbsProps
+	extends WithTranslation,
+		RouteComponentProps<{}>,
+		StaticContext {}
 
-class MainBreadcrumbsOrigin extends React.PureComponent<MainBreadcrumbsProps> {
+class MainBreadcrumbsOrigin extends React.PureComponent<
+	MainBreadcrumbsProps,
+	{}
+> {
 	render() {
 		const { history } = this.props
 		const pathnames = history.location.pathname.split('/')
@@ -22,8 +26,8 @@ class MainBreadcrumbsOrigin extends React.PureComponent<MainBreadcrumbsProps> {
 					let to = `${pathnames.slice(0, idx + 1).join('/')}`
 					if (to === '' && idx === 0) to = '/'
 					return last ? (
-						<Typography color="inherit" key={to}>
-							{breadcrumbNameMap[to]}
+						<Typography color="textPrimary" key={to}>
+							{this.props.t(breadcrumbNameMap[to])}
 						</Typography>
 					) : (
 						<Link
@@ -32,7 +36,7 @@ class MainBreadcrumbsOrigin extends React.PureComponent<MainBreadcrumbsProps> {
 							key={to}
 							className="hov-pointer"
 						>
-							{breadcrumbNameMap[to]}
+							{this.props.t(breadcrumbNameMap[to])}
 						</Link>
 					)
 				})}
@@ -40,7 +44,9 @@ class MainBreadcrumbsOrigin extends React.PureComponent<MainBreadcrumbsProps> {
 		)
 	}
 }
-
-const MainBreadcrumbs = withRouter(MainBreadcrumbsOrigin)
+const AddTranslation = withTranslation(undefined, { withRef: true })(
+	MainBreadcrumbsOrigin
+)
+const MainBreadcrumbs = withRouter(AddTranslation)
 
 export { MainBreadcrumbs }

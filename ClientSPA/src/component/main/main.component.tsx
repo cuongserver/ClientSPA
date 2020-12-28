@@ -41,6 +41,7 @@ import { AuthRoute } from 'routing-config/auth-route.component'
 import { RouteComponentProps, Switch, Route } from 'react-router-dom'
 import { StaticContext, withRouter } from 'react-router'
 import { MainBreadcrumbs } from 'component/main/main.breadcrumbs.component'
+import { routes } from 'configs/config.routes'
 
 const drawerWidth = 240
 const cssClasses = (theme: Theme) => {
@@ -179,7 +180,10 @@ class UIComponent extends React.PureComponent<MainProps, MainState> {
 							groupName={this.props.t('main-drawer-menugroup-content')}
 							groupNameTextVariant="secondary"
 						>
-							<ListItem button onClick={() => this.props.history.push('/')}>
+							<ListItem
+								button
+								onClick={() => this.props.history.push(routes.home)}
+							>
 								<ListItemIcon>
 									<Image />
 								</ListItemIcon>
@@ -192,7 +196,10 @@ class UIComponent extends React.PureComponent<MainProps, MainState> {
 							groupName={this.props.t('main-drawer-menugroup-members')}
 							groupNameTextVariant="secondary"
 						>
-							<ListItem button onClick={() => this.props.history.push('/home')}>
+							<ListItem
+								button
+								onClick={() => this.props.history.push(routes.addMember)}
+							>
 								<ListItemIcon>
 									<PersonAdd />
 								</ListItemIcon>
@@ -221,8 +228,8 @@ class UIComponent extends React.PureComponent<MainProps, MainState> {
 							SelectProps={{
 								MenuProps: {
 									disableScrollLock: true,
-									id: 'custom'
-								}
+									className: 'custom',
+								},
 							}}
 						>
 							<MenuItem value={'vi'}>
@@ -266,7 +273,7 @@ class UIComponent extends React.PureComponent<MainProps, MainState> {
 					<React.Suspense fallback="">
 						<Switch>
 							<AuthRoute
-								path="/home"
+								path="/add-member"
 								isAuthenticated={this.props.isAuthenticated!}
 								authenticationPath="/login"
 								exact
