@@ -5,8 +5,8 @@
 /.pnp
 .pnp.js
 **/.vs
-**/.idea
-.idea/
+**/.idea/*
+
 # testing
 /coverage
 **/Logs
@@ -31,3 +31,4 @@ workspace.xml
 **/.idea/dictionaries
 **/.idea/vcs.xml
 **/.idea/jsLibraryMappings.xml
+ClientSPA/.idea/workspace.xml
