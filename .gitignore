@@ -5,6 +5,8 @@
 /.pnp
 .pnp.js
 **/.vs
+**/.idea
+.idea/
 # testing
 /coverage
 **/Logs
