@@ -17,5 +17,7 @@
   "main-drawer-menugroup-members": "Member management",
   "main-drawer-menugroup-item-addmember": "Add member",
   "main-breadcrumbs-pathname-home": "Home",
-  "main-breadcrumbs-pathname-addmember": "Add member"
+  "main-breadcrumbs-pathname-addmember": "Add member",
+  "addmember-error-email-required": "Email is required",
+  "addmember-label-email": "Email"
 }

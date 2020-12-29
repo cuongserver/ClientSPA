@@ -17,5 +17,7 @@
   "main-drawer-menugroup-members": "Quản lý thành viên",
   "main-drawer-menugroup-item-addmember": "Thêm thành viên",
   "main-breadcrumbs-pathname-home": "Trang chính",
-  "main-breadcrumbs-pathname-addmember": "Thêm thành viên"
+  "main-breadcrumbs-pathname-addmember": "Thêm thành viên",
+  "addmember-error-email-required": "Yêu cầu phải nhập hộp thư",
+  "addmember-label-email": "Hộp thư"
 }

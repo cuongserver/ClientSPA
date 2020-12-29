@@ -89,7 +89,10 @@ interface MainState {
 	drawerOpen: boolean
 }
 
-const Home = React.lazy(() => import('component/home/home.component'))
+//const Home = React.lazy(() => import('component/home/home.component'))
+const AddMember = React.lazy(
+	() => import('component/add-member/add-member.component')
+)
 
 class UIComponent extends React.PureComponent<MainProps, MainState> {
 	static contextType = RootContext
@@ -277,7 +280,7 @@ class UIComponent extends React.PureComponent<MainProps, MainState> {
 								isAuthenticated={this.props.isAuthenticated!}
 								authenticationPath="/login"
 								exact
-								render={() => <Home />}
+								render={() => <AddMember />}
 							/>
 							<Route
 								render={() => (
