@@ -1,7 +1,9 @@
 import React from 'react'
 import { TextField } from '@material-ui/core'
 import { WithTranslation, withTranslation } from 'react-i18next'
-import { Formik, FormikProps, FormikErrors } from 'formik'
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
+import { Formik, FormikProps, FormikErrors, FieldArray } from 'formik'
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
 import { GenericObject } from 'types/common'
 
 interface IProps extends WithTranslation {}
@@ -13,6 +15,7 @@ const initFormData: IFormData = {
 	password: '',
 	passwordConfirm: '',
 	name: '',
+	extra: ['', ''],
 }
 
 interface IFormData {
@@ -20,6 +23,7 @@ interface IFormData {
 	password: string
 	passwordConfirm: string
 	name: string
+	extra: string[]
 }
 
 class AddMemberOrigin extends React.PureComponent<IProps, IState> {
@@ -33,25 +37,32 @@ class AddMemberOrigin extends React.PureComponent<IProps, IState> {
 	// eslint-disable-next-line @typescript-eslint/no-unused-vars
 	validateForm = (values: IFormData): Promise<FormikErrors<IFormData>> => {
 		let err: FormikErrors<IFormData> = {}
+
 		if (values.email === '' || values.email === null)
 			err.email = 'addmember-error-email-required'
+		let extraErrs = values.extra.map(() => {
+			return ''
+		})
+		values.extra.forEach((val, idx) => {
+			if (val === '' || val === null) extraErrs[idx] = 'xxxxx'
+		})
+		err.extra = extraErrs
 		return Promise.resolve(err)
 	}
 
 	formHandleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-		console.log(e)
-		const target = e.target
+		//const target = e.target
 		const validator = this.formValidator
-		if (
-			validator.current?.errors &&
-			(validator.current?.errors as GenericObject)[target.name]
-		) {
-			const err = validator.current?.errors as GenericObject
-			validator.current?.setErrors({
-				...err,
-				[target.name]: undefined,
-			})
-		}
+		// if (
+		// 	validator.current?.errors &&
+		// 	(validator.current?.errors as GenericObject)[target.name]
+		// ) {
+		// 	const err = validator.current?.errors as GenericObject
+		// 	validator.current?.setErrors({
+		// 		...err,
+		// 		[target.name]: undefined,
+		// 	})
+		// }
 		validator.current?.handleChange(e)
 	}
 
@@ -64,6 +75,7 @@ class AddMemberOrigin extends React.PureComponent<IProps, IState> {
 				validate={this.validateForm}
 				innerRef={this.formValidator}
 				validateOnChange={true}
+				validateOnMount={true}
 			>
 				{(props: FormikProps<IFormData>) => {
 					const { errors, values } = props
@@ -73,7 +85,7 @@ class AddMemberOrigin extends React.PureComponent<IProps, IState> {
 								id="login-username"
 								label={t('addmember-label-email')}
 								variant="outlined"
-								fullWidth
+								fullWidth={false}
 								size="small"
 								name="email"
 								value={values.email}
@@ -85,6 +97,34 @@ class AddMemberOrigin extends React.PureComponent<IProps, IState> {
 								}}
 								error={errors.email !== undefined}
 							/>
+							<React.Fragment>
+								{values.extra.length > 0 &&
+									values.extra.map((val, idx) => {
+										return (
+											<TextField
+												label="extra"
+												variant="outlined"
+												fullWidth={false}
+												size="small"
+												name={`extra[${idx}]`}
+												onChange={this.formHandleChange}
+												value={val}
+												helperText={
+													errors.extra !== undefined &&
+													errors.extra[idx] !== undefined
+														? 'abc'
+														: ' '
+												}
+												FormHelperTextProps={{
+													className: 'p-b-5',
+													error: true,
+												}}
+												key={idx}
+											/>
+										)
+									})}
+							</React.Fragment>
+							{JSON.stringify(errors)}
 						</React.Fragment>
 					)
 				}}
