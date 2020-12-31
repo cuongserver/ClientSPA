@@ -44,7 +44,7 @@ class AddMemberOrigin extends React.PureComponent<IProps, IState> {
 			return ''
 		})
 		values.extra.forEach((val, idx) => {
-			if (val === '' || val === null) extraErrs[idx] = 'xxxxx'
+			if (val === '' || val === null) extraErrs[idx] = idx.toString()
 		})
 		err.extra = extraErrs
 		return Promise.resolve(err)
@@ -96,8 +96,8 @@ class AddMemberOrigin extends React.PureComponent<IProps, IState> {
 				onSubmit={(values, actions) => console.log({ values, actions })}
 				validate={this.validateForm}
 				innerRef={this.formValidator}
-				validateOnChange={false}
-				validateOnMount={true}
+				validateOnChange={true}
+				validateOnMount={false}
 			>
 				{(props: FormikProps<IFormData>) => {
 					const { errors, values } = props
@@ -132,12 +132,12 @@ class AddMemberOrigin extends React.PureComponent<IProps, IState> {
 													name={`extra[${idx}]`}
 													onChange={this.formHandleChange}
 													value={val}
-													// helperText={
-													// 	errors.extra !== undefined &&
-													// 	errors.extra[idx] !== undefined
-													// 		? 'abc'
-													// 		: ' '
-													// }
+													helperText={
+														errors.extra !== undefined &&
+														errors.extra[idx] !== undefined
+															? errors.extra[idx]
+															: ' '
+													}
 													FormHelperTextProps={{
 														className: 'p-b-5',
 														error: true,
