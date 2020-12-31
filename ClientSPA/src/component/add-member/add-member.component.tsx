@@ -40,9 +40,7 @@ class AddMemberOrigin extends React.PureComponent<IProps, IState> {
 
 		if (values.email === '' || values.email === null)
 			err.email = 'addmember-error-email-required'
-		let extraErrs = values.extra.map(() => {
-			return ''
-		})
+		let extraErrs = values.extra.map(() => '')
 		values.extra.forEach((val, idx) => {
 			if (val === '' || val === null) extraErrs[idx] = idx.toString()
 		})
