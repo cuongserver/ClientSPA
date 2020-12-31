@@ -1,5 +1,5 @@
 import React from 'react'
-import { TextField } from '@material-ui/core'
+import { TextField, Button } from '@material-ui/core'
 import { WithTranslation, withTranslation } from 'react-i18next'
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
 import { Formik, FormikProps, FormikErrors, FieldArray } from 'formik'
@@ -15,7 +15,7 @@ const initFormData: IFormData = {
 	password: '',
 	passwordConfirm: '',
 	name: '',
-	extra: ['', ''],
+	extra: [],
 }
 
 interface IFormData {
@@ -65,6 +65,28 @@ class AddMemberOrigin extends React.PureComponent<IProps, IState> {
 		// }
 		validator.current?.handleChange(e)
 	}
+	get validator() {
+		return this.formValidator.current!
+	}
+	addExtra = (props: FormikProps<IFormData>) => {
+		const newExtra = [...props.values.extra]
+		newExtra.push('')
+		props.setValues({
+			...props.values,
+			extra: newExtra,
+		})
+	}
+
+	removeExtra = (e: React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
+		const target = e.target! as HTMLElement
+		const idx = target.getAttribute('data-index')!
+		const newExtra = [...this.validator.values.extra]
+		newExtra.splice(parseInt(idx), 1)
+		this.validator.setValues({
+			...this.validator.values,
+			extra: newExtra,
+		})
+	}
 
 	render() {
 		const { t } = this.props
@@ -74,7 +96,7 @@ class AddMemberOrigin extends React.PureComponent<IProps, IState> {
 				onSubmit={(values, actions) => console.log({ values, actions })}
 				validate={this.validateForm}
 				innerRef={this.formValidator}
-				validateOnChange={true}
+				validateOnChange={false}
 				validateOnMount={true}
 			>
 				{(props: FormikProps<IFormData>) => {
@@ -101,29 +123,40 @@ class AddMemberOrigin extends React.PureComponent<IProps, IState> {
 								{values.extra.length > 0 &&
 									values.extra.map((val, idx) => {
 										return (
-											<TextField
-												label="extra"
-												variant="outlined"
-												fullWidth={false}
-												size="small"
-												name={`extra[${idx}]`}
-												onChange={this.formHandleChange}
-												value={val}
-												helperText={
-													errors.extra !== undefined &&
-													errors.extra[idx] !== undefined
-														? 'abc'
-														: ' '
-												}
-												FormHelperTextProps={{
-													className: 'p-b-5',
-													error: true,
-												}}
-												key={idx}
-											/>
+											<div key={idx}>
+												<TextField
+													label="extra"
+													variant="outlined"
+													fullWidth={false}
+													size="small"
+													name={`extra[${idx}]`}
+													onChange={this.formHandleChange}
+													value={val}
+													// helperText={
+													// 	errors.extra !== undefined &&
+													// 	errors.extra[idx] !== undefined
+													// 		? 'abc'
+													// 		: ' '
+													// }
+													FormHelperTextProps={{
+														className: 'p-b-5',
+														error: true,
+													}}
+												/>
+												<Button
+													data-index={idx}
+													onClick={this.removeExtra}
+													variant="contained"
+													color="primary"
+												>
+													Remove
+												</Button>
+												{idx}
+											</div>
 										)
 									})}
 							</React.Fragment>
+							<button onClick={() => this.addExtra(props)}>Add more</button>
 							{JSON.stringify(errors)}
 						</React.Fragment>
 					)
