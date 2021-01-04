@@ -1,9 +1,6 @@
 import React from 'react'
 import { TextField, Button } from '@material-ui/core'
 import { WithTranslation, withTranslation } from 'react-i18next'
-import { Formik, FormikProps, FormikErrors } from 'formik'
-// eslint-disable-next-line @typescript-eslint/no-unused-vars
-import { GenericObject } from 'types/common'
 import * as yup from 'yup'
 import _ from 'lodash'
 
@@ -11,10 +8,11 @@ interface IProps extends WithTranslation {}
 
 interface IState {
 	formData: IFormData
-	formValidationErrors?: yup.ValidationError
+	formValidationErrors: yup.ValidationError[]
 }
 interface Extra {
 	extraValue: string
+	enabled: boolean
 }
 const initFormData: IFormData = {
 	email: '',
@@ -45,13 +43,11 @@ const schema = yup.object().shape({
 })
 
 class AddMemberOrigin extends React.PureComponent<IProps, IState> {
-	formValidator: React.RefObject<FormikProps<IFormData>> = React.createRef()
-
 	constructor(props: IProps) {
 		super(props)
 		this.state = {
 			formData: initFormData,
-			formValidationErrors: undefined,
+			formValidationErrors: [],
 		}
 	}
 
@@ -96,19 +92,6 @@ class AddMemberOrigin extends React.PureComponent<IProps, IState> {
 	formHandleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
 		const target = e.currentTarget
 		const path = target.name
-		//const validator = this.formValidator
-		// if (
-		// 	validator.current?.errors &&
-		// 	(validator.current?.errors as GenericObject)[target.name]
-		// ) {
-		// 	const err = validator.current?.errors as GenericObject
-		// 	validator.current?.setErrors({
-		// 		...err,
-		// 		[target.name]: undefined,
-		// 	})
-		// }
-		//validator.current?.handleChange(e)
-
 		const newFormData = _.cloneDeep(this.state.formData)
 		_.set(newFormData, path, target.value)
 		this.setState(
@@ -116,22 +99,22 @@ class AddMemberOrigin extends React.PureComponent<IProps, IState> {
 				formData: newFormData,
 			},
 			async () => {
-				const valRes = await this.validateForm(this.state.formData)
-				console.log(
-					JSON.stringify(await this.validateFormAt(path, this.state.formData))
+				const valRes = await this.validateFormAt(path, this.state.formData)
+				const currentErrors = [...this.state.formValidationErrors].filter(
+					(error) => error.path !== path
 				)
+				let errors: yup.ValidationError[] = [...currentErrors]
+				if (valRes) errors = currentErrors.concat(valRes.inner)
 				this.setState({
-					formValidationErrors: valRes,
+					formValidationErrors: errors,
 				})
 			}
 		)
 	}
-	get validator() {
-		return this.formValidator.current!
-	}
+
 	addExtra = () => {
 		const newExtra = _.cloneDeep(this.state.formData.extra)
-		newExtra.push({ extraValue: '' })
+		newExtra.push({ extraValue: '', enabled: true })
 		this.setState({
 			formData: {
 				...this.state.formData,
@@ -144,7 +127,7 @@ class AddMemberOrigin extends React.PureComponent<IProps, IState> {
 		const target = e.currentTarget! as HTMLElement
 		const idx = target.getAttribute('data-index')!
 		const newExtra = _.cloneDeep(this.state.formData.extra)
-		newExtra.splice(parseInt(idx), 1)
+		newExtra[parseInt(idx)].enabled = false
 		this.setState({
 			formData: {
 				...this.state.formData,
@@ -156,7 +139,7 @@ class AddMemberOrigin extends React.PureComponent<IProps, IState> {
 	get errorByPath() {
 		const { formValidationErrors } = this.state
 		return (path: string) => {
-			return formValidationErrors?.inner.find((error) => error.path === path)
+			return formValidationErrors.find((error) => error.path === path)
 		}
 	}
 
@@ -189,41 +172,45 @@ class AddMemberOrigin extends React.PureComponent<IProps, IState> {
 					{formData.extra.length > 0 &&
 						formData.extra.map((val, idx) => {
 							return (
-								<div key={idx}>
-									<TextField
-										label="extra"
-										variant="outlined"
-										fullWidth={false}
-										size="small"
-										name={`extra[${idx}].extraValue`}
-										onChange={this.formHandleChange}
-										value={val.extraValue}
-										helperText={
-											this.errorByPath(`extra[${idx}].extraValue`) !== undefined
-												? t(
-														this.errorByPath(`extra[${idx}].extraValue`)!
-															.message!
-												  )
-												: ' '
-										}
-										FormHelperTextProps={{
-											className: 'p-b-5',
-											error: true,
-										}}
-										error={
-											this.errorByPath(`extra[${idx}].extraValue`) !== undefined
-										}
-									/>
-									<Button
-										data-index={idx}
-										onClick={this.removeExtra}
-										variant="contained"
-										color="primary"
-									>
-										Remove
-									</Button>
-									{idx}
-								</div>
+								val.enabled && (
+									<div key={idx}>
+										<TextField
+											label="extra"
+											variant="outlined"
+											fullWidth={false}
+											size="small"
+											name={`extra[${idx}].extraValue`}
+											onChange={this.formHandleChange}
+											value={val.extraValue}
+											helperText={
+												this.errorByPath(`extra[${idx}].extraValue`) !==
+												undefined
+													? t(
+															this.errorByPath(`extra[${idx}].extraValue`)!
+																.message!
+													  )
+													: ' '
+											}
+											FormHelperTextProps={{
+												className: 'p-b-5',
+												error: true,
+											}}
+											error={
+												this.errorByPath(`extra[${idx}].extraValue`) !==
+												undefined
+											}
+										/>
+										<Button
+											data-index={idx}
+											onClick={this.removeExtra}
+											variant="contained"
+											color="primary"
+										>
+											Remove
+										</Button>
+										{idx}
+									</div>
+								)
 							)
 						})}
 				</React.Fragment>
