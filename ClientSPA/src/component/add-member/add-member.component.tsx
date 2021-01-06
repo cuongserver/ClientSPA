@@ -55,12 +55,14 @@ const schema = yup.object().shape({
 })
 
 class AddMemberOrigin extends React.PureComponent<IProps, IState> {
+	validator: React.RefObject<FormikProps<IFormData>> = React.createRef()
 	constructor(props: IProps) {
 		super(props)
 		this.state = {
 			formData: initFormData,
 			formValidationErrors: [],
 		}
+		//this.validator
 	}
 
 	// eslint-disable-next-line @typescript-eslint/no-unused-vars
@@ -125,16 +127,24 @@ class AddMemberOrigin extends React.PureComponent<IProps, IState> {
 	}
 
 	addExtra = () => {
-		const newExtra = _.cloneDeep(this.state.formData.extra)
+		const { values, setValues } = this.form
+		const newExtra = _.cloneDeep(values.extra)
 		newExtra.push({ extraValue: '', enabled: true })
-		this.setState({
-			formData: {
-				...this.state.formData,
-				extra: newExtra,
-			},
+		// this.setState({
+		// 	formData: {
+		// 		...this.state.formData,
+		// 		extra: newExtra,
+		// 	},
+		// })
+		setValues({
+			...this.form.values,
+			extra: newExtra,
 		})
 	}
 
+	get form() {
+		return this.validator.current!
+	}
 	removeExtra = (e: React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
 		const target = e.currentTarget! as HTMLElement
 		const idx = target.getAttribute('data-index')!
@@ -245,6 +255,7 @@ class AddMemberOrigin extends React.PureComponent<IProps, IState> {
 				validationSchema={schema}
 				/* eslint-disable-next-line @typescript-eslint/no-unused-vars */
 				onSubmit={(values, helpers) => {}}
+				innerRef={this.validator}
 			>
 				{(props: FormikProps<IFormData>) => {
 					const { errors, values, handleChange, setErrors } = props
@@ -374,16 +385,7 @@ class AddMemberOrigin extends React.PureComponent<IProps, IState> {
 														</div>
 													)
 												})}
-											<button
-												onClick={() => {
-													push({
-														extraValue: '',
-														enabled: true,
-													})
-												}}
-											>
-												Add more
-											</button>
+											<button onClick={this.addExtra}>Add more</button>
 											<pre>{JSON.stringify(values)}</pre>
 											<pre>{JSON.stringify(errors)}</pre>
 											<button
