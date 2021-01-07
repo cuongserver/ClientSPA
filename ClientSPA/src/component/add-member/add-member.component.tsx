@@ -1,8 +1,7 @@
 import React from 'react'
 import { WithTranslation, withTranslation } from 'react-i18next'
-// eslint-disable-next-line @typescript-eslint/no-unused-vars
 import { Formik, FormikProps, yupToFormErrors } from 'formik'
-import { Button, TextField } from '@material-ui/core'
+import { Button, TextField, TextFieldProps } from '@material-ui/core'
 import _ from 'lodash'
 import * as yup from 'yup'
 
@@ -63,6 +62,15 @@ class AddMember_Origin extends React.PureComponent<IProps> {
 
 	render() {
 		const { t } = this.props
+		const commonTextFieldProps: TextFieldProps = {
+			variant: 'outlined',
+			size: 'small',
+			onChange: this.formHandleChange,
+			FormHelperTextProps: {
+				className: 'p-b-5',
+				error: true,
+			},
+		}
 		return (
 			<Formik
 				innerRef={this.validator}
@@ -78,34 +86,22 @@ class AddMember_Origin extends React.PureComponent<IProps> {
 						<React.Fragment>
 							<div>
 								<TextField
+									{...commonTextFieldProps}
 									id="addMember_Email"
 									label={t('addmember-label-email')}
-									variant="outlined"
-									size="small"
 									name="email"
 									value={values.email}
-									onChange={this.formHandleChange}
-									FormHelperTextProps={{
-										className: 'p-b-5',
-										error: true,
-									}}
 									error={!_.isEmpty(errors.email)}
 									helperText={!_.isEmpty(errors.email) ? t(errors.email!) : ' '}
 								/>
 							</div>
 							<div>
 								<TextField
+									{...commonTextFieldProps}
 									id="addMember_Password"
 									label={t('addmember-label-password')}
-									variant="outlined"
-									size="small"
 									name="password"
 									value={values.password}
-									onChange={this.formHandleChange}
-									FormHelperTextProps={{
-										className: 'p-b-5',
-										error: true,
-									}}
 									error={!_.isEmpty(errors.password)}
 									helperText={
 										!_.isEmpty(errors.password) ? t(errors.password!) : ' '
@@ -114,17 +110,11 @@ class AddMember_Origin extends React.PureComponent<IProps> {
 							</div>
 							<div>
 								<TextField
+									{...commonTextFieldProps}
 									id="addMember_ConfirmPassword"
 									label={t('addmember-label-password-cfm')}
-									variant="outlined"
-									size="small"
 									name="confirmPassword"
 									value={values.confirmPassword}
-									onChange={this.formHandleChange}
-									FormHelperTextProps={{
-										className: 'p-b-5',
-										error: true,
-									}}
 									error={!_.isEmpty(errors.confirmPassword)}
 									helperText={
 										!_.isEmpty(errors.confirmPassword)
