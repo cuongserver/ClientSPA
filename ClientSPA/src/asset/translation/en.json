@@ -19,5 +19,11 @@
   "main-breadcrumbs-pathname-home": "Home",
   "main-breadcrumbs-pathname-addmember": "Add member",
   "addmember-error-email-required": "Email is required",
-  "addmember-label-email": "Email"
+  "addmember-label-email": "Email",
+  "addmember-label-password": "Password",
+  "addmember-label-password-cfm": "Confirm password",
+  "addmember-label-create-button": "Create",
+  "addmember-error-email-invalid": "Email is not in valid format",
+  "addmember-error-password-required": "Password is required",
+  "addmember-error-password-cfm-unmatched": "Password confirmation is unmatched"
 }

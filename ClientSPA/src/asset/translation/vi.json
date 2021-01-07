@@ -19,5 +19,11 @@
   "main-breadcrumbs-pathname-home": "Trang chính",
   "main-breadcrumbs-pathname-addmember": "Thêm thành viên",
   "addmember-error-email-required": "Yêu cầu phải nhập hộp thư",
-  "addmember-label-email": "Hộp thư"
+  "addmember-label-email": "Hộp thư",
+  "addmember-label-password": "Mật khẩu",
+  "addmember-label-password-cfm": "Xác nhận mật khẩu",
+  "addmember-label-create-button": "Tạo mới",
+  "addmember-error-email-invalid": "Hộp thư không đúng định dạng",
+  "addmember-error-password-required": "Yêu cầu phải nhập mật khẩu",
+  "addmember-error-password-cfm-unmatched": "Xác nhận mật khẩu không khớp"
 }
