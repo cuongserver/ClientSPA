@@ -159,9 +159,9 @@ class Login extends React.PureComponent<
 			...(this.loginValidator.current?.values as UserLoginRequest),
 		}
 
-		// this.setState({
-		// 	loading: true,
-		// })
+		this.setState({
+			loading: true,
+		})
 
 		let result = this.userApi.doLogin(data)
 		result.subscribe({
@@ -183,14 +183,14 @@ class Login extends React.PureComponent<
 				}
 			},
 			error: () => {
-				// this.setState({
-				// 	loading: false,
-				// })
-				// actionCreatorsAlert.showAlert(
-				// 	this.props.dispatch,
-				// 	this.props.t('common-api-error'),
-				// 	'error'
-				// )
+				this.setState({
+					loading: false,
+				})
+				actionCreatorsAlert.showAlert(
+					this.props.dispatch,
+					this.props.t('common-api-error'),
+					'error'
+				)
 			},
 		})
 	}

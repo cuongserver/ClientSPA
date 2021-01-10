@@ -1,14 +1,13 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using AutoMapper;
+using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
 using RestAPI.Models.Request;
 using RestAPI.Models.Response;
+using Security;
 using Service;
 using Service.DTO.Output.Authentication;
-using Security;
 using System.Threading.Tasks;
-using AutoMapper;
-using Microsoft.AspNetCore.Authorization;
-using System;
 
 namespace RestAPI.Controllers
 {

@@ -8,10 +8,17 @@ import {
 	InputAdornment,
 	IconButton,
 	InputProps,
+	Typography,
+	Link,
 } from '@material-ui/core'
 import _ from 'lodash'
 import * as yup from 'yup'
 import { Visibility, VisibilityOff } from '@material-ui/icons'
+import { UserApiService } from 'api/api.user'
+import { AddMemberRequest, AddMemberResult } from 'types/dto.user'
+import { actionCreatorsAlert } from 'store/action-creators/action-creators.alert'
+import { Dispatch } from 'redux'
+import { connect } from 'react-redux'
 
 interface IFormData {
 	userName: string
@@ -19,9 +26,17 @@ interface IFormData {
 	confirmPassword: string
 }
 
-interface IProps extends WithTranslation {}
+interface IProps extends WithTranslation {
+	dispatch: Dispatch
+}
 type IState = {
-	[key in keyof IFormData]: boolean
+	showHiddenText: {
+		[key in keyof IFormData]: boolean
+	}
+	successLayoutProps: {
+		newUsername: string
+		showSuccess: boolean
+	}
 }
 
 const initFormData: IFormData = {
@@ -52,13 +67,19 @@ const schema = yup.object().shape({
 
 class AddMember_Origin extends React.PureComponent<IProps, IState> {
 	validator: React.RefObject<FormikProps<IFormData>> = React.createRef()
-
+	userApi: UserApiService = new UserApiService()
 	constructor(props: IProps) {
 		super(props)
 		this.state = {
-			userName: false,
-			password: false,
-			confirmPassword: false,
+			showHiddenText: {
+				userName: false,
+				password: false,
+				confirmPassword: false,
+			},
+			successLayoutProps: {
+				newUsername: '',
+				showSuccess: false,
+			},
 		}
 	}
 	formHandleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -71,15 +92,41 @@ class AddMember_Origin extends React.PureComponent<IProps, IState> {
 		form.handleChange(e)
 	}
 
-	formHandleSubmit = () => {
+	formHandleSubmit = async () => {
 		const form = this.validator.current!
-		schema
-			.validate(form.values, {
+		const { t, dispatch } = this.props
+		try {
+			await schema.validate(form.values, {
 				abortEarly: false,
 			})
-			.catch((errors) => {
-				form.setErrors(yupToFormErrors(errors))
+			const request: AddMemberRequest = {
+				userName: form.values.userName,
+				password: form.values.password,
+			}
+
+			this.userApi.addMember(request).subscribe({
+				next: (result) => {
+					const data = result.data
+					if (data.result === AddMemberResult.Success) {
+						form.resetForm()
+						this.setState({
+							successLayoutProps: {
+								newUsername: request.userName,
+								showSuccess: true,
+							},
+						})
+					} else {
+						actionCreatorsAlert.showAlert(
+							dispatch,
+							t('api-message-addmember-' + data.result),
+							'error'
+						)
+					}
+				},
 			})
+		} catch (errors) {
+			form.setErrors(yupToFormErrors(errors))
+		}
 	}
 
 	handleMouseDownPassword = (event: React.MouseEvent<HTMLButtonElement>) => {
@@ -88,10 +135,15 @@ class AddMember_Origin extends React.PureComponent<IProps, IState> {
 
 	handleClickShowPassword = (event: React.MouseEvent<HTMLButtonElement>) => {
 		const target = event.currentTarget
-		const idx = target.getAttribute('data-index') as keyof IState
+		const idx = target.getAttribute(
+			'data-index'
+		) as keyof IState['showHiddenText']
 		this.setState({
 			...this.state,
-			[idx]: !this.state[idx],
+			showHiddenText: {
+				...this.state.showHiddenText,
+				[idx]: !this.state.showHiddenText[idx],
+			},
 		})
 	}
 
@@ -106,7 +158,9 @@ class AddMember_Origin extends React.PureComponent<IProps, IState> {
 				error: true,
 			},
 		}
-		return (
+		return this.state.successLayoutProps.showSuccess ? (
+			this.successLayout()
+		) : (
 			<Formik
 				innerRef={this.validator}
 				validateOnChange={false}
@@ -178,7 +232,36 @@ class AddMember_Origin extends React.PureComponent<IProps, IState> {
 		)
 	}
 
-	inputAdornment = (name: keyof IState): InputProps => {
+	successLayout = () => {
+		const { t } = this.props
+		return (
+			<React.Fragment>
+				<Typography color="textPrimary">
+					{t('api-message-addmember-0')}: &nbsp;
+					<Typography color="secondary" component="span">
+						{this.state.successLayoutProps.newUsername}
+					</Typography>
+					<br />
+					<Link
+						className="hov-pointer"
+						color="primary"
+						onClick={() => {
+							this.setState({
+								successLayoutProps: {
+									newUsername: '',
+									showSuccess: false,
+								},
+							})
+						}}
+					>
+						{t('addmember-label-add-another')}
+					</Link>
+				</Typography>
+			</React.Fragment>
+		)
+	}
+
+	inputAdornment = (name: keyof IState['showHiddenText']): InputProps => {
 		return {
 			endAdornment: (
 				<InputAdornment position="end">
@@ -187,15 +270,22 @@ class AddMember_Origin extends React.PureComponent<IProps, IState> {
 						onMouseDown={this.handleMouseDownPassword}
 						data-index={name}
 					>
-						{(this.state[name] as boolean) ? <Visibility /> : <VisibilityOff />}
+						{(this.state.showHiddenText[name] as boolean) ? (
+							<Visibility />
+						) : (
+							<VisibilityOff />
+						)}
 					</IconButton>
 				</InputAdornment>
 			),
-			type: this.state[name] ? undefined : 'password',
+			type: this.state.showHiddenText[name] ? undefined : 'password',
 		}
 	}
 }
-const AddMember = withTranslation(undefined, { withRef: true })(
+const AddMember_WithTranslation = withTranslation(undefined, { withRef: true })(
 	AddMember_Origin
+)
+const AddMember = connect(null, null, null, { forwardRef: true })(
+	AddMember_WithTranslation
 )
 export default AddMember

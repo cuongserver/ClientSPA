@@ -26,5 +26,9 @@
   "addmember-error-username-invalid": "Phải là số hoặc chữ, độ dài từ 3 đến 10 ký tự",
   "addmember-error-username-required": "Yêu cầu phải nhập tên tài khoản",
   "addmember-label-username": "Tên tài khoản",
-  "common-api-error": "Có lỗi trong quá trình lấy dữ liệu"
+  "common-api-error": "Có lỗi trong quá trình lấy dữ liệu",
+  "api-message-addmember-0": "Thành viên mới được tạo",
+  "addmember-label-add-another": "Tạo thêm thành viên mới",
+  "api-message-addmember-1": "Tài khoản đã tồn tại",
+  "api-message-addmember-2": "Có lỗi"
 }

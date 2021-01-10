@@ -19,11 +19,12 @@ interface UserLoginResponse extends OutputAuthentication {
 }
 
 interface AddMemberRequest {
-	name: string,
+	userName: string,
 	password: string
 }
 interface AddMemberResponse {
-
+	id: string
+	result: AddMemberResult
 }
 
 
@@ -35,7 +36,11 @@ enum AuthenticationResult {
 	Success,
 	WrongCredential
 }
+enum AddMemberResult {
+	Success,
+	UsernameExists,
+	Error
+}
 
-
-export { AuthenticationResult }
-export type { UserLoginRequest, UserDetail, OutputAuthentication, UserLoginResponse }
+export { AuthenticationResult, AddMemberResult }
+export type { UserLoginRequest, UserDetail, OutputAuthentication, UserLoginResponse, AddMemberRequest, AddMemberResponse }

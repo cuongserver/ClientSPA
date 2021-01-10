@@ -14,6 +14,10 @@ const userEndpoints: Endpoints = {
 	authenticate: {
 		path: 'user/authenticate',
 		method: 'POST'
+	},
+	addMember: {
+		path: 'user/add-member',
+		method: 'POST'
 	}
 }
 

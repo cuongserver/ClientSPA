@@ -26,5 +26,9 @@
   "addmember-error-username-invalid": "Must be alphanumeric, length from 3 to 10",
   "addmember-error-username-required": "Username is required",
   "addmember-label-username": "Username",
-  "common-api-error": "Exception in fetching data"
+  "common-api-error": "Exception in fetching data",
+  "api-message-addmember-0": "New member is added",
+  "addmember-label-add-another": "Create another new member",
+  "api-message-addmember-1": "Username exists",
+  "api-message-addmember-2": "Errors"
 }
