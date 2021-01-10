@@ -17,6 +17,16 @@ interface OutputAuthentication {
 interface UserLoginResponse extends OutputAuthentication {
 	token: string
 }
+
+interface AddMemberRequest {
+	name: string,
+	password: string
+}
+interface AddMemberResponse {
+
+}
+
+
 /** 
  ** 0: success
  ** 1: wrong credential
@@ -25,5 +35,7 @@ enum AuthenticationResult {
 	Success,
 	WrongCredential
 }
+
+
 export { AuthenticationResult }
 export type { UserLoginRequest, UserDetail, OutputAuthentication, UserLoginResponse }

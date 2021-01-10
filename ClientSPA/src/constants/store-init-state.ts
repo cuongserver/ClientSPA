@@ -14,7 +14,7 @@ export const appStoreInitState: StoreStateApp = {
 		loading: false,
 	},
 	identity: {
-		isAuthenticated: true,
+		isAuthenticated: false,
 	},
 	locale: {
 		loadedTranPkg: [cacheLang],

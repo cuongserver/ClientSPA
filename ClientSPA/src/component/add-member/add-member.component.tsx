@@ -1,29 +1,43 @@
 import React from 'react'
 import { WithTranslation, withTranslation } from 'react-i18next'
 import { Formik, FormikProps, yupToFormErrors } from 'formik'
-import { Button, TextField, TextFieldProps } from '@material-ui/core'
+import {
+	Button,
+	TextField,
+	TextFieldProps,
+	InputAdornment,
+	IconButton,
+	InputProps,
+} from '@material-ui/core'
 import _ from 'lodash'
 import * as yup from 'yup'
+import { Visibility, VisibilityOff } from '@material-ui/icons'
 
 interface IFormData {
-	email: string
+	userName: string
 	password: string
 	confirmPassword: string
 }
 
 interface IProps extends WithTranslation {}
+type IState = {
+	[key in keyof IFormData]: boolean
+}
 
 const initFormData: IFormData = {
-	email: '',
+	userName: '',
 	password: '',
 	confirmPassword: '',
 }
 
 const schema = yup.object().shape({
-	email: yup
+	userName: yup
 		.string()
-		.required('addmember-error-email-required')
-		.email('addmember-error-email-invalid'),
+		.required('addmember-error-username-required')
+		.matches(
+			new RegExp('^[a-zA-Z0-9]{3,10}$'),
+			'addmember-error-username-invalid'
+		),
 	password: yup.string().required('addmember-error-password-required'),
 	confirmPassword: yup.string().when('password', {
 		is: (val: string) => !_.isEmpty(val),
@@ -36,9 +50,17 @@ const schema = yup.object().shape({
 	}),
 })
 
-class AddMember_Origin extends React.PureComponent<IProps> {
+class AddMember_Origin extends React.PureComponent<IProps, IState> {
 	validator: React.RefObject<FormikProps<IFormData>> = React.createRef()
 
+	constructor(props: IProps) {
+		super(props)
+		this.state = {
+			userName: false,
+			password: false,
+			confirmPassword: false,
+		}
+	}
 	formHandleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
 		const form = this.validator.current!
 		const target = e.currentTarget
@@ -58,6 +80,19 @@ class AddMember_Origin extends React.PureComponent<IProps> {
 			.catch((errors) => {
 				form.setErrors(yupToFormErrors(errors))
 			})
+	}
+
+	handleMouseDownPassword = (event: React.MouseEvent<HTMLButtonElement>) => {
+		event.preventDefault()
+	}
+
+	handleClickShowPassword = (event: React.MouseEvent<HTMLButtonElement>) => {
+		const target = event.currentTarget
+		const idx = target.getAttribute('data-index') as keyof IState
+		this.setState({
+			...this.state,
+			[idx]: !this.state[idx],
+		})
 	}
 
 	render() {
@@ -87,12 +122,14 @@ class AddMember_Origin extends React.PureComponent<IProps> {
 							<div>
 								<TextField
 									{...commonTextFieldProps}
-									id="addMember_Email"
-									label={t('addmember-label-email')}
-									name="email"
-									value={values.email}
-									error={!_.isEmpty(errors.email)}
-									helperText={!_.isEmpty(errors.email) ? t(errors.email!) : ' '}
+									id="addMember_Username"
+									label={t('addmember-label-username')}
+									name="userName"
+									value={values.userName}
+									error={!_.isEmpty(errors.userName)}
+									helperText={
+										!_.isEmpty(errors.userName) ? t(errors.userName!) : ' '
+									}
 								/>
 							</div>
 							<div>
@@ -106,6 +143,7 @@ class AddMember_Origin extends React.PureComponent<IProps> {
 									helperText={
 										!_.isEmpty(errors.password) ? t(errors.password!) : ' '
 									}
+									InputProps={this.inputAdornment('password')}
 								/>
 							</div>
 							<div>
@@ -121,6 +159,7 @@ class AddMember_Origin extends React.PureComponent<IProps> {
 											? t(errors.confirmPassword!)
 											: ' '
 									}
+									InputProps={this.inputAdornment('confirmPassword')}
 								/>
 							</div>
 							<div>
@@ -137,6 +176,23 @@ class AddMember_Origin extends React.PureComponent<IProps> {
 				}}
 			</Formik>
 		)
+	}
+
+	inputAdornment = (name: keyof IState): InputProps => {
+		return {
+			endAdornment: (
+				<InputAdornment position="end">
+					<IconButton
+						onClick={this.handleClickShowPassword}
+						onMouseDown={this.handleMouseDownPassword}
+						data-index={name}
+					>
+						{(this.state[name] as boolean) ? <Visibility /> : <VisibilityOff />}
+					</IconButton>
+				</InputAdornment>
+			),
+			type: this.state[name] ? undefined : 'password',
+		}
 	}
 }
 const AddMember = withTranslation(undefined, { withRef: true })(

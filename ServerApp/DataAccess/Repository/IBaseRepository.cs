@@ -13,13 +13,13 @@ namespace DataAccess.Repository
     public interface IBaseRepository<T, TId> where TId : struct where T : class, IEntityId<TId>
     {
         public CmsContext Context { get; }
-        public virtual Task<T> FindFirst(CmsContext ctx, Expression<Func<T, bool>> predicate)
+        public virtual Task<T> FindFirst(Expression<Func<T, bool>> predicate)
         {
-            return ctx.Set<T>().Where(predicate).FirstOrDefaultAsync();
+            return Context.Set<T>().Where(predicate).FirstOrDefaultAsync();
         }
-        public virtual Task<List<T>> FindAll(CmsContext ctx, Expression<Func<T, bool>> predicate)
+        public virtual Task<List<T>> FindAll(Expression<Func<T, bool>> predicate)
         {
-            return ctx.Set<T>().Where(predicate).ToListAsync();
+            return Context.Set<T>().Where(predicate).ToListAsync();
         }
     }
 }

@@ -7,23 +7,55 @@ using DataAccess.Repository;
 using DataStorage;
 using Security;
 using AutoMapper;
+using Service.DTO.Output.AddMember;
+using Service.DTO.Input.AddMember;
+
 namespace Service
 {
     public class UserService : IUserService
     {
-        private readonly IUserRepository<User, Guid> _userRepo;
+        private readonly IUserRepository _userRepo;
         private readonly SecretEnhancer _enhancer;
         private readonly IMapper _mapper;
-        public UserService(IUserRepository<User, Guid> userRepo, SecretEnhancer enhancer, IMapper mapper)
+        public UserService(IUserRepository userRepo, SecretEnhancer enhancer, IMapper mapper)
         {
             _userRepo = userRepo;
             _enhancer = enhancer;
             _mapper = mapper;
         }
 
+        public async Task<OutputAddMember> AddNewMember(InputAddMember member, string pepper)
+        {
+            var existedUser = await _userRepo.FindFirst(user => user.UserName == member.UserName);
+            if (existedUser != null) return new OutputAddMember { Result = AddMemberResult.UsernameExists };
+            var id = Guid.NewGuid();
+            var user = new User
+            {
+                Id = id,
+                UserName = member.UserName,
+                PasswordHash = _enhancer.GenerateHashedPassword(member.Password, member.UserName, pepper)
+            };
+            try
+            {
+                await _userRepo.AddNew(user);
+                return new OutputAddMember
+                {
+                    Id = id,
+                    Result = AddMemberResult.Success
+                };
+            }
+            catch (Exception e)
+            {
+                return new OutputAddMember
+                {
+                    Result = AddMemberResult.Error
+                };
+            }
+        }
+
         public async Task<OutputAuthentication> Authenticate(string password, string userName, string pepper)
         {
-            var userDetail = await _userRepo.FindFirst(_userRepo.Context, user => user.UserName == userName);
+            var userDetail = await _userRepo.FindFirst(user => user.UserName == userName);
             var defaultOutput = new OutputAuthentication
             {
                 Result = AuthenticationResult.WrongCredential

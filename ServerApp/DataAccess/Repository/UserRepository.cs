@@ -8,14 +8,12 @@ using System;
 
 namespace DataAccess.Repository
 {
-    public class UserRepository : IUserRepository<User, Guid>
+    public class UserRepository : IUserRepository
     {
         public CmsContext Context { get; }
         public UserRepository(CmsContext ctx)
         {
             Context = ctx;
         }
-
-
     }
 }

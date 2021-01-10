@@ -18,12 +18,13 @@
   "main-drawer-menugroup-item-addmember": "Thêm thành viên",
   "main-breadcrumbs-pathname-home": "Trang chính",
   "main-breadcrumbs-pathname-addmember": "Thêm thành viên",
-  "addmember-error-email-required": "Yêu cầu phải nhập hộp thư",
-  "addmember-label-email": "Hộp thư",
   "addmember-label-password": "Mật khẩu",
   "addmember-label-password-cfm": "Xác nhận mật khẩu",
   "addmember-label-create-button": "Tạo mới",
-  "addmember-error-email-invalid": "Hộp thư không đúng định dạng",
   "addmember-error-password-required": "Yêu cầu phải nhập mật khẩu",
-  "addmember-error-password-cfm-unmatched": "Xác nhận mật khẩu không khớp"
+  "addmember-error-password-cfm-unmatched": "Xác nhận mật khẩu không khớp",
+  "addmember-error-username-invalid": "Phải là số hoặc chữ, độ dài từ 3 đến 10 ký tự",
+  "addmember-error-username-required": "Yêu cầu phải nhập tên tài khoản",
+  "addmember-label-username": "Tên tài khoản",
+  "common-api-error": "Có lỗi trong quá trình lấy dữ liệu"
 }

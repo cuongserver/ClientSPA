@@ -44,5 +44,13 @@ namespace RestAPI.Controllers
             }
             return Ok(response);
         }
+        [HttpPost("add-member")]
+        [AllowAnonymous]
+        public async Task<IActionResult> AddMember([FromBody] AddMemberRequest user)
+        {
+            var pepper = _configuration.GetValue<string>("Security:Pepper");
+            var result = await _userService.AddNewMember(user, pepper);
+            return Ok(result);
+        }
     }
 }

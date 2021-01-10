@@ -36,7 +36,7 @@ namespace RestAPI
 
             services.AddControllers();
             services.AddDbContext<CmsContext>(options => options.UseSqlServer(Configuration.GetValue<string>("DbConnection:Default")));
-            services.AddScoped<IUserRepository<User, Guid>, UserRepository>();
+            services.AddScoped<IUserRepository, UserRepository>();
             services.AddScoped<IUserService, UserService>();
             services.AddScoped<SecretEnhancer>();
             services.AddScoped<IJwtTokenHelper, JwtTokenHelper>();
