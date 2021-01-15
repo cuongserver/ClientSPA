@@ -279,7 +279,6 @@ class Login extends React.PureComponent<
 				</InputAdornment>
 			),
 		}
-		console.log('xxx')
 		return (
 			<Formik
 				initialValues={this.initialLogin}

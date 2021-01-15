@@ -10,22 +10,17 @@ export class WrapperWithLoading extends React.PureComponent<
 		const CustomCircularProgress = styled(CircularProgress)({
 			color: this.props.progressColor ?? 'primary',
 		})
-		let Wrapper = (
-			props: Readonly<{ children?: React.ReactNode }>
-		): JSX.Element => (
-			<div className={this.props.className} style={this.props.style}>
-				{props.children}
-			</div>
-		)
-
-		if (this.props.className === undefined && this.props.style === undefined)
-			Wrapper = (
-				props: Readonly<{ children?: React.ReactNode }>
-			): JSX.Element => (
-				<div style={{ position: 'relative' }}>{props.children}</div>
-			)
+		const wrapperProps: React.HTMLAttributes<HTMLElement> = {}
+		if (this.props.className === undefined && this.props.style === undefined) {
+			wrapperProps.style = {
+				position: 'relative',
+			}
+		} else {
+			wrapperProps.className = this.props.className
+			wrapperProps.style = this.props.style
+		}
 		return (
-			<Wrapper>
+			<div {...wrapperProps}>
 				{this.props.loading && (
 					<div
 						style={{
@@ -44,12 +39,12 @@ export class WrapperWithLoading extends React.PureComponent<
 							style={{
 								position: 'relative',
 							}}
-						></CustomCircularProgress>
+						/>
 					</div>
 				)}
 
 				{this.props.children}
-			</Wrapper>
+			</div>
 		)
 	}
 }
