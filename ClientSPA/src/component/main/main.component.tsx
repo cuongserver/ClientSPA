@@ -17,6 +17,7 @@ import {
 	Menu,
 	Clear,
 	PersonAdd,
+	Edit,
 	//BrightnessHigh,
 	//Brightness4,
 } from '@material-ui/icons'
@@ -92,6 +93,10 @@ interface MainState {
 //const Home = React.lazy(() => import('component/home/home.component'))
 const AddMember = React.lazy(
 	() => import('component/add-member/add-member.component')
+)
+
+const EditMemberInfo = React.lazy(
+	() => import('component/edit-member-info2/edit-member-info2.component')
 )
 
 class UIComponent extends React.PureComponent<MainProps, MainState> {
@@ -210,6 +215,19 @@ class UIComponent extends React.PureComponent<MainProps, MainState> {
 									primary={this.props.t('main-drawer-menugroup-item-addmember')}
 								/>
 							</ListItem>
+							<ListItem
+								button
+								onClick={() => this.props.history.push(routes.editMemberInfo)}
+							>
+								<ListItemIcon>
+									<Edit />
+								</ListItemIcon>
+								<ListItemText
+									primary={this.props.t(
+										'main-drawer-menugroup-item-editmember'
+									)}
+								/>
+							</ListItem>
 						</DrawerMenuGroup>
 					</div>
 					<div className="m-t-auto">
@@ -281,6 +299,13 @@ class UIComponent extends React.PureComponent<MainProps, MainState> {
 								authenticationPath="/login"
 								exact
 								render={() => <AddMember />}
+							/>
+							<AuthRoute
+								path={routes.editMemberInfo}
+								isAuthenticated={this.props.isAuthenticated!}
+								authenticationPath="/login"
+								exact
+								render={() => <EditMemberInfo />}
 							/>
 							<Route
 								render={() => (

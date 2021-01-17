@@ -30,5 +30,7 @@
   "api-message-addmember-0": "New member is added",
   "addmember-label-add-another": "Create another new member",
   "api-message-addmember-1": "Username exists",
-  "api-message-addmember-2": "Errors"
+  "api-message-addmember-2": "Errors",
+  "main-drawer-menugroup-item-editmember": "Edit member info",
+  "main-breadcrumbs-pathname-editmember": "Edit member info"
 }

@@ -30,5 +30,7 @@
   "api-message-addmember-0": "Thành viên mới được tạo",
   "addmember-label-add-another": "Tạo thêm thành viên mới",
   "api-message-addmember-1": "Tài khoản đã tồn tại",
-  "api-message-addmember-2": "Có lỗi"
+  "api-message-addmember-2": "Có lỗi",
+  "main-drawer-menugroup-item-editmember": "Sửa thông tin thành viên",
+  "main-breadcrumbs-pathname-editmember": "Sửa thông tin thành viên"
 }

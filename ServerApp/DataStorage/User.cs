@@ -13,5 +13,7 @@ namespace DataStorage
         public string PasswordHash { get; set; }
         public string SecurityStamp { get; set; }
         public bool MfaEnabled { get; set; }
+        public string DisplayName { get; set; }
+        public Guid AvatarImageId { get; set; }
     }
 }

@@ -1,7 +1,7 @@
 import React from 'react'
 
 export class Mock extends React.PureComponent {
-	render(){
+	render() {
 		return <span>Oh Shit</span>
 	}
 }

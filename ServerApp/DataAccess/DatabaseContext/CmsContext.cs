@@ -24,6 +24,7 @@ namespace DataAccess.DatabaseContext
         }
 
         public DbSet<User> Users { get; set; }
+        public DbSet<AvatarImage> AvatarImages { get; set; }
     }
 }
 
