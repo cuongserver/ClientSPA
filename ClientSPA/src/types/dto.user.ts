@@ -5,7 +5,7 @@ interface UserLoginRequest {
 
 interface UserDetail {
 	id: string
-	username: string
+	userName: string
 	accessRights: string[]
 }
 
@@ -19,7 +19,7 @@ interface UserLoginResponse extends OutputAuthentication {
 }
 
 interface AddMemberRequest {
-	userName: string,
+	userName: string
 	password: string
 }
 interface AddMemberResponse {
@@ -27,20 +27,29 @@ interface AddMemberResponse {
 	result: AddMemberResult
 }
 
+interface SubmitAvatarRequest extends FormData {}
 
-/** 
+/**
  ** 0: success
  ** 1: wrong credential
  */
 enum AuthenticationResult {
 	Success,
-	WrongCredential
+	WrongCredential,
 }
 enum AddMemberResult {
 	Success,
 	UsernameExists,
-	Error
+	Error,
 }
 
 export { AuthenticationResult, AddMemberResult }
-export type { UserLoginRequest, UserDetail, OutputAuthentication, UserLoginResponse, AddMemberRequest, AddMemberResponse }
+export type {
+	UserLoginRequest,
+	UserDetail,
+	OutputAuthentication,
+	UserLoginResponse,
+	AddMemberRequest,
+	AddMemberResponse,
+	SubmitAvatarRequest,
+}

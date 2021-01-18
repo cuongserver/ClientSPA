@@ -170,7 +170,11 @@ class Login extends React.PureComponent<
 					const redirectURL = this.props.location.state?.from
 					if (redirectURL !== undefined) {
 						this.props.history.push(redirectURL)
-						actionCreatorsIdentity.login(this.props.dispatch)
+						actionCreatorsIdentity.login(this.props.dispatch, {
+							id: value.data.userDetail.id,
+							userName: value.data.userDetail.userName,
+							authToken: value.data.token,
+						})
 					} else {
 						this.props.history.push('/login')
 					}

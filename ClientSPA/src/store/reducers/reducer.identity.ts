@@ -15,6 +15,7 @@ export const reducerIdentity: Reducer<StoreStateIdentity> = (
 		case 'LOGIN':
 			return {
 				isAuthenticated: true,
+				identity: action.payload,
 			} as StoreStateIdentity
 		case 'LOGOUT':
 			return {

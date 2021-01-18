@@ -1,4 +1,3 @@
-
 import { Method } from 'axios'
 
 interface Endpoint {
@@ -13,12 +12,16 @@ interface Endpoints {
 const userEndpoints: Endpoints = {
 	authenticate: {
 		path: 'user/authenticate',
-		method: 'POST'
+		method: 'POST',
 	},
 	addMember: {
 		path: 'user/add-member',
-		method: 'POST'
-	}
+		method: 'POST',
+	},
+	submitAvatar: {
+		path: 'user/submit-avatar',
+		method: 'POST',
+	},
 }
 
 export { userEndpoints }

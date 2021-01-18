@@ -1,5 +1,6 @@
 ﻿using AutoMapper;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
 using RestAPI.Models.Request;
@@ -7,6 +8,8 @@ using RestAPI.Models.Response;
 using Security;
 using Service;
 using Service.DTO.Output.Authentication;
+using System;
+using System.Net.Http.Headers;
 using System.Threading.Tasks;
 
 namespace RestAPI.Controllers
@@ -19,12 +22,19 @@ namespace RestAPI.Controllers
         private readonly IConfiguration _configuration;
         private readonly IJwtTokenHelper _tokenHelper;
         private readonly IMapper _mapper;
-        public UserController(IUserService userService, IConfiguration configuration, IJwtTokenHelper tokenHelper, IMapper mapper)
+        private readonly IAvatarImageStorageService _avatarStorageService;
+        public UserController(
+            IUserService userService,
+            IConfiguration configuration,
+            IJwtTokenHelper tokenHelper,
+            IMapper mapper,
+            IAvatarImageStorageService avatarStorageService)
         {
             _userService = userService;
             _configuration = configuration;
             _tokenHelper = tokenHelper;
             _mapper = mapper;
+            _avatarStorageService = avatarStorageService;
         }
 
         [HttpPost("authenticate")]
@@ -50,6 +60,14 @@ namespace RestAPI.Controllers
             var pepper = _configuration.GetValue<string>("Security:Pepper");
             var result = await _userService.AddNewMember(user, pepper);
             return Ok(result);
+        }
+
+        [HttpPost("submit-avatar")]
+        public async Task<IActionResult> SubmitAvatar(IFormFile avatarImage)
+        {
+            var fileName = ContentDispositionHeaderValue.Parse(avatarImage.ContentDisposition).FileName.Trim('"');
+            await _avatarStorageService.SaveImage(avatarImage, Guid.NewGuid(), fileName);
+            return Ok();
         }
     }
 }

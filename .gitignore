@@ -10,6 +10,7 @@
 # testing
 /coverage
 **/Logs
+**/Resources/Avatar
 # production
 **/build
 **/bin

@@ -77,7 +77,7 @@ namespace RestAPI.Middleware
 
                 var jwtToken = (JwtSecurityToken)validatedToken;
                 var expiredAt = Convert.ToInt64(jwtToken.Claims.First(x => x.Type == JwtRegisteredClaimNames.Exp).Value);
-                var now = (Int64)(DateTime.UtcNow.Subtract(new DateTime(1970, 1, 1))).TotalSeconds + 3600;
+                var now = (Int64)(DateTime.UtcNow.Subtract(new DateTime(1970, 1, 1))).TotalSeconds;
                 if (now > expiredAt)
                 {
                     claims = null;

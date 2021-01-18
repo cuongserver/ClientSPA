@@ -3,7 +3,8 @@ import { WithTranslation, withTranslation } from 'react-i18next'
 import Cropper, { CropperProps } from 'react-easy-crop'
 import { Area, MediaSize, Point } from 'react-easy-crop/types'
 import { Button, InputLabel } from '@material-ui/core'
-
+import { saveAs } from 'file-saver'
+import { UserApiService } from 'api/api.user'
 interface IProps extends WithTranslation {}
 interface IState extends Partial<CropperProps> {}
 
@@ -133,6 +134,32 @@ class EditMemberInfoOrigin extends React.PureComponent<IProps, IState> {
 			reader.readAsDataURL(file)
 		})
 	}
+
+	getImage = () => {
+		const canvas = document.getElementById('avatarOutput')! as HTMLCanvasElement
+		canvas.toBlob((blob: Blob | null) => {
+			if (blob !== null) saveAs(blob, 'avatar.jpeg')
+		})
+	}
+
+	uploadImage = () => {
+		const canvas = document.getElementById('avatarOutput')! as HTMLCanvasElement
+		canvas.toBlob((blob: Blob | null) => {
+			if (blob === null) return
+			const apiService = new UserApiService()
+			const formData = new FormData()
+			formData.append('avatarImage', new File([blob], 'avatar.jpeg'))
+			apiService.submitAvatar(formData).subscribe({
+				next: (res) => {
+					console.log(res)
+				},
+				error: (e) => {
+					console.log(e)
+				},
+			})
+		})
+	}
+
 	render() {
 		return (
 			<React.Fragment>
@@ -148,6 +175,22 @@ class EditMemberInfoOrigin extends React.PureComponent<IProps, IState> {
 							onChange={this.onFileChange}
 						/>
 					</InputLabel>
+					<Button
+						variant="outlined"
+						component="span"
+						color="primary"
+						onClick={this.getImage}
+					>
+						Get Image
+					</Button>
+					<Button
+						variant="outlined"
+						component="span"
+						color="primary"
+						onClick={this.uploadImage}
+					>
+						Upload Image
+					</Button>
 				</div>
 				<div
 					style={{

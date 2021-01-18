@@ -40,6 +40,7 @@ namespace RestAPI
             services.AddScoped<IUserService, UserService>();
             services.AddScoped<SecretEnhancer>();
             services.AddScoped<IJwtTokenHelper, JwtTokenHelper>();
+            services.AddScoped<IAvatarImageStorageService, AvatarImageStorageService>();
             services.AddAutoMapper(typeof(Startup));
 
             //avoid the MultiPartBodyLength error
