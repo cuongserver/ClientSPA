@@ -11,5 +11,6 @@ namespace Service
     {
         Task<OutputAuthentication> Authenticate(string password, string userName, string pepper);
         Task<OutputAddMember> AddNewMember(InputAddMember member, string pepper);
+        Task<int> UpdateAvatar(Guid imageId, Guid userId);
     }
 }

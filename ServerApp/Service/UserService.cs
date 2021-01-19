@@ -77,5 +77,10 @@ namespace Service
             }
 
         }
+
+        public async Task<int> UpdateAvatar(Guid imageId, Guid userId)
+        {
+            return await _userRepo.UpdateAvatar(imageId, userId);
+        }
     }
 }

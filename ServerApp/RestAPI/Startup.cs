@@ -33,15 +33,19 @@ namespace RestAPI
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
-
+            services.AddAuthentication();
             services.AddControllers();
             services.AddDbContext<CmsContext>(options => options.UseSqlServer(Configuration.GetValue<string>("DbConnection:Default")));
             services.AddScoped<IUserRepository, UserRepository>();
+            services.AddScoped<IAvatarImageRepository, AvatarImageRepository>();
+
             services.AddScoped<IUserService, UserService>();
             services.AddScoped<SecretEnhancer>();
             services.AddScoped<IJwtTokenHelper, JwtTokenHelper>();
             services.AddScoped<IAvatarImageStorageService, AvatarImageStorageService>();
+            services.AddScoped<IAvatarImageService, AvatarImageService>();
             services.AddAutoMapper(typeof(Startup));
+            services.AddScoped<IAvatarUploadService, AvatarUploadService>();
 
             //avoid the MultiPartBodyLength error
             services.Configure<FormOptions>(options =>
@@ -79,7 +83,7 @@ namespace RestAPI
             app.UseRouting();
 
             app.UseCors(policy => policy.AllowAnyMethod().AllowAnyHeader().SetIsOriginAllowed(origin => true));
-
+            app.UseAuthentication();
             app.UseMiddleware<JwtMiddleware>();
             app.UseAuthorization();
 

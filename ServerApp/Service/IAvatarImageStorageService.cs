@@ -6,6 +6,6 @@ namespace Service
 {
     public interface IAvatarImageStorageService
     {
-        Task SaveImage(IFormFile file, Guid id, string fileName);
+        Task<string> SaveImage(IFormFile file, Guid id, string fileName);
     }
 }

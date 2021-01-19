@@ -49,7 +49,7 @@ namespace RestAPI.Middleware
                 await context.Response.WriteAsync(JsonConvert.SerializeObject(new { Message = "Unknown Authentication" }));
                 return;
             }
-            foreach (var claim in claims) context.User.Claims.Append(claim);
+            foreach (var claim in claims) context.Items.Add(claim.Type, claim.Value);
             await _next.Invoke(context);
         }
 

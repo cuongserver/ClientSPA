@@ -11,6 +11,7 @@ using Service.DTO.Output.Authentication;
 using System;
 using System.Net.Http.Headers;
 using System.Threading.Tasks;
+using System.Linq;
 
 namespace RestAPI.Controllers
 {
@@ -23,18 +24,22 @@ namespace RestAPI.Controllers
         private readonly IJwtTokenHelper _tokenHelper;
         private readonly IMapper _mapper;
         private readonly IAvatarImageStorageService _avatarStorageService;
+        private readonly IAvatarUploadService _avatarUploadService;
         public UserController(
             IUserService userService,
             IConfiguration configuration,
             IJwtTokenHelper tokenHelper,
             IMapper mapper,
-            IAvatarImageStorageService avatarStorageService)
+            IAvatarImageStorageService avatarStorageService,
+            IAvatarUploadService avatarUploadService
+            )
         {
             _userService = userService;
             _configuration = configuration;
             _tokenHelper = tokenHelper;
             _mapper = mapper;
             _avatarStorageService = avatarStorageService;
+            _avatarUploadService = avatarUploadService;
         }
 
         [HttpPost("authenticate")]
@@ -65,9 +70,11 @@ namespace RestAPI.Controllers
         [HttpPost("submit-avatar")]
         public async Task<IActionResult> SubmitAvatar(IFormFile avatarImage)
         {
+            var userId = Guid.Parse(HttpContext.Items["uid"].ToString());
             var fileName = ContentDispositionHeaderValue.Parse(avatarImage.ContentDisposition).FileName.Trim('"');
-            await _avatarStorageService.SaveImage(avatarImage, Guid.NewGuid(), fileName);
-            return Ok();
+            //await _avatarStorageService.SaveImage(avatarImage, Guid.NewGuid(), fileName);
+            var res = await _avatarUploadService.UploadImage(avatarImage, Guid.NewGuid(), fileName, userId);
+            return Ok(res);
         }
     }
 }
