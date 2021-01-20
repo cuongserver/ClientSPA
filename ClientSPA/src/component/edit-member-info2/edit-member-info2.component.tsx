@@ -51,7 +51,11 @@ class EditMemberInfoOrigin extends React.PureComponent<IProps, IState> {
 		const canvas = document.getElementById('avatarOutput')! as HTMLCanvasElement
 		const ctx = canvas.getContext('2d')!
 
-		const maxSize = Math.max(image.naturalWidth, image.naturalHeight)
+		const maxSize = Math.max(
+			image.naturalWidth,
+			image.naturalHeight,
+			this.cropDiameter
+		)
 		const safeArea = 2 * ((maxSize / 2) * Math.sqrt(2))
 
 		// set each dimensions to double largest dimension to allow for a safe area for the
@@ -70,20 +74,28 @@ class EditMemberInfoOrigin extends React.PureComponent<IProps, IState> {
 			safeArea / 2 - image.naturalWidth / 2,
 			safeArea / 2 - image.naturalHeight / 2
 		)
-
 		const data = ctx.getImageData(0, 0, safeArea, safeArea)
 
 		// set canvas width to final desired crop size - this will clear existing context
-		canvas.width = pixelCrop.width
-		canvas.height = pixelCrop.height
+		canvas.width = Math.max(pixelCrop.width, this.cropDiameter)
+		canvas.height = Math.max(pixelCrop.height, this.cropDiameter)
 
 		// paste generated rotate image with correct offsets for x,y crop values.
 		ctx.putImageData(
 			data,
-			Math.round(0 - safeArea / 2 + image.naturalWidth * 0.5 - pixelCrop.x),
-			Math.round(0 - safeArea / 2 + image.naturalHeight * 0.5 - pixelCrop.y)
+			Math.round(
+				0 -
+					safeArea / 2 +
+					Math.max(image.naturalWidth, this.cropDiameter) * 0.5 -
+					pixelCrop.x
+			),
+			Math.round(
+				0 -
+					safeArea / 2 +
+					Math.max(image.naturalHeight, this.cropDiameter) * 0.5 -
+					pixelCrop.y
+			)
 		)
-		ctx.fillStyle = '#fff'
 		ctx.globalCompositeOperation = 'destination-in'
 		ctx.beginPath()
 		ctx.arc(
@@ -95,6 +107,8 @@ class EditMemberInfoOrigin extends React.PureComponent<IProps, IState> {
 		)
 		ctx.closePath()
 		ctx.fill()
+		ctx.save()
+
 		const data2 = canvas.toDataURL('image/*')
 		canvas.width = this.cropDiameter
 		canvas.height = this.cropDiameter
@@ -217,7 +231,12 @@ class EditMemberInfoOrigin extends React.PureComponent<IProps, IState> {
 						/>
 					)}
 				</div>
-				<canvas id="avatarOutput"></canvas>
+				<canvas
+					id="avatarOutput"
+					style={{
+						border: '1px solid red',
+					}}
+				></canvas>
 			</React.Fragment>
 		)
 	}
