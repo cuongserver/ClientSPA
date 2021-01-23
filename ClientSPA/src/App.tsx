@@ -7,6 +7,7 @@ import 'asset/style/utilities.css'
 import { AuthRoute } from 'routing-config/auth-route.component'
 import { connect } from 'react-redux'
 import { StoreStateApp } from 'types/store.app'
+import Home from 'component/home/home.component'
 
 const Login = React.lazy(() => import('component/login/login.component'))
 const Main = React.lazy(() => import('component/main/main.component'))
