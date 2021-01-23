@@ -3,7 +3,13 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 16
 VisualStudioVersion = 16.0.30804.86
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DemoCms.Domain", "DemoCms.Domain\DemoCms.Domain.csproj", "{5060FCF4-F0B5-4DCC-BD88-CFCEC13E10A9}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DemoCms.Domain", "core\DemoCms.Domain\DemoCms.Domain.csproj", "{5060FCF4-F0B5-4DCC-BD88-CFCEC13E10A9}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DemoCms.EF", "data\DemoCms.EF\DemoCms.EF.csproj", "{CC697C9C-33F5-4CF7-8E01-5C828AD12511}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "core", "core", "{EBD34E7E-F7E0-4B07-9241-44F0C5E68F2B}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "data", "data", "{26E00B5D-174F-4B9E-9C67-B4E79333CB33}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -15,9 +21,17 @@ Global
 		{5060FCF4-F0B5-4DCC-BD88-CFCEC13E10A9}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{5060FCF4-F0B5-4DCC-BD88-CFCEC13E10A9}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{5060FCF4-F0B5-4DCC-BD88-CFCEC13E10A9}.Release|Any CPU.Build.0 = Release|Any CPU
+		{CC697C9C-33F5-4CF7-8E01-5C828AD12511}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{CC697C9C-33F5-4CF7-8E01-5C828AD12511}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{CC697C9C-33F5-4CF7-8E01-5C828AD12511}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{CC697C9C-33F5-4CF7-8E01-5C828AD12511}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{5060FCF4-F0B5-4DCC-BD88-CFCEC13E10A9} = {EBD34E7E-F7E0-4B07-9241-44F0C5E68F2B}
+		{CC697C9C-33F5-4CF7-8E01-5C828AD12511} = {26E00B5D-174F-4B9E-9C67-B4E79333CB33}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {96E93292-E72A-42B8-9C73-CF0AE64C189C}

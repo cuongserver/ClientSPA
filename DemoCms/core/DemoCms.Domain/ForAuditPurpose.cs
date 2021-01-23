@@ -2,7 +2,7 @@
 
 namespace DemoCms.Domain
 {
-    public class ForAuditPurpose
+    public abstract class ForAuditPurpose
     {
         public virtual Guid CreatedByUserId { get; set; }
         public virtual DateTime CreatedAtTime { get; set; }
