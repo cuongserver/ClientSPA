@@ -1,12 +1,12 @@
 ﻿
 using DemoCms.EF.Data;
 using Microsoft.EntityFrameworkCore;
-
+using System;
 namespace DemoCms.EF
 {
-	public interface IDb
-	{
-		public DbSet<User> Users { get; set; }
-		public DbSet<UserAvatarMetadata> UserAvatarMetadatas { get; set; }
-	}
+    public interface IDb : IDisposable
+    {
+        public DbSet<User> Users { get; set; }
+        public DbSet<UserAvatarMetadata> UserAvatarMetadatas { get; set; }
+    }
 }

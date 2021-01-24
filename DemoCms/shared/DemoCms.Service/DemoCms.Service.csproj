@@ -1,0 +1,16 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+	<PropertyGroup>
+		<TargetFramework>netcoreapp3.1</TargetFramework>
+	</PropertyGroup>
+
+	<ItemGroup>
+		<ProjectReference Include="..\..\data\DemoCms.EF\DemoCms.EF.csproj" />
+		<ProjectReference Include="..\DemoCms.Helper\DemoCms.Helper.csproj" />
+	</ItemGroup>
+
+	<ItemGroup>
+		<Folder Include="DTO\Input\" />
+	</ItemGroup>
+
+</Project>

@@ -5,7 +5,6 @@ namespace DemoCms.Domain.IdentityAndAccess
 {
     public class User : ForAuditPurpose
     {
-        [Key]
         public virtual Guid Id { get; set; }
         public virtual string Email { get; set; }
         public virtual string LoginName { get; set; }

@@ -1,0 +1,14 @@
+<Project Sdk="Microsoft.NET.Sdk.Web">
+
+  <PropertyGroup>
+    <TargetFramework>netcoreapp3.1</TargetFramework>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\..\data\DemoCms.EF.MsSqlServer\DemoCms.EF.MsSqlServer.csproj" />
+    <ProjectReference Include="..\..\data\DemoCms.EF\DemoCms.EF.csproj" />
+    <ProjectReference Include="..\..\shared\DemoCms.Service\DemoCms.Service.csproj" />
+  </ItemGroup>
+
+
+</Project>

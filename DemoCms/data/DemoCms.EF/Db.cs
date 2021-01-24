@@ -15,7 +15,10 @@ namespace DemoCms.EF
         protected override void OnModelCreating(ModelBuilder mb)
         {
             mb.Entity<User>().ToTable("Users");
-            mb.Entity<User>().Property(x => x.Id).HasDefaultValue(Guid.NewGuid());
+            mb.Entity<User>().HasKey(x => new { x.Id });
+
+            mb.Entity<UserAvatarMetadata>().ToTable("UserAvatarMetadatas");
+            mb.Entity<User>().HasKey(x => new { x.Id });
 
         }
 
