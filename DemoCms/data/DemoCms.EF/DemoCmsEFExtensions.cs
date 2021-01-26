@@ -1,4 +1,5 @@
-﻿using DemoCms.EF.Repository;
+﻿using DemoCms.Application.Repository;
+using DemoCms.EF.Repository;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
 using System;

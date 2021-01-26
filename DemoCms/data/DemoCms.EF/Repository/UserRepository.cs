@@ -1,9 +1,6 @@
-﻿using DemoCms.EF.Data;
+﻿using DemoCms.Application.Repository;
+using DemoCms.Domain.IdentityAndAccess;
 using Microsoft.EntityFrameworkCore;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 using System.Threading.Tasks;
 
 namespace DemoCms.EF.Repository

@@ -1,5 +1,5 @@
 ﻿
-using DemoCms.EF.Data;
+using DemoCms.Domain.IdentityAndAccess;
 using Microsoft.EntityFrameworkCore;
 using System;
 namespace DemoCms.EF

@@ -11,6 +11,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\..\core\DemoCms.Application\DemoCms.Application.csproj" />
     <ProjectReference Include="..\..\core\DemoCms.Domain\DemoCms.Domain.csproj" />
   </ItemGroup>
 

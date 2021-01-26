@@ -19,11 +19,13 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DemoCms.EF.MsSqlServer.Seed
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DemoCms.Helper", "shared\DemoCms.Helper\DemoCms.Helper.csproj", "{566EAE86-F114-4FDF-A9EF-5E3EA93252EB}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DemoCms.Service", "shared\DemoCms.Service\DemoCms.Service.csproj", "{A388ED2D-A4A1-409C-9729-CD74B649744D}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DemoCms.Service", "shared\DemoCms.Service\DemoCms.Service.csproj", "{A388ED2D-A4A1-409C-9729-CD74B649744D}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "webapi", "webapi", "{2C60DE9B-7EBF-44BF-8869-9FF4EF50C567}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DemoCms.RestAPI", "webapi\DemoCms.RestAPI\DemoCms.RestAPI.csproj", "{150BE54E-F5F6-4B83-80AA-11B40129960C}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DemoCms.RestAPI", "webapi\DemoCms.RestAPI\DemoCms.RestAPI.csproj", "{150BE54E-F5F6-4B83-80AA-11B40129960C}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DemoCms.Application", "core\DemoCms.Application\DemoCms.Application.csproj", "{0F432632-1E3D-4069-9166-003E4DC82934}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -119,6 +121,18 @@ Global
 		{150BE54E-F5F6-4B83-80AA-11B40129960C}.Release|x64.Build.0 = Release|Any CPU
 		{150BE54E-F5F6-4B83-80AA-11B40129960C}.Release|x86.ActiveCfg = Release|Any CPU
 		{150BE54E-F5F6-4B83-80AA-11B40129960C}.Release|x86.Build.0 = Release|Any CPU
+		{0F432632-1E3D-4069-9166-003E4DC82934}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{0F432632-1E3D-4069-9166-003E4DC82934}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{0F432632-1E3D-4069-9166-003E4DC82934}.Debug|x64.ActiveCfg = Debug|Any CPU
+		{0F432632-1E3D-4069-9166-003E4DC82934}.Debug|x64.Build.0 = Debug|Any CPU
+		{0F432632-1E3D-4069-9166-003E4DC82934}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{0F432632-1E3D-4069-9166-003E4DC82934}.Debug|x86.Build.0 = Debug|Any CPU
+		{0F432632-1E3D-4069-9166-003E4DC82934}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{0F432632-1E3D-4069-9166-003E4DC82934}.Release|Any CPU.Build.0 = Release|Any CPU
+		{0F432632-1E3D-4069-9166-003E4DC82934}.Release|x64.ActiveCfg = Release|Any CPU
+		{0F432632-1E3D-4069-9166-003E4DC82934}.Release|x64.Build.0 = Release|Any CPU
+		{0F432632-1E3D-4069-9166-003E4DC82934}.Release|x86.ActiveCfg = Release|Any CPU
+		{0F432632-1E3D-4069-9166-003E4DC82934}.Release|x86.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -131,6 +145,7 @@ Global
 		{566EAE86-F114-4FDF-A9EF-5E3EA93252EB} = {85B2C35E-CC72-4693-8480-58ACF59764FB}
 		{A388ED2D-A4A1-409C-9729-CD74B649744D} = {85B2C35E-CC72-4693-8480-58ACF59764FB}
 		{150BE54E-F5F6-4B83-80AA-11B40129960C} = {2C60DE9B-7EBF-44BF-8869-9FF4EF50C567}
+		{0F432632-1E3D-4069-9166-003E4DC82934} = {EBD34E7E-F7E0-4B07-9241-44F0C5E68F2B}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {96E93292-E72A-42B8-9C73-CF0AE64C189C}

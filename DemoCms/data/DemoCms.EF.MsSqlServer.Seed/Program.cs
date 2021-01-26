@@ -1,4 +1,5 @@
-﻿using DemoCms.Helper.Encryption;
+﻿using DemoCms.Domain.IdentityAndAccess;
+using DemoCms.Helper.Encryption;
 using Microsoft.EntityFrameworkCore;
 using System;
 
@@ -18,7 +19,7 @@ namespace DemoCms.EF.MsSqlServer.Seed
 			using (var ctx = new MsSqlServerDb(builder.Options))
 			{
 				ctx.Database.ExecuteSqlRaw("delete from Users");
-				ctx.Users.Add(new Data.User
+				ctx.Users.Add(new User
 				{
 					Id = Guid.NewGuid(),
 					LoginName = loginName,
