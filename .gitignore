@@ -33,3 +33,4 @@ workspace.xml
 **/.idea/vcs.xml
 **/.idea/jsLibraryMappings.xml
 ClientSPA/.idea/workspace.xml
+**/.eslintcache
