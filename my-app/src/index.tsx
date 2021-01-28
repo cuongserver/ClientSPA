@@ -4,10 +4,13 @@ import 'index.css'
 import App from 'app'
 import reportWebVitals from 'reportWebVitals'
 import 'assets/styles/utilities.css'
+import { Context } from 'context/app-context-dom'
 
 ReactDOM.render(
 	<React.StrictMode>
-		<App />
+		<Context>
+			<App />
+		</Context>
 	</React.StrictMode>,
 	document.getElementById('root')
 )

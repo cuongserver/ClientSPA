@@ -1,7 +1,8 @@
 const routes = {
-	home: '/',
-	addMember: '/add-member',
+	home: '/editor-portal',
+	addMember: '/editor-portal/members/add',
 	editMemberInfo: '/edit-member-info',
+	login: '/editor-portal/login',
 }
 
 const breadcrumbNameMap: { [key: string]: string } = {}
