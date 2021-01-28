@@ -5,6 +5,10 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <PackageReference Include="Swashbuckle.AspNetCore" Version="5.6.3" />
+  </ItemGroup>
+
+  <ItemGroup>
     <ProjectReference Include="..\..\data\DemoCms.EF.MsSqlServer\DemoCms.EF.MsSqlServer.csproj" />
     <ProjectReference Include="..\..\data\DemoCms.EF\DemoCms.EF.csproj" />
     <ProjectReference Include="..\..\shared\DemoCms.Service\DemoCms.Service.csproj" />
