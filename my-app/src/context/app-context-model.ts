@@ -3,8 +3,16 @@ interface AuthState {
 	switchAuthState: () => void
 }
 
-interface AppContext {
-	auth: AuthState
+interface I18n {
+	currentLang: string
+	loadedLang: string[]
+	supportedLang: string[]
+	changeLang: (lang: string) => Promise<void>
 }
 
-export type { AuthState, AppContext }
+interface AppContext {
+	auth: AuthState
+	i18n: I18n
+}
+
+export type { AuthState, AppContext, I18n }

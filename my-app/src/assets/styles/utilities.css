@@ -2965,8 +2965,11 @@
 
 /*#endregion*/
 
-/*#region elevation*/
-.break-word {
-	word-break: break-word;
+/*#region align*/
+.perfect-centered{
+	top: 50%;
+	left: 50%;
+	transform: translate(-50%, -50%);
 }
 /*#endregion*/
+

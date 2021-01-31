@@ -3,6 +3,8 @@ const routes = {
 	addMember: '/editor-portal/members/add',
 	editMemberInfo: '/edit-member-info',
 	login: '/editor-portal/login',
+	forgotPassword: '/editor-portal/forgot-password',
+	default: '/',
 }
 
 const breadcrumbNameMap: { [key: string]: string } = {}

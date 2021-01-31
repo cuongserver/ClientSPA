@@ -1,4 +1,8 @@
-.App {
+html * {
+	box-sizing: border-box;
+}
+
+/* .App {
 	text-align: center;
 }
 
@@ -34,4 +38,4 @@
 	to {
 		transform: rotate(360deg);
 	}
-}
+} */

@@ -3,3 +3,6 @@
 	background-position: center;
 	background-attachment: fixed;
 }
+[data-whitealphabackground] {
+	background-color: rgba($color: #ffffff, $alpha: 0.8) !important;
+}

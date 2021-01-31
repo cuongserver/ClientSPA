@@ -8,9 +8,13 @@ export interface IAuthRouteProps extends RouteProps {
 }
 
 class PrivateRoute extends Route<IAuthRouteProps> {
+	publicRoutes: string[] = [routes.login, routes.forgotPassword]
 	render() {
 		//not authenticated and path is "/login" then do nothing
-		if (!this.props.isAuth && this.props.path === routes.login) {
+		if (
+			!this.props.isAuth &&
+			this.publicRoutes.includes(this.props.path as string)
+		) {
 			return <Route {...this.props} />
 		}
 
@@ -30,7 +34,10 @@ class PrivateRoute extends Route<IAuthRouteProps> {
 			)
 		}
 		//not authenticated and path is not "/login" then redirect to login
-		if (!this.props.isAuth && this.props.path !== routes.login) {
+		if (
+			!this.props.isAuth &&
+			!this.publicRoutes.includes(this.props.path as string)
+		) {
 			const renderComponent = () => (
 				<Redirect
 					to={{
