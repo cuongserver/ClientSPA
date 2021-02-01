@@ -1,6 +1,5 @@
 {
   "login-label-password": "Mật khẩu",
-  "login-label-available-language": "Ngôn ngữ hiển thị hiện có",
   "main-drawer-menugroup-content": "Nội dung",
   "main-drawer-menugroup-item-image": "Hình ảnh",
   "login-label-display-mode": "Chế độ hiển thị",
@@ -35,5 +34,8 @@
   "forgotPassword-error-emailRequired": "Email không được bỏ trống",
   "forgotPassword-label-sendEmail": "Gửi email",
   "forgotPassword-label-backToLogin": "Quay lại Đăng Nhập",
-  "forgotPassword-error-emailInvalid": "Email không hợp lệ"
+  "forgotPassword-error-emailInvalid": "Email không hợp lệ",
+  "login-label-selectLanguage": "Lựa chọn ngôn ngữ hiển thị",
+  "login-label-backToLogin": "Quay lại Đăng Nhập",
+  "login-label-availableLanguage": "Ngôn ngữ hiện có"
 }

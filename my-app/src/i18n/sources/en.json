@@ -1,6 +1,5 @@
 {
   "login-label-password": "Password",
-  "login-label-available-language": "Available language for display",
   "main-drawer-menugroup-content": "Content",
   "main-drawer-menugroup-item-image": "Image",
   "login-label-display-mode": "Display mode",
@@ -35,5 +34,8 @@
   "forgotPassword-error-emailRequired": "Email is required",
   "forgotPassword-label-sendEmail": "Send email",
   "forgotPassword-label-backToLogin": "Return to Sign In",
-  "forgotPassword-error-emailInvalid": "Email is invalid"
+  "forgotPassword-error-emailInvalid": "Email is invalid",
+  "login-label-selectLanguage": "Select display language",
+  "login-label-backToLogin": "Return to Sign In",
+  "login-label-availableLanguage": "Available languages"
 }

@@ -25,6 +25,10 @@ import { Visibility, VisibilityOff } from '@material-ui/icons'
 import * as yup from 'yup'
 import { Formik, FormikProps, yupToFormErrors } from 'formik'
 import _ from 'lodash'
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
+import { SelectLanguage } from './page.select-language'
+import { RootContext } from 'context/app-context-dom'
+import { Subscription } from 'rxjs'
 
 const schema = yup.object().shape({
 	loginName: yup.string().required('login-error-loginNameRequired'),
@@ -38,8 +42,12 @@ interface IFormData {
 }
 interface IState {
 	showPassword: boolean
+	currentScreen: 'default' | 'selectLanguage'
+	subscriptions: Subscription[]
 }
 class Login_Root extends React.PureComponent<IProps, IState> {
+	static contextType = RootContext
+	context!: React.ContextType<typeof RootContext>
 	formHandleSubmit = async () => {
 		const form = this.validator.current!
 		try {
@@ -95,8 +103,29 @@ class Login_Root extends React.PureComponent<IProps, IState> {
 		super(props)
 		this.state = {
 			showPassword: false,
+			currentScreen: 'default',
+			subscriptions: [],
 		}
 	}
+
+	componentDidMount() {
+		const ctx = this.context!
+		this.state.subscriptions.push(
+			ctx.entryModule.switchScreenChannel.subscribe({
+				next: (val) => {
+					this.setState({
+						currentScreen: val,
+						showPassword: false,
+					})
+				},
+			})
+		)
+	}
+
+	componentWillUnmount() {
+		this.state.subscriptions.forEach((sub) => sub.unsubscribe())
+	}
+
 	render() {
 		const { t, history } = this.props
 		return (
@@ -117,57 +146,85 @@ class Login_Root extends React.PureComponent<IProps, IState> {
 								data-whitealphabackground
 								raised
 							>
-								<Typography
-									variant="h6"
-									paragraph
-									align="center"
-									className="m-t-auto"
-								>
-									{t('login-label-pageName')}
-								</Typography>
-								<TextField
-									{...this.commonTextFieldProps}
-									label={t('login-label-loginName')}
-									id="LoginPage_loginName"
-									name="loginName"
-									helperText={
-										!_.isEmpty(errors.loginName) ? t(errors.loginName!) : ' '
-									}
-									error={!_.isEmpty(errors.loginName)}
-								/>
-								<div className="m-t-5"></div>
-								<TextField
-									{...this.commonTextFieldProps}
-									label={t('login-label-password')}
-									id="LoginPage_password"
-									name="password"
-									helperText={
-										!_.isEmpty(errors.password) ? t(errors.password!) : ' '
-									}
-									error={!_.isEmpty(errors.password)}
-									InputProps={{
-										endAdornment: this.visibilityToggle(),
-									}}
-									type={this.state.showPassword ? 'text' : 'password'}
-									value={values.password}
-								/>
-								<div className="m-t-20"></div>
-								<Button
-									fullWidth
-									variant="outlined"
-									size="large"
-									onClick={this.formHandleSubmit}
-								>
-									{t('login-label-submitSignIn')}
-								</Button>
-								<Typography align="center">
-									<Link
-										className="hov-pointer"
-										onClick={() => history.push(routes.forgotPassword)}
-									>
-										{t('login-label-forgotPassword')}
-									</Link>
-								</Typography>
+								{this.state.currentScreen === 'default' && (
+									<React.Fragment>
+										<Typography
+											variant="h6"
+											paragraph
+											align="center"
+											className="m-t-auto"
+										>
+											{t('login-label-pageName')}
+										</Typography>
+										<TextField
+											{...this.commonTextFieldProps}
+											label={t('login-label-loginName')}
+											id="LoginPage_loginName"
+											name="loginName"
+											helperText={
+												!_.isEmpty(errors.loginName)
+													? t(errors.loginName!)
+													: ' '
+											}
+											error={!_.isEmpty(errors.loginName)}
+											value={values.loginName}
+										/>
+										<div className="m-t-5"></div>
+										<TextField
+											{...this.commonTextFieldProps}
+											label={t('login-label-password')}
+											id="LoginPage_password"
+											name="password"
+											helperText={
+												!_.isEmpty(errors.password) ? t(errors.password!) : ' '
+											}
+											error={!_.isEmpty(errors.password)}
+											InputProps={{
+												endAdornment: this.visibilityToggle(),
+											}}
+											type={this.state.showPassword ? 'text' : 'password'}
+											value={values.password}
+										/>
+										<div className="m-t-20"></div>
+										<Button
+											fullWidth
+											variant="outlined"
+											size="large"
+											onClick={this.formHandleSubmit}
+										>
+											{t('login-label-submitSignIn')}
+										</Button>
+										<Typography align="center">
+											<Link
+												className="hov-pointer"
+												onClick={() => history.push(routes.forgotPassword)}
+											>
+												{t('login-label-forgotPassword')}
+											</Link>
+										</Typography>
+										<Typography
+											align="center"
+											variant="caption"
+											component="p"
+											color="textSecondary"
+										>
+											<Link
+												className="hov-pointer"
+												onClick={() =>
+													this.setState({
+														currentScreen: 'selectLanguage',
+													})
+												}
+												color="inherit"
+											>
+												{t('login-label-selectLanguage')}
+											</Link>
+										</Typography>
+									</React.Fragment>
+								)}
+								{this.state.currentScreen === 'selectLanguage' && (
+									<SelectLanguage></SelectLanguage>
+								)}
 							</Card>
 						)
 					}}

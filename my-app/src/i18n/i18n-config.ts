@@ -11,7 +11,7 @@ const startUpLang =
 	availableI18nPackages.includes(
 		localStorage.getItem(localStorageItems.currentLang) as string
 	)
-		? (localStorage.getItem('displayLanguage') as string)
+		? (localStorage.getItem(localStorageItems.currentLang) as string)
 		: 'vi'
 
 import(`i18n/sources/${startUpLang}.json`).then((data: unknown) => {

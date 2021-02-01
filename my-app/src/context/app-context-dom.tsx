@@ -1,8 +1,14 @@
 import React from 'react'
-import { AuthState, AppContext, I18n } from 'context/app-context-model'
+import {
+	AuthState,
+	AppContext,
+	I18n,
+	EntryModule,
+} from 'context/app-context-model'
 import _ from 'lodash'
 import { availableI18nPackages, startUpLang, i18n } from 'i18n/i18n-config'
 import { localStorageItems } from 'constants/local-storage-items'
+import { Subject } from 'rxjs'
 
 const RootContext = React.createContext<AppContext | undefined>(undefined)
 
@@ -22,6 +28,7 @@ class Context extends React.PureComponent<{}, AppContext> {
 		currentLang: startUpLang,
 		supportedLang: availableI18nPackages,
 		changeLang: async (lang: string) => {
+			console.log(lang)
 			let targetLang = lang
 			const setState = () => {
 				i18n.changeLanguage(targetLang)
@@ -51,11 +58,15 @@ class Context extends React.PureComponent<{}, AppContext> {
 			}
 		},
 	}
+	entryModule: EntryModule = {
+		switchScreenChannel: new Subject<'default' | 'selectLanguage'>(),
+	}
 	constructor(props: {}) {
 		super(props)
 		this.state = {
 			auth: this.auth,
 			i18n: this.i18n,
+			entryModule: this.entryModule,
 		}
 	}
 
