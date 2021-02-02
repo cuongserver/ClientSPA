@@ -16,7 +16,6 @@ import {
 	// //Radio,
 	// PaletteType,
 } from '@material-ui/core'
-import { LayoutEntry } from 'layouts/layout.entry'
 import 'assets/styles/page.login.scss'
 import { withRouter } from 'react-router'
 import { RouteComponentProps } from 'react-router-dom'
@@ -129,7 +128,7 @@ class Login_Root extends React.PureComponent<IProps, IState> {
 	render() {
 		const { t, history } = this.props
 		return (
-			<LayoutEntry>
+			<React.Fragment>
 				<Formik
 					validateOnChange={false}
 					validateOnBlur={false}
@@ -229,7 +228,7 @@ class Login_Root extends React.PureComponent<IProps, IState> {
 						)
 					}}
 				</Formik>
-			</LayoutEntry>
+			</React.Fragment>
 		)
 	}
 }
