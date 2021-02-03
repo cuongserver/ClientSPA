@@ -25,10 +25,9 @@ namespace DemoCms.RestAPI.Controllers
 		[HttpPost("auth")]
 		public async Task<IActionResult> Login([FromBody] AuthRequest request)
 		{
-			var pepper = _configuration.GetValue<string>("Security:Pepper");
 			var secret = _configuration.GetValue<string>("Security:Secret");
 			var validPeriod = _configuration.GetValue<int>("Security:ValidPeriod");
-			var res = await _userService.Authenticate(request.Password, request.LoginName, pepper, secret, validPeriod);
+			var res = await _userService.Authenticate(request.Password, request.LoginName, secret, validPeriod);
 			return Ok(res);
 		}
 	}

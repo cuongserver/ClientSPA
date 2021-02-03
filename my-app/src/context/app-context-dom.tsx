@@ -1,10 +1,5 @@
 import React from 'react'
-import {
-	AuthState,
-	AppContext,
-	I18n,
-	EntryModule,
-} from 'context/app-context-model'
+import { AuthState, AppContext, I18n, EntryModule } from 'context/app-context-model'
 import _ from 'lodash'
 import { availableI18nPackages, startUpLang, i18n } from 'i18n/i18n-config'
 import { localStorageItems } from 'constants/local-storage-items'
@@ -28,7 +23,6 @@ class Context extends React.PureComponent<{}, AppContext> {
 		currentLang: startUpLang,
 		supportedLang: availableI18nPackages,
 		changeLang: async (lang: string) => {
-			console.log(lang)
 			let targetLang = lang
 			const setState = () => {
 				i18n.changeLanguage(targetLang)
@@ -37,14 +31,12 @@ class Context extends React.PureComponent<{}, AppContext> {
 				this.setState((prevState) => {
 					const state = _.cloneDeep(prevState)
 					state.i18n.currentLang = targetLang
-					if (!state.i18n.loadedLang.includes(targetLang))
-						state.i18n.loadedLang.push(targetLang)
+					if (!state.i18n.loadedLang.includes(targetLang)) state.i18n.loadedLang.push(targetLang)
 					return state
 				})
 			}
 
-			if (!this.state.i18n.supportedLang.includes(targetLang))
-				targetLang = this.state.i18n.currentLang
+			if (!this.state.i18n.supportedLang.includes(targetLang)) targetLang = this.state.i18n.currentLang
 			if (this.state.i18n.loadedLang.includes(targetLang)) {
 				setState()
 			} else {
@@ -71,11 +63,7 @@ class Context extends React.PureComponent<{}, AppContext> {
 	}
 
 	render() {
-		return (
-			<RootContext.Provider value={{ ...this.state }}>
-				{this.props.children}
-			</RootContext.Provider>
-		)
+		return <RootContext.Provider value={{ ...this.state }}>{this.props.children}</RootContext.Provider>
 	}
 }
 

@@ -9,6 +9,7 @@ namespace DemoCms.Domain.IdentityAndAccess
         public virtual string Email { get; set; }
         public virtual string LoginName { get; set; }
         public virtual string DisplayName { get; set; }
+        public virtual string Salt { get; set; }
         public virtual string PasswordHash { get; set; }
         public virtual bool MfaEnabled { get; set; }
         public virtual string MfaKey { get; set; }

@@ -11,21 +11,21 @@ namespace DemoCms.Service.Database
     public class UserService : IUserService
     {
         private readonly IUserRepository _userRepo;
-        private readonly IHashHelper _hashHelper;
+        private readonly ICrypytoHelper _crypytoHelper;
         private readonly IJWTokenHelper _tokenHelper;
         public UserService
             (
                 IUserRepository userRepo,
-                IHashHelper hashHelper,
+                ICrypytoHelper crypytoHelper,
                 IJWTokenHelper tokenHelper
             )
         {
             _userRepo = userRepo;
-            _hashHelper = hashHelper;
+            _crypytoHelper = crypytoHelper;
             _tokenHelper = tokenHelper;
         }
 
-        public async Task<AuthOutput> Authenticate(string password, string loginName, string pepper, string secretKey, int validPeriodInMinutes)
+        public async Task<AuthOutput> Authenticate(string password, string loginName, string secretKey, int validPeriodInMinutes)
         {
             var failed = new AuthOutput
             {
@@ -34,7 +34,7 @@ namespace DemoCms.Service.Database
             try
             {
                 var user = await _userRepo.GetUserByLoginName(loginName);
-                var computedHashPw = _hashHelper.GenerateHashedPassword(password, loginName, pepper);
+                var computedHashPw = _crypytoHelper.GenerateHashedPassword(password, user.Salt);
                 if (user.IsDeleted == true || user.PasswordHash != computedHashPw)
                 {
                     return failed;

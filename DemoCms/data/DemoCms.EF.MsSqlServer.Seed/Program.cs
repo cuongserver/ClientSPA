@@ -10,11 +10,11 @@ namespace DemoCms.EF.MsSqlServer.Seed
 		static void Main(string[] args)
 		{
 			var builder = new DbContextOptionsBuilder<MsSqlServerDb>();
-			var pepper = "abcxyz";
 			var loginName = "superuser";
 			var displayName = "Super User";
 			var password = "1234";
-			var hashHelper = new HashHelper();
+			var cryptoHelper = new CryptoHelper();
+			var salt = cryptoHelper.GenerateSalt(loginName);
 			builder.UseSqlServer(@"Data Source=(LocalDb)\MSSQLLocalDB;Initial Catalog=DemoCms;");
 			using (var ctx = new MsSqlServerDb(builder.Options))
 			{
@@ -24,7 +24,8 @@ namespace DemoCms.EF.MsSqlServer.Seed
 					Id = Guid.NewGuid(),
 					LoginName = loginName,
 					DisplayName = displayName,
-					PasswordHash = hashHelper.GenerateHashedPassword(password, loginName, pepper)
+					PasswordHash = cryptoHelper.GenerateHashedPassword(password, salt),
+					Salt = salt
 				});
 				ctx.SaveChanges();
 			}

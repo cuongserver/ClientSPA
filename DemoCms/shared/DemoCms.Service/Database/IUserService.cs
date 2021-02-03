@@ -5,6 +5,6 @@ namespace DemoCms.Service.Database
 {
 	public interface IUserService
 	{
-		Task<AuthOutput> Authenticate(string password, string loginName, string pepper, string secretKey, int validPeriodInMinutes);
+		Task<AuthOutput> Authenticate(string password, string loginName, string secretKey, int validPeriodInMinutes);
 	}
 }

@@ -1,17 +1,17 @@
 using DemoCms.EF;
 using DemoCms.EF.MsSqlServer;
+using DemoCms.Helper;
+using DemoCms.Service;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
-using DemoCms.Service;
-using DemoCms.Helper;
 
 namespace DemoCms.RestAPI
 {
-	public class Startup
+    public class Startup
 	{
 		public Startup(IConfiguration configuration)
 		{
@@ -34,6 +34,7 @@ namespace DemoCms.RestAPI
 
 			// Register the Swagger generator, defining 1 or more Swagger documents
 			services.AddSwaggerGen();
+			services.AddCors();
 		}
 
 		// This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -51,6 +52,15 @@ namespace DemoCms.RestAPI
 			{
 				app.UseDeveloperExceptionPage();
 			}
+
+			app.UseCors(policy =>
+			{
+				policy
+				.AllowAnyMethod()
+				.AllowAnyOrigin()
+				.AllowAnyHeader()
+				.SetIsOriginAllowed(origin => true);
+			});
 
 			app.UseHttpsRedirection();
 

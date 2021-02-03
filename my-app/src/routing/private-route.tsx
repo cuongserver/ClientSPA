@@ -11,18 +11,12 @@ class PrivateRoute extends Route<IAuthRouteProps> {
 	publicRoutes: string[] = [routes.login, routes.forgotPassword]
 	render() {
 		//not authenticated and path is "/login" then do nothing
-		if (
-			!this.props.isAuth &&
-			this.publicRoutes.includes(this.props.location?.pathname as string)
-		) {
+		if (!this.props.isAuth && this.publicRoutes.includes(this.props.location?.pathname as string)) {
 			return <Route {...this.props} />
 		}
 
 		//already authenticated and path is "/login" then redirect to main
-		if (
-			this.props.isAuth &&
-			(this.props.location?.pathname as string) === routes.login
-		) {
+		if (this.props.isAuth && (this.props.location?.pathname as string) === routes.login) {
 			return (
 				<Route
 					{...this.props}
@@ -37,11 +31,7 @@ class PrivateRoute extends Route<IAuthRouteProps> {
 			)
 		}
 		//not authenticated and path is not public then redirect to login
-		if (
-			!this.props.isAuth &&
-			!this.publicRoutes.includes(this.props.location?.pathname as string)
-		) {
-			console.log(this.props.location?.pathname)
+		if (!this.props.isAuth && !this.publicRoutes.includes(this.props.location?.pathname as string)) {
 			const renderComponent = () => (
 				<Redirect
 					to={{
