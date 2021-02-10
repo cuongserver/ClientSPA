@@ -2,14 +2,16 @@
 using DemoCms.Domain.IdentityAndAccess;
 using Microsoft.EntityFrameworkCore;
 using System;
+using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
 
 namespace DemoCms.EF.Repository
 {
-    public class UserRepository : IUserRepository
+    public class PermissionRepository : IPermissionRepository
     {
         private readonly IDb _ctx;
-        public UserRepository
+        public PermissionRepository
             (
                 IDb ctx
             )
@@ -17,14 +19,10 @@ namespace DemoCms.EF.Repository
             _ctx = ctx;
         }
 
-        public async Task<User> GetUserById(Guid id)
-        {
-            return await _ctx.Users.FirstAsync(x => x.Id == id);
-        }
 
-        public async Task<User> GetUserByLoginName(string loginName)
+        public async Task<List<Permission>> GetPermissionByRoleId(Guid roleId)
         {
-            return await _ctx.Users.FirstAsync(x => x.LoginName == loginName);
+            return await _ctx.Permissions.Where(x => x.RoleId == roleId && !x.IsDeleted).ToListAsync();
         }
     }
 }

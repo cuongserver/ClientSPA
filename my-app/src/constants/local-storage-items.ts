@@ -1,4 +1,5 @@
 const localStorageItems = {
-	currentLang: 'app-current-lang',
+	currentLang: 'appCurrentLang',
+	jwt: 'appJwt',
 }
 export { localStorageItems }

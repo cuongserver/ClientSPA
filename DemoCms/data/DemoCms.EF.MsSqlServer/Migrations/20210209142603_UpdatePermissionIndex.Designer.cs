@@ -4,14 +4,16 @@ using DemoCms.EF.MsSqlServer;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace DemoCms.EF.MsSqlServer.Migrations
 {
     [DbContext(typeof(MsSqlServerDb))]
-    partial class MsSqlServerDbModelSnapshot : ModelSnapshot
+    [Migration("20210209142603_UpdatePermissionIndex")]
+    partial class UpdatePermissionIndex
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder

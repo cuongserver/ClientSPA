@@ -1,12 +1,12 @@
 ﻿using DemoCms.Domain.IdentityAndAccess;
 using System;
+using System.Collections.Generic;
 using System.Threading.Tasks;
 
 namespace DemoCms.Application.Repository
 {
-    public interface IUserRepository
+    public interface IPermissionRepository
     {
-        Task<User> GetUserByLoginName(string loginName);
-        Task<User> GetUserById(Guid id);
+        Task<List<Permission>> GetPermissionByRoleId(Guid roleId);
     }
 }

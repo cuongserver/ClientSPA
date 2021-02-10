@@ -6,10 +6,10 @@ using System.Threading.Tasks;
 
 namespace DemoCms.EF.Repository
 {
-    public class UserRepository : IUserRepository
+    public class RoleAssignmentRepository : IRoleAssignmentRepository
     {
         private readonly IDb _ctx;
-        public UserRepository
+        public RoleAssignmentRepository
             (
                 IDb ctx
             )
@@ -17,14 +17,9 @@ namespace DemoCms.EF.Repository
             _ctx = ctx;
         }
 
-        public async Task<User> GetUserById(Guid id)
+        public async Task<RoleAssignment> GetAssignementByUserId(Guid userId)
         {
-            return await _ctx.Users.FirstAsync(x => x.Id == id);
-        }
-
-        public async Task<User> GetUserByLoginName(string loginName)
-        {
-            return await _ctx.Users.FirstAsync(x => x.LoginName == loginName);
+            return await _ctx.RoleAssignments.FirstAsync(x => x.UserId == userId && !x.IsDeleted);
         }
     }
 }

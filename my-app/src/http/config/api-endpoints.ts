@@ -14,6 +14,10 @@ const userEndpoints: Endpoints = {
 		path: 'user/auth',
 		method: 'POST',
 	},
+	restoreSession: {
+		path: 'user/restore-session',
+		method: 'GET',
+	},
 }
 
 export { userEndpoints }

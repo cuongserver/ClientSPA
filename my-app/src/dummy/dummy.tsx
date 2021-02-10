@@ -14,10 +14,7 @@ class Dummy extends React.PureComponent {
 					height: '100%',
 				}}
 			>
-				<Link
-					onClick={() => ctx.auth.switchAuthState()}
-					to="/editor-portal/login"
-				>
+				<Link onClick={() => ctx.auth.setToken('')} to="/editor-portal/login">
 					To Login
 				</Link>
 			</div>

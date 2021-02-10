@@ -8,7 +8,7 @@ namespace DemoCms.Service.DTO.Output
     {
         public string DisplayName { get; set; }
         public string JwToken { get; set; }
-        public List<string> Roles { get; set; }
+        public List<string> Permissions { get; set; }
         public string Result { get; set; }
     }
 }

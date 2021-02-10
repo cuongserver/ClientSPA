@@ -5,11 +5,16 @@ import { PrivateRoute } from 'routing/private-route'
 import { routes } from 'routing/routes-config'
 import { RootContext } from 'context/app-context-dom'
 
-const LayoutDummy = React.lazy(() => import('dummy/dummy'))
+//const LayoutDummy = React.lazy(() => import('dummy/dummy'))
 
 const LayoutEntry = React.lazy(async () => {
 	const bundle = await import('layouts/layout.entry')
 	return { default: bundle.LayoutEntry }
+})
+
+const LayoutPortal = React.lazy(async () => {
+	const bundle = await import('layouts/layout.portal')
+	return { default: bundle.LayoutPortal }
 })
 
 class App extends React.PureComponent {
@@ -31,12 +36,9 @@ class App extends React.PureComponent {
 							path={routes.home}
 							exact
 							isAuth={ctx.auth.isAuth}
-							render={() => <LayoutDummy />}
+							render={() => <LayoutPortal />}
 						></PrivateRoute>
-						<Route
-							path={routes.default}
-							component={() => <Redirect to={routes.home} />}
-						></Route>
+						<Route path={routes.default} component={() => <Redirect to={routes.home} />}></Route>
 					</Switch>
 				</React.Suspense>
 			</div>

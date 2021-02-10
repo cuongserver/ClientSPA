@@ -8,6 +8,8 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
+using Newtonsoft.Json;
+using Newtonsoft.Json.Serialization;
 
 namespace DemoCms.RestAPI
 {
@@ -23,6 +25,12 @@ namespace DemoCms.RestAPI
 		// This method gets called by the runtime. Use this method to add services to the container.
 		public void ConfigureServices(IServiceCollection services)
 		{
+			JsonConvert.DefaultSettings = () => new JsonSerializerSettings
+			{
+				Formatting = Formatting.None,
+				ContractResolver = new CamelCasePropertyNamesContractResolver()
+			};
+
 			services.AddControllers();
 			services.AddDemoCmsEF<MsSqlServerDb>(options =>
 			{
@@ -56,10 +64,12 @@ namespace DemoCms.RestAPI
 			app.UseCors(policy =>
 			{
 				policy
+				.WithOrigins("http://localhost:3000")
 				.AllowAnyMethod()
-				.AllowAnyOrigin()
 				.AllowAnyHeader()
-				.SetIsOriginAllowed(origin => true);
+				.AllowCredentials()
+				.WithExposedHeaders("set-cookie")
+				.SetIsOriginAllowed(origin => origin == "http://localhost:3000");
 			});
 
 			app.UseHttpsRedirection();

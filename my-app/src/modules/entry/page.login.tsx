@@ -42,17 +42,18 @@ class Login_Root extends React.PureComponent<IProps, IState> {
 	static contextType = RootContext
 	context!: React.ContextType<typeof RootContext>
 	formHandleSubmit = async () => {
+		const ctx = this.context!
 		const form = this.validator.current!
 		const isValid = await this.validateForm()
 		if (!isValid) return
-		const result = this.userApiHandlers().doLogin({
+		const result = this.userApiHandlers.doLogin({
 			loginName: form.values.loginName,
 			password: form.values.password,
 		})
 		result.subscribe({
 			next: (res) => {
 				if (res.result === 'auth-success') {
-					console.log('xxx')
+					ctx.auth.setToken(res.jwToken)
 				}
 				if (res.result === 'auth-failed') {
 					console.log('yyy')
@@ -113,9 +114,7 @@ class Login_Root extends React.PureComponent<IProps, IState> {
 		</InputAdornment>
 	)
 	validator: React.RefObject<FormikProps<IFormData>> = React.createRef()
-	userApiHandlers = (): UserApiHandler => {
-		return new UserApiHandler(this.context!)
-	}
+	userApiHandlers: UserApiHandler = new UserApiHandler()
 	constructor(props: IProps) {
 		super(props)
 		this.state = {

@@ -6,8 +6,8 @@ export interface AuthRequest {
 export interface AuthResponse {
 	displayName: string
 	jwToken: string
-	roles: string[]
-	result: AuthMessage
+	permissions: string[]
+	result: string
 }
 
 export type AuthMessage = 'auth-success' | 'auth-failed'
