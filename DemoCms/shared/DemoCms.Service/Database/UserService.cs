@@ -3,6 +3,7 @@ using DemoCms.Helper.Encryption;
 using DemoCms.Helper.SecurityToken;
 using DemoCms.Service.Constant;
 using DemoCms.Service.DTO.Output;
+using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -42,23 +43,50 @@ namespace DemoCms.Service.Database
 			};
 			try
 			{
-				var user = await _userRepo.GetUserByLoginName(loginName);
-				var computedHashPw = _crypytoHelper.GenerateHashedPassword(password, user.Salt);
-				if (user.IsDeleted == true || user.PasswordHash != computedHashPw)
-				{
-					return failed;
-				}
+                var query = from a in _userRepo.GetAll()
+                            join b in _roleAssignmentRepo.GetAll() on a.Id equals b.UserId
+                            join c in _permissionRepo.GetAll() on b.RoleId equals c.RoleId
+                            where a.LoginName == loginName && !a.IsDeleted && !b.IsDeleted && !c.IsDeleted
+                            select new
+                            {
+                                User = a,
+                                RoleAssignment = b,
+                                Claim = c
+                            };
+                var output = await query.ToListAsync();
+                if (output.Count == 0) return failed;
 
-				var roleAssignment = await _roleAssignmentRepo.GetAssignementByUserId(user.Id);
-				var permissions = await _permissionRepo.GetPermissionByRoleId(roleAssignment.RoleId);
-				return new AuthOutput
-				{
-					Result = AuthMessage.AuthSuccess,
-					DisplayName = user.DisplayName,
-					JwToken = _tokenHelper.GenerateJwToken(user.Id, secretKey, validPeriodInMinutes),
-					Permissions = permissions.Select(x => x.Claim).ToList()
-				};
-			}
+                var credential = output.First().User;
+                var computedHashPw = _crypytoHelper.GenerateHashedPassword(password, credential.Salt);
+                if (credential.PasswordHash != computedHashPw) return failed;
+
+
+                //var user = await _userRepo.GetUserByLoginName(loginName);
+                //var computedHashPw = _crypytoHelper.GenerateHashedPassword(password, user.Salt);
+                //if (user.IsDeleted == true || user.PasswordHash != computedHashPw)
+                //{
+                //	return failed;
+                //}
+
+                //var roleAssignment = await _roleAssignmentRepo.GetAssignementByUserId(user.Id);
+                //var permissions = await _permissionRepo.GetPermissionByRoleId(roleAssignment.RoleId);
+                //return new AuthOutput
+                //{
+                //	Result = AuthMessage.AuthSuccess,
+                //	DisplayName = user.DisplayName,
+                //	JwToken = _tokenHelper.GenerateJwToken(user.Id, secretKey, validPeriodInMinutes),
+                //	Permissions = permissions.Select(x => x.Claim).ToList()
+                //};
+
+                return new AuthOutput
+                {
+                    Result = AuthMessage.AuthSuccess,
+                    DisplayName = credential.DisplayName,
+                    JwToken = _tokenHelper.GenerateJwToken(credential.Id, secretKey, validPeriodInMinutes),
+                    Permissions = output.Select(x => x.Claim.Claim).ToList()
+                };
+
+            }
 			catch (InvalidOperationException)
 			{
 				return failed;

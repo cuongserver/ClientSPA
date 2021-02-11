@@ -2,6 +2,7 @@
 using DemoCms.Domain.IdentityAndAccess;
 using Microsoft.EntityFrameworkCore;
 using System;
+using System.Linq;
 using System.Threading.Tasks;
 
 namespace DemoCms.EF.Repository
@@ -17,6 +18,7 @@ namespace DemoCms.EF.Repository
             _ctx = ctx;
         }
 
+
         public async Task<User> GetUserById(Guid id)
         {
             return await _ctx.Users.FirstAsync(x => x.Id == id);
@@ -25,6 +27,11 @@ namespace DemoCms.EF.Repository
         public async Task<User> GetUserByLoginName(string loginName)
         {
             return await _ctx.Users.FirstAsync(x => x.LoginName == loginName);
+        }
+
+        public IQueryable<User> GetAll()
+        {
+            return _ctx.Users;
         }
     }
 }

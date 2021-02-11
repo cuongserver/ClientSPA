@@ -2,6 +2,7 @@
 using DemoCms.Domain.IdentityAndAccess;
 using Microsoft.EntityFrameworkCore;
 using System;
+using System.Linq;
 using System.Threading.Tasks;
 
 namespace DemoCms.EF.Repository
@@ -15,6 +16,11 @@ namespace DemoCms.EF.Repository
             )
         {
             _ctx = ctx;
+        }
+
+        public IQueryable<RoleAssignment> GetAll()
+        {
+            return _ctx.RoleAssignments;
         }
 
         public async Task<RoleAssignment> GetAssignementByUserId(Guid userId)

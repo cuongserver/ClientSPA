@@ -2,6 +2,7 @@
 {
     using DemoCms.Domain.IdentityAndAccess;
     using System;
+    using System.Linq;
     using System.Threading.Tasks;
 
     #region Interfaces
@@ -11,6 +12,7 @@
         #region Methods
 
         Task<RoleAssignment> GetAssignementByUserId(Guid userId);
+        IQueryable<RoleAssignment> GetAll();
 
         #endregion
     }

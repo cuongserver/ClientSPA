@@ -37,5 +37,7 @@
   "forgotPassword-error-emailInvalid": "Email không hợp lệ",
   "login-label-selectLanguage": "Lựa chọn ngôn ngữ hiển thị",
   "login-label-backToLogin": "Quay lại Đăng Nhập",
-  "login-label-availableLanguage": "Ngôn ngữ hiện có"
+  "login-label-availableLanguage": "Ngôn ngữ hiện có",
+  "main-drawerMenuGroup-membersAndRoles": "Quản lý thành viên",
+  "main-drawerMenuGroup-membersAndRoles-Roles": "Quyền truy cập"
 }

@@ -1,6 +1,7 @@
 ﻿using DemoCms.Domain.IdentityAndAccess;
 using Microsoft.EntityFrameworkCore;
-using System;
+using Microsoft.Extensions.Logging;
+using System.Diagnostics;
 
 namespace DemoCms.EF
 {
@@ -36,6 +37,10 @@ namespace DemoCms.EF
 
         }
 
+        protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
+        {
+            optionsBuilder.LogTo(message => Debug.WriteLine(message), LogLevel.Information);
+        }
     }
 
 }

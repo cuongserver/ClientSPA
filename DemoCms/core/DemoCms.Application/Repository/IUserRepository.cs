@@ -1,5 +1,6 @@
 ﻿using DemoCms.Domain.IdentityAndAccess;
 using System;
+using System.Linq;
 using System.Threading.Tasks;
 
 namespace DemoCms.Application.Repository
@@ -8,5 +9,7 @@ namespace DemoCms.Application.Repository
     {
         Task<User> GetUserByLoginName(string loginName);
         Task<User> GetUserById(Guid id);
+
+        IQueryable<User> GetAll();
     }
 }

@@ -37,5 +37,7 @@
   "forgotPassword-error-emailInvalid": "Email is invalid",
   "login-label-selectLanguage": "Select display language",
   "login-label-backToLogin": "Return to Sign In",
-  "login-label-availableLanguage": "Available languages"
+  "login-label-availableLanguage": "Available languages",
+  "main-drawerMenuGroup-membersAndRoles": "Users & Roles",
+  "main-drawerMenuGroup-membersAndRoles-Roles": "Roles"
 }

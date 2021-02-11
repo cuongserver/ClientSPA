@@ -28,16 +28,10 @@ class App extends React.PureComponent {
 					<Switch>
 						<PrivateRoute
 							path={[routes.login, routes.forgotPassword]}
-							exact
 							isAuth={ctx.auth.isAuth}
 							render={() => <LayoutEntry />}
 						></PrivateRoute>
-						<PrivateRoute
-							path={routes.home}
-							exact
-							isAuth={ctx.auth.isAuth}
-							render={() => <LayoutPortal />}
-						></PrivateRoute>
+						<PrivateRoute path={routes.home} isAuth={ctx.auth.isAuth} render={() => <LayoutPortal />}></PrivateRoute>
 						<Route path={routes.default} component={() => <Redirect to={routes.home} />}></Route>
 					</Switch>
 				</React.Suspense>

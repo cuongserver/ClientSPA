@@ -1,12 +1,26 @@
 import React from 'react'
 import { RootContext } from 'context/app-context-dom'
-//import { PrivateRoute } from 'routing/private-route'
-//import { routes } from 'routing/routes-config'
-import { RouteComponentProps, withRouter } from 'react-router-dom'
-import { AppBar, Breadcrumbs, Divider, Drawer, IconButton, Toolbar, Typography } from '@material-ui/core'
+import { Link, RouteComponentProps, Switch, withRouter } from 'react-router-dom'
+import {
+	AppBar,
+	Breadcrumbs,
+	CircularProgress,
+	Divider,
+	Drawer,
+	IconButton,
+	ListItem,
+	ListItemIcon,
+	ListItemText,
+	Toolbar,
+	Typography,
+} from '@material-ui/core'
 import { defaultTheme } from 'constants/default-theme-value'
-import { Apps, Close, NavigateNext } from '@material-ui/icons'
+import { Apps, Close, NavigateNext, Security } from '@material-ui/icons'
 import { mediaMatches } from 'constants/get-media-query'
+import { DrawerMenuGroup } from 'components/app-drawer/component.drawer-menu-group'
+import { WithTranslation, withTranslation } from 'react-i18next'
+import { PrivateRoute } from 'routing/private-route'
+import { routes } from 'routing/routes-config'
 
 const styles = {
 	drawerWidthExpanded: '250px',
@@ -15,7 +29,17 @@ const styles = {
 
 type RenderStylesProps = 'collapsedDrawerStyle' | 'expandedDrawerStyle' | 'contentStyle' | 'breadCrumbStyle'
 
-interface IProps extends RouteComponentProps {}
+const RoleList = React.lazy(async () => {
+	const bundle = await import('modules/role/page.role-list')
+	return { default: bundle.RoleList }
+})
+
+const LoremIpsum = React.lazy(async () => {
+	const bundle = await import('dummy/lorem-ipsum')
+	return { default: bundle.LoremIpsum }
+})
+
+interface IProps extends RouteComponentProps, WithTranslation {}
 interface IState {
 	drawerExpand: boolean
 }
@@ -77,10 +101,16 @@ class LayoutPortal_Root extends React.PureComponent<IProps, IState> {
 	}
 
 	render() {
+		const { t, location, history } = this.props
+		const ctx = this.context!
 		return (
 			<div>
 				<AppBar style={{ zIndex: defaultTheme.zIndex!.drawer! + 1 }}>
-					<Toolbar></Toolbar>
+					<Toolbar>
+						<Link onClick={() => ctx.auth.setToken('')} to="/editor-portal/login">
+							To Login
+						</Link>
+					</Toolbar>
 				</AppBar>
 				<Drawer
 					variant="persistent"
@@ -107,6 +137,22 @@ class LayoutPortal_Root extends React.PureComponent<IProps, IState> {
 								</IconButton>
 							</div>
 							<Divider />
+							<div className="of-auto">
+								<DrawerMenuGroup groupName={t('main-drawerMenuGroup-membersAndRoles')} groupNameTextVariant="secondary">
+									<ListItem
+										button
+										onClick={() => {
+											console.log('xxx')
+											history.push(routes.roleList)
+										}}
+									>
+										<ListItemIcon>
+											<Security />
+										</ListItemIcon>
+										<ListItemText primary={t('main-drawerMenuGroup-membersAndRoles-Roles')} />
+									</ListItem>
+								</DrawerMenuGroup>
+							</div>
 						</div>
 					</div>
 				</Drawer>
@@ -129,66 +175,37 @@ class LayoutPortal_Root extends React.PureComponent<IProps, IState> {
 							</div>
 						</div>
 						<Divider />
-						Lorem ipsum dolor sit amet, consectetur adipiscing elit. Suspendisse mollis urna velit, et fringilla urna
-						aliquam vitae. Donec eu ligula lorem. Nulla quis bibendum nibh, ullamcorper finibus elit. Maecenas in nunc
-						nec mauris fermentum consectetur. Vestibulum pretium nisl felis, quis finibus est pulvinar a. Nullam
-						sagittis at sem eget vulputate. Curabitur velit tortor, sollicitudin non sollicitudin at, volutpat non nibh.
-						Integer pretium suscipit risus, nec vehicula ipsum ullamcorper vitae. Aliquam fermentum hendrerit orci, nec
-						aliquet diam imperdiet a. Curabitur a facilisis ipsum. Mauris sollicitudin facilisis libero quis pretium.
-						Proin porttitor libero nec sapien faucibus euismod. Nam nec convallis tortor. Pellentesque elementum mi at
-						ipsum cursus aliquam eu ut ante. In eu nisl a massa tempor interdum eget quis elit. Proin molestie sem eu
-						fringilla efficitur. Ut euismod est sed odio malesuada, eget elementum arcu tincidunt. Morbi ac nulla sed
-						lacus blandit tincidunt placerat nec diam. Nam eu nisl convallis lectus pulvinar sagittis sit amet id neque.
-						Praesent id volutpat libero. Fusce quis lectus quis nisl elementum suscipit. Phasellus imperdiet fermentum
-						lorem vulputate feugiat. Nunc lobortis justo mi. Pellentesque euismod suscipit odio, eget convallis ante
-						fermentum sed. Maecenas nulla libero, consectetur tristique vestibulum a, consequat sed ante. Cras
-						scelerisque, turpis nec maximus varius, velit nisl pharetra est, vitae laoreet quam purus nec mi. Nullam
-						porttitor justo vitae orci semper pellentesque. Vestibulum euismod finibus ullamcorper. Vestibulum blandit
-						ac urna et egestas. Pellentesque velit elit, laoreet quis sollicitudin sit amet, tempus sit amet ante. Etiam
-						sed arcu semper, posuere mi ut, viverra risus. Etiam at facilisis ligula. Donec hendrerit dui nec odio
-						finibus, nec iaculis risus placerat. Etiam euismod pharetra nunc, ut fringilla nulla varius et. Suspendisse
-						arcu mi, porta vel elit non, egestas hendrerit velit. Donec finibus ipsum nibh, vitae porttitor arcu luctus
-						sit amet. Sed sed commodo mauris, id ullamcorper tortor. Etiam sodales placerat sollicitudin. Etiam mauris
-						libero, imperdiet nec feugiat non, tempor eget quam. Vestibulum sit amet tincidunt metus. Etiam ultricies ac
-						quam eget condimentum. Praesent euismod elit massa, vitae malesuada ligula tincidunt sollicitudin. Nulla eu
-						lacus nibh. Suspendisse porta tortor non mi gravida, non varius nisi rhoncus. Suspendisse non aliquet leo.
-						Suspendisse ac felis sed lorem mollis accumsan et vel diam. Proin est justo, semper vel nulla a, tristique
-						iaculis est. Fusce pharetra bibendum dapibus. Aliquam convallis ligula sed consectetur ullamcorper. Ut
-						euismod porttitor enim nec mollis. Vestibulum vel quam tellus. Curabitur finibus ac ligula euismod ultrices.
-						Proin ultricies eros nisl, congue faucibus velit sodales ut. Lorem ipsum dolor sit amet, consectetur
-						adipiscing elit. Suspendisse mollis urna velit, et fringilla urna aliquam vitae. Donec eu ligula lorem.
-						Nulla quis bibendum nibh, ullamcorper finibus elit. Maecenas in nunc nec mauris fermentum consectetur.
-						Vestibulum pretium nisl felis, quis finibus est pulvinar a. Nullam sagittis at sem eget vulputate. Curabitur
-						velit tortor, sollicitudin non sollicitudin at, volutpat non nibh. Integer pretium suscipit risus, nec
-						vehicula ipsum ullamcorper vitae. Aliquam fermentum hendrerit orci, nec aliquet diam imperdiet a. Curabitur
-						a facilisis ipsum. Mauris sollicitudin facilisis libero quis pretium. Proin porttitor libero nec sapien
-						faucibus euismod. Nam nec convallis tortor. Pellentesque elementum mi at ipsum cursus aliquam eu ut ante. In
-						eu nisl a massa tempor interdum eget quis elit. Proin molestie sem eu fringilla efficitur. Ut euismod est
-						sed odio malesuada, eget elementum arcu tincidunt. Morbi ac nulla sed lacus blandit tincidunt placerat nec
-						diam. Nam eu nisl convallis lectus pulvinar sagittis sit amet id neque. Praesent id volutpat libero. Fusce
-						quis lectus quis nisl elementum suscipit. Phasellus imperdiet fermentum lorem vulputate feugiat. Nunc
-						lobortis justo mi. Pellentesque euismod suscipit odio, eget convallis ante fermentum sed. Maecenas nulla
-						libero, consectetur tristique vestibulum a, consequat sed ante. Cras scelerisque, turpis nec maximus varius,
-						velit nisl pharetra est, vitae laoreet quam purus nec mi. Nullam porttitor justo vitae orci semper
-						pellentesque. Vestibulum euismod finibus ullamcorper. Vestibulum blandit ac urna et egestas. Pellentesque
-						velit elit, laoreet quis sollicitudin sit amet, tempus sit amet ante. Etiam sed arcu semper, posuere mi ut,
-						viverra risus. Etiam at facilisis ligula. Donec hendrerit dui nec odio finibus, nec iaculis risus placerat.
-						Etiam euismod pharetra nunc, ut fringilla nulla varius et. Suspendisse arcu mi, porta vel elit non, egestas
-						hendrerit velit. Donec finibus ipsum nibh, vitae porttitor arcu luctus sit amet. Sed sed commodo mauris, id
-						ullamcorper tortor. Etiam sodales placerat sollicitudin. Etiam mauris libero, imperdiet nec feugiat non,
-						tempor eget quam. Vestibulum sit amet tincidunt metus. Etiam ultricies ac quam eget condimentum. Praesent
-						euismod elit massa, vitae malesuada ligula tincidunt sollicitudin. Nulla eu lacus nibh. Suspendisse porta
-						tortor non mi gravida, non varius nisi rhoncus. Suspendisse non aliquet leo. Suspendisse ac felis sed lorem
-						mollis accumsan et vel diam. Proin est justo, semper vel nulla a, tristique iaculis est. Fusce pharetra
-						bibendum dapibus. Aliquam convallis ligula sed consectetur ullamcorper. Ut euismod porttitor enim nec
-						mollis. Vestibulum vel quam tellus. Curabitur finibus ac ligula euismod ultrices. Proin ultricies eros nisl,
-						congue faucibus velit sodales ut.
+
+						<Switch>
+							<React.Suspense
+								fallback={
+									<div>
+										<CircularProgress />
+									</div>
+								}
+							>
+								<PrivateRoute
+									location={location}
+									exact
+									path={routes.roleList}
+									isAuth={ctx.auth.isAuth}
+									render={() => <RoleList />}
+								/>
+								<PrivateRoute
+									location={location}
+									exact
+									path={routes.home}
+									isAuth={ctx.auth.isAuth}
+									render={() => <LoremIpsum />}
+								/>
+							</React.Suspense>
+						</Switch>
 					</div>
 				</div>
 			</div>
 		)
 	}
 }
-
-const LayoutPortal = withRouter(LayoutPortal_Root)
+const AddRouter = withRouter(LayoutPortal_Root)
+const LayoutPortal = withTranslation(undefined, { withRef: true })(AddRouter)
 export { LayoutPortal }

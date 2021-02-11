@@ -19,6 +19,10 @@ namespace DemoCms.EF.Repository
             _ctx = ctx;
         }
 
+        public IQueryable<Permission> GetAll()
+        {
+            return _ctx.Permissions;
+        }
 
         public async Task<List<Permission>> GetPermissionByRoleId(Guid roleId)
         {
