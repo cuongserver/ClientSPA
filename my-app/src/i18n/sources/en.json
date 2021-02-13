@@ -6,7 +6,6 @@
   "api-message-auth-1": "Wrong Credential",
   "main-drawer-menugroup-members": "Member management",
   "main-drawer-menugroup-item-addmember": "Add member",
-  "main-breadcrumbs-pathname-home": "Home",
   "main-breadcrumbs-pathname-addmember": "Add member",
   "addmember-label-password": "Password",
   "addmember-label-password-cfm": "Confirm password",
@@ -39,5 +38,12 @@
   "login-label-backToLogin": "Return to Sign In",
   "login-label-availableLanguage": "Available languages",
   "main-drawerMenuGroup-membersAndRoles": "Users & Roles",
-  "main-drawerMenuGroup-membersAndRoles-Roles": "Roles"
+  "main-drawerMenuGroup-membersAndRoles-Roles": "Roles",
+  "pagination-resultToDisplay": "Result from {{from}} to {{to}} of total {{count}}",
+  "pagination-rowsPerPage": "Results per page",
+  "footer-resultsSelected": "{{count}} results selected",
+  "portal-breadcrumbs-home": "Portal",
+  "portal-breadcrumbs-role": "Roles",
+  "portal-breadcrumbs-role-add": "Add",
+  "main-drawerMenuGroup-membersAndRoles-Roles-Add": "Add role"
 }

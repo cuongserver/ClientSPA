@@ -15,6 +15,7 @@ namespace DemoCms.Domain.IdentityAndAccess
         public const string List = "RolesList";
         public const string Edit = "RolesEdit";
         public const string Delete = "RolesDelete";
+        public static List<string> All() => new List<string>() { Create, List, Edit, Delete };
     }
     public static class UsersPermission
     {
@@ -22,6 +23,8 @@ namespace DemoCms.Domain.IdentityAndAccess
         public const string List = "UsersList";
         public const string Edit = "UsersEdit";
         public const string Delete = "UsersDelete";
+        public static List<string> All() => new List<string>() { Create, List, Edit, Delete };
+
     }
     public class Role: ForAuditPurpose
     {

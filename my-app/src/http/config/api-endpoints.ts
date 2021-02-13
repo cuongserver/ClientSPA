@@ -20,5 +20,16 @@ const userEndpoints: Endpoints = {
 	},
 }
 
-export { userEndpoints }
+const roleEndpoints: Endpoints = {
+	getAll: {
+		path: 'role/get-all',
+		method: 'GET',
+	},
+	getAllPermissionsForCreate: {
+		path: 'role/get-all-permissions-for-create',
+		method: 'GET',
+	},
+}
+
+export { userEndpoints, roleEndpoints }
 export type { Endpoints }

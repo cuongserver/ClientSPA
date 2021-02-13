@@ -1,17 +1,14 @@
 ﻿using DemoCms.RestAPI.Models;
 using DemoCms.Service.Database;
-using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
-using System;
-using System.Threading.Tasks;
-using System.Text;
-using Newtonsoft.Json;
 using Microsoft.Extensions.Primitives;
+using System.Threading.Tasks;
 
 namespace DemoCms.RestAPI.Controllers
 {
-	[ApiController]
+    [ApiController]
 	[Route("[controller]")]
 	public class UserController : ControllerBase
 	{
@@ -28,6 +25,7 @@ namespace DemoCms.RestAPI.Controllers
 		}
 
 		[HttpPost("auth")]
+		[AllowAnonymous]
 		public async Task<IActionResult> Login([FromBody] AuthRequest request)
 		{
 			var secret = _configuration.GetValue<string>("Security:Secret");
@@ -41,8 +39,12 @@ namespace DemoCms.RestAPI.Controllers
         {
 			var hasAuthToken = Request.Headers.TryGetValue("Authorization", out StringValues token);
 			var secret = _configuration.GetValue<string>("Security:Secret");
-			if (!hasAuthToken) return BadRequest();
-			var res = await _userService.Authenticate(token, secret);
+			if (!hasAuthToken)
+            {
+                return BadRequest();
+            }
+
+            var res = await _userService.Authenticate(token, secret);
 			return Ok(res);
         }
 

@@ -10,5 +10,11 @@ namespace DemoCms.Domain
         public virtual DateTime LastUpdateAtTime { get; set; }
         public virtual bool IsDeleted { get; set; }
         public virtual int Version { get; set; }
+
+        public bool ShouldSerializeCreatedByUserId() => false;
+        public bool ShouldSerializeCreatedAtTime() => false;
+        public bool ShouldSerializeLastUpdateByUserId() => false;
+        public bool ShouldSerializeLastUpdateAtTime() => false;
+        public bool ShouldSerializeIsDeleted() => false;
     }
 }

@@ -29,6 +29,7 @@ namespace DemoCms.EF
 			services.Add(new ServiceDescriptor(typeof(IUserRepository), typeof(UserRepository), scope));
 			services.Add(new ServiceDescriptor(typeof(IPermissionRepository), typeof(PermissionRepository), scope));
 			services.Add(new ServiceDescriptor(typeof(IRoleAssignmentRepository), typeof(RoleAssignmentRepository), scope));
+			services.Add(new ServiceDescriptor(typeof(IRoleRepository), typeof(RoleRepository), scope));
 			return services;
 		}
 	}

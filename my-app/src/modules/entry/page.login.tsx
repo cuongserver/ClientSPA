@@ -59,6 +59,10 @@ class Login_Root extends React.PureComponent<IProps, IState> {
 					console.log('yyy')
 				}
 			},
+			// eslint-disable-next-line @typescript-eslint/no-unused-vars
+			error: (err) => {
+				console.log(err)
+			},
 		})
 	}
 

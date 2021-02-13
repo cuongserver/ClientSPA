@@ -1,17 +1,15 @@
 const routes = {
 	home: '/editor-portal',
-	addMember: '/editor-portal/members/add',
-	editMemberInfo: '/edit-member-info',
 	login: '/editor-portal/login',
 	forgotPassword: '/editor-portal/forgot-password',
 	default: '/',
 	roleList: '/editor-portal/roles',
+	roleAdd: '/editor-portal/roles/add',
 }
 
-const breadcrumbNameMap: { [key: string]: string } = {}
+const breadcrumbPathnameMap: { [key: string]: string } = {}
 
-breadcrumbNameMap[routes.home] = 'main-breadcrumbs-pathname-home'
-breadcrumbNameMap[routes.addMember] = 'main-breadcrumbs-pathname-addmember'
-breadcrumbNameMap[routes.editMemberInfo] = 'main-breadcrumbs-pathname-editmember'
-
-export { routes, breadcrumbNameMap }
+breadcrumbPathnameMap[routes.home] = 'portal-breadcrumbs-home'
+breadcrumbPathnameMap[routes.roleList] = 'portal-breadcrumbs-role'
+breadcrumbPathnameMap[routes.roleAdd] = 'portal-breadcrumbs-role-add'
+export { routes, breadcrumbPathnameMap }

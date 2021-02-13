@@ -1,6 +1,7 @@
 using DemoCms.EF;
 using DemoCms.EF.MsSqlServer;
 using DemoCms.Helper;
+using DemoCms.RestAPI.Middlewares;
 using DemoCms.Service;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
@@ -25,13 +26,11 @@ namespace DemoCms.RestAPI
 		// This method gets called by the runtime. Use this method to add services to the container.
 		public void ConfigureServices(IServiceCollection services)
 		{
-			JsonConvert.DefaultSettings = () => new JsonSerializerSettings
+			services.AddControllers().AddNewtonsoftJson(options => 
 			{
-				Formatting = Formatting.None,
-				ContractResolver = new CamelCasePropertyNamesContractResolver()
-			};
-
-			services.AddControllers();
+				options.SerializerSettings.Formatting = Formatting.None;
+				options.SerializerSettings.ContractResolver = new CamelCasePropertyNamesContractResolver();
+			});
 			services.AddDemoCmsEF<MsSqlServerDb>(options =>
 			{
 				options.UseSqlServer(Configuration.GetValue<string>("SqlServerDbConnection:Default"));
@@ -75,6 +74,12 @@ namespace DemoCms.RestAPI
 			app.UseHttpsRedirection();
 
 			app.UseRouting();
+
+			app.UseAuthentication();
+			//after userouting for getendpoint to work
+			app.UseMiddleware<JwtValidationMiddleware>();
+
+			app.UseMiddleware<CustomAuthorizeMiddleware>();
 
 			app.UseAuthorization();
 

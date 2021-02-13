@@ -6,7 +6,6 @@
   "api-message-auth-1": "Thông tin đăng nhập sai",
   "main-drawer-menugroup-members": "Quản lý thành viên",
   "main-drawer-menugroup-item-addmember": "Thêm thành viên",
-  "main-breadcrumbs-pathname-home": "Trang chính",
   "main-breadcrumbs-pathname-addmember": "Thêm thành viên",
   "addmember-label-password": "Mật khẩu",
   "addmember-label-password-cfm": "Xác nhận mật khẩu",
@@ -39,5 +38,12 @@
   "login-label-backToLogin": "Quay lại Đăng Nhập",
   "login-label-availableLanguage": "Ngôn ngữ hiện có",
   "main-drawerMenuGroup-membersAndRoles": "Quản lý thành viên",
-  "main-drawerMenuGroup-membersAndRoles-Roles": "Quyền truy cập"
+  "main-drawerMenuGroup-membersAndRoles-Roles": "Quyền truy cập",
+  "pagination-resultToDisplay": "Kết quả từ {{from}} đến {{to}} trên tổng số {{count}}",
+  "pagination-rowsPerPage": "Số lượng kết quả mỗi trang",
+  "footer-resultsSelected": "{{count}} kết quả được chọn",
+  "portal-breadcrumbs-home": "Cổng thông tin",
+  "portal-breadcrumbs-role": "Phân quyền",
+  "portal-breadcrumbs-role-add": "Thêm mới",
+  "main-drawerMenuGroup-membersAndRoles-Roles-Add": "Thêm quyền"
 }

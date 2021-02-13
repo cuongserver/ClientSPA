@@ -8,5 +8,6 @@ namespace DemoCms.Service.Database
 	{
 		Task<AuthOutput> Authenticate(string password, string loginName, string secretKey, int validPeriodInMinutes);
 		Task<AuthOutput> Authenticate(string token, string secretKey);
+		Task<AuthOutput> GetPermissionByUserId(Guid userId);
 	}
 }

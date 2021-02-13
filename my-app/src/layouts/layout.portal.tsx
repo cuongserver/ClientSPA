@@ -1,6 +1,6 @@
 import React from 'react'
 import { RootContext } from 'context/app-context-dom'
-import { Link, RouteComponentProps, Switch, withRouter } from 'react-router-dom'
+import { Link, RouteComponentProps, Switch, withRouter, matchPath } from 'react-router-dom'
 import {
 	AppBar,
 	Breadcrumbs,
@@ -13,14 +13,17 @@ import {
 	ListItemText,
 	Toolbar,
 	Typography,
+	Link as MuiLink,
+	List,
 } from '@material-ui/core'
 import { defaultTheme } from 'constants/default-theme-value'
-import { Apps, Close, NavigateNext, Security } from '@material-ui/icons'
+import { Add, Apps, Close, NavigateNext, Security } from '@material-ui/icons'
 import { mediaMatches } from 'constants/get-media-query'
 import { DrawerMenuGroup } from 'components/app-drawer/component.drawer-menu-group'
 import { WithTranslation, withTranslation } from 'react-i18next'
 import { PrivateRoute } from 'routing/private-route'
-import { routes } from 'routing/routes-config'
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
+import { breadcrumbPathnameMap, routes } from 'routing/routes-config'
 
 const styles = {
 	drawerWidthExpanded: '250px',
@@ -32,6 +35,11 @@ type RenderStylesProps = 'collapsedDrawerStyle' | 'expandedDrawerStyle' | 'conte
 const RoleList = React.lazy(async () => {
 	const bundle = await import('modules/role/page.role-list')
 	return { default: bundle.RoleList }
+})
+
+const RoleAdd = React.lazy(async () => {
+	const bundle = await import('modules/role/page.role-add')
+	return { default: bundle.RoleAdd }
 })
 
 const LoremIpsum = React.lazy(async () => {
@@ -142,14 +150,54 @@ class LayoutPortal_Root extends React.PureComponent<IProps, IState> {
 									<ListItem
 										button
 										onClick={() => {
-											console.log('xxx')
 											history.push(routes.roleList)
 										}}
 									>
 										<ListItemIcon>
 											<Security />
 										</ListItemIcon>
-										<ListItemText primary={t('main-drawerMenuGroup-membersAndRoles-Roles')} />
+										<ListItemText
+											primary={
+												<span
+													style={{
+														color:
+															matchPath(history.location.pathname, { path: routes.roleList, exact: true }) !== null
+																? 'red'
+																: undefined,
+													}}
+												>
+													{t('main-drawerMenuGroup-membersAndRoles-Roles')}
+												</span>
+											}
+										/>
+									</ListItem>
+									<ListItem>
+										<List>
+											<ListItem
+												button
+												onClick={() => {
+													history.push(routes.roleAdd)
+												}}
+											>
+												<ListItemIcon>
+													<Add />
+												</ListItemIcon>
+												<ListItemText
+													primary={
+														<span
+															style={{
+																color:
+																	matchPath(history.location.pathname, { path: routes.roleAdd, exact: true }) !== null
+																		? 'red'
+																		: undefined,
+															}}
+														>
+															{t('main-drawerMenuGroup-membersAndRoles-Roles-Add')}
+														</span>
+													}
+												/>
+											</ListItem>
+										</List>
 									</ListItem>
 								</DrawerMenuGroup>
 							</div>
@@ -166,13 +214,7 @@ class LayoutPortal_Root extends React.PureComponent<IProps, IState> {
 								</IconButton>
 							</div>
 							<Divider orientation="vertical" flexItem />
-							<div>
-								<Breadcrumbs separator={<NavigateNext fontSize="small" />}>
-									<Typography>xxx</Typography>
-									<Typography>yyy</Typography>
-									<Typography>zzz</Typography>
-								</Breadcrumbs>
-							</div>
+							<div>{this.RenderBreadcrumbs()}</div>
 						</div>
 						<Divider />
 
@@ -194,6 +236,13 @@ class LayoutPortal_Root extends React.PureComponent<IProps, IState> {
 								<PrivateRoute
 									location={location}
 									exact
+									path={routes.roleAdd}
+									isAuth={ctx.auth.isAuth}
+									render={() => <RoleAdd />}
+								/>
+								<PrivateRoute
+									location={location}
+									exact
 									path={routes.home}
 									isAuth={ctx.auth.isAuth}
 									render={() => <LoremIpsum />}
@@ -203,6 +252,31 @@ class LayoutPortal_Root extends React.PureComponent<IProps, IState> {
 					</div>
 				</div>
 			</div>
+		)
+	}
+	RenderBreadcrumbs = () => {
+		// eslint-disable-next-line @typescript-eslint/no-unused-vars
+		const { t, history } = this.props
+		const pathnames = history.location.pathname.split('/')
+		if (pathnames[1] === '' && pathnames.length === 2) pathnames.pop()
+		return (
+			<Breadcrumbs separator={<NavigateNext fontSize="small" />}>
+				{pathnames.map((path, idx) => {
+					const last = idx === pathnames.length - 1
+					let to = `${pathnames.slice(0, idx + 1).join('/')}`
+					if (to === '' && idx === 0) to = '/'
+					if (idx === 0) return null
+					return last ? (
+						<Typography color="textPrimary" key={to}>
+							{t(breadcrumbPathnameMap[to])}
+						</Typography>
+					) : (
+						<MuiLink color="inherit" onClick={() => history.push(to)} key={to} className="hov-pointer">
+							{t(breadcrumbPathnameMap[to])}
+						</MuiLink>
+					)
+				})}
+			</Breadcrumbs>
 		)
 	}
 }

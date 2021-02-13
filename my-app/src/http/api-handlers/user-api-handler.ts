@@ -1,11 +1,12 @@
+import { AxiosError } from 'axios'
 import { Axios } from 'axios-observable'
 import { userEndpoints } from 'http/config/api-endpoints'
 import { ApiHandlerBase } from 'http/config/api-handler-base'
 import { AuthRequest, AuthResponse } from 'http/dto/user'
-import { map } from 'rxjs/operators'
+import { throwError } from 'rxjs'
+import { catchError, map } from 'rxjs/operators'
 
 class UserApiHandler extends ApiHandlerBase {
-	serverUrl = process.env.REACT_APP_API_URL
 	public doLogin(request: AuthRequest) {
 		const apiKey: keyof typeof userEndpoints = 'auth'
 		return Axios.request<AuthResponse>({
@@ -30,6 +31,18 @@ class UserApiHandler extends ApiHandlerBase {
 		}).pipe(
 			map((res) => {
 				return res.data
+			}),
+			catchError((err: AxiosError) => {
+				if (err.response?.status === 401)
+					return [
+						{
+							displayName: '',
+							jwToken: '',
+							permissions: [],
+							result: 'auth-failed',
+						},
+					]
+				return throwError(err)
 			})
 		)
 	}
