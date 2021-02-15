@@ -10,5 +10,6 @@ namespace DemoCms.Application.Repository
     {
         Task<List<Permission>> GetPermissionByRoleId(Guid roleId);
         IQueryable<Permission> GetAll();
+        Task<int> CreatePermissionByRoleId(List<Permission> permissions);
     }
 }

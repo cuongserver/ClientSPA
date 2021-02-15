@@ -26,6 +26,26 @@ namespace DemoCms.Domain.IdentityAndAccess
         public static List<string> All() => new List<string>() { Create, List, Edit, Delete };
 
     }
+
+    public static class RoleCategory
+    {
+        public static string GetCategory(string permission)
+        {
+            return permission switch
+            {
+                RolesPermission.Create => nameof(RolesPermission),
+                RolesPermission.List => nameof(RolesPermission),
+                RolesPermission.Edit => nameof(RolesPermission),
+                RolesPermission.Delete => nameof(RolesPermission),
+                UsersPermission.Create => nameof(UsersPermission),
+                UsersPermission.List => nameof(UsersPermission),
+                UsersPermission.Edit => nameof(UsersPermission),
+                UsersPermission.Delete => nameof(UsersPermission),
+                _ => throw new Exception(),
+            };
+        }
+    }
+
     public class Role: ForAuditPurpose
     {
         public virtual Guid Id { get; set; }

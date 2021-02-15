@@ -6,7 +6,8 @@ import React from 'react'
 import { withTranslation, WithTranslation } from 'react-i18next'
 import { RouteComponentProps, withRouter } from 'react-router-dom'
 import { DataGrid, ColDef, BaseComponentProps } from '@material-ui/data-grid'
-import { Button, TablePagination } from '@material-ui/core'
+import { Link, TablePagination } from '@material-ui/core'
+import { routes } from 'routing/routes-config'
 
 interface IProps extends RouteComponentProps, WithTranslation {}
 interface IState {
@@ -34,7 +35,13 @@ class RoleList_Root extends React.PureComponent<IProps, IState> {
 			{
 				field: 'name',
 				headerName: 'Role Name',
-				renderCell: (params) => <Button variant="contained">{params.row.name}</Button>,
+				headerAlign: 'center',
+				renderCell: (params) => (
+					<Link className="hov-pointer" data-roleid={params.row.id} onClick={this.showRole}>
+						{params.row.name}
+					</Link>
+				),
+				width: 200,
 			},
 		]
 	}
@@ -93,6 +100,13 @@ class RoleList_Root extends React.PureComponent<IProps, IState> {
 				/>
 			</div>
 		)
+	}
+
+	showRole = (e: React.MouseEvent<HTMLAnchorElement, MouseEvent>) => {
+		const { history } = this.props
+		const id = (e.target as HTMLElement).getAttribute('data-roleid')
+		if (id === null) return
+		history.push(`${routes.roleList}/${id}`)
 	}
 }
 

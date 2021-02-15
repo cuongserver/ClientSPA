@@ -45,5 +45,7 @@
   "portal-breadcrumbs-home": "Cổng thông tin",
   "portal-breadcrumbs-role": "Phân quyền",
   "portal-breadcrumbs-role-add": "Thêm mới",
-  "main-drawerMenuGroup-membersAndRoles-Roles-Add": "Thêm quyền"
+  "main-drawerMenuGroup-membersAndRoles-Roles-Add": "Thêm quyền",
+  "common-name": "Tên",
+  "common-error-required": "Bắt buộc nhập"
 }

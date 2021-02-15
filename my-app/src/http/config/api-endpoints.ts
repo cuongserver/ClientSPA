@@ -29,6 +29,14 @@ const roleEndpoints: Endpoints = {
 		path: 'role/get-all-permissions-for-create',
 		method: 'GET',
 	},
+	createOrEditRole: {
+		path: 'role/create-role',
+		method: 'POST',
+	},
+	viewRoleDetails: {
+		path: 'role/view-role',
+		method: 'GET',
+	},
 }
 
 export { userEndpoints, roleEndpoints }

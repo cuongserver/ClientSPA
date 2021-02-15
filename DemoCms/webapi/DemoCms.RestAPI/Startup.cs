@@ -2,6 +2,7 @@ using DemoCms.EF;
 using DemoCms.EF.MsSqlServer;
 using DemoCms.Helper;
 using DemoCms.RestAPI.Middlewares;
+using DemoCms.RestAPI.ModelValidators;
 using DemoCms.Service;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
@@ -42,6 +43,7 @@ namespace DemoCms.RestAPI
 			// Register the Swagger generator, defining 1 or more Swagger documents
 			services.AddSwaggerGen();
 			services.AddCors();
+			services.ApplyFluentValidation();
 		}
 
 		// This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -67,7 +69,6 @@ namespace DemoCms.RestAPI
 				.AllowAnyMethod()
 				.AllowAnyHeader()
 				.AllowCredentials()
-				.WithExposedHeaders("set-cookie")
 				.SetIsOriginAllowed(origin => origin == "http://localhost:3000");
 			});
 

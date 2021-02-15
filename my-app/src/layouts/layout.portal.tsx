@@ -47,6 +47,11 @@ const LoremIpsum = React.lazy(async () => {
 	return { default: bundle.LoremIpsum }
 })
 
+const RoleDetails = React.lazy(async () => {
+	const bundle = await import('modules/role/page.role-details')
+	return { default: bundle.RoleDetails }
+})
+
 interface IProps extends RouteComponentProps, WithTranslation {}
 interface IState {
 	drawerExpand: boolean
@@ -242,6 +247,12 @@ class LayoutPortal_Root extends React.PureComponent<IProps, IState> {
 								/>
 								<PrivateRoute
 									location={location}
+									path={routes.roleDetails}
+									isAuth={ctx.auth.isAuth}
+									render={() => <RoleDetails />}
+								/>
+								<PrivateRoute
+									location={location}
 									exact
 									path={routes.home}
 									isAuth={ctx.auth.isAuth}
@@ -268,11 +279,11 @@ class LayoutPortal_Root extends React.PureComponent<IProps, IState> {
 					if (idx === 0) return null
 					return last ? (
 						<Typography color="textPrimary" key={to}>
-							{t(breadcrumbPathnameMap[to])}
+							{breadcrumbPathnameMap[to] !== undefined ? t(breadcrumbPathnameMap[to]) : path}
 						</Typography>
 					) : (
 						<MuiLink color="inherit" onClick={() => history.push(to)} key={to} className="hov-pointer">
-							{t(breadcrumbPathnameMap[to])}
+							{breadcrumbPathnameMap[to] !== undefined ? t(breadcrumbPathnameMap[to]) : path}
 						</MuiLink>
 					)
 				})}

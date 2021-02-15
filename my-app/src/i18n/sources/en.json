@@ -45,5 +45,7 @@
   "portal-breadcrumbs-home": "Portal",
   "portal-breadcrumbs-role": "Roles",
   "portal-breadcrumbs-role-add": "Add",
-  "main-drawerMenuGroup-membersAndRoles-Roles-Add": "Add role"
+  "main-drawerMenuGroup-membersAndRoles-Roles-Add": "Add role",
+  "common-name": "Name",
+  "common-error-required": "Required"
 }

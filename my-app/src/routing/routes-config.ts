@@ -5,6 +5,7 @@ const routes = {
 	default: '/',
 	roleList: '/editor-portal/roles',
 	roleAdd: '/editor-portal/roles/add',
+	roleDetails: '/editor-portal/roles/:roleId',
 }
 
 const breadcrumbPathnameMap: { [key: string]: string } = {}

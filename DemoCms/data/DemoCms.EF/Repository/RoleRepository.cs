@@ -19,6 +19,12 @@ namespace DemoCms.EF.Repository
             _ctx = ctx;
         }
 
+        public Task<int> CreateRole(Role role)
+        {
+            _ctx.Roles.Add(role);
+            return _ctx.SaveChangesAsync();
+        }
+
         public IQueryable<Role> GetAll()
         {
             return _ctx.Roles;

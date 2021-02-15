@@ -19,6 +19,12 @@ namespace DemoCms.EF.Repository
             _ctx = ctx;
         }
 
+        public Task<int> CreatePermissionByRoleId(List<Permission> permissions)
+        {
+            _ctx.Permissions.AddRange(permissions);
+            return _ctx.SaveChangesAsync();
+        }
+
         public IQueryable<Permission> GetAll()
         {
             return _ctx.Permissions;
