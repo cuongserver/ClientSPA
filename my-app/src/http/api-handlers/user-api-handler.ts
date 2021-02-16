@@ -2,7 +2,8 @@ import { AxiosError } from 'axios'
 import { Axios } from 'axios-observable'
 import { userEndpoints } from 'http/config/api-endpoints'
 import { ApiHandlerBase } from 'http/config/api-handler-base'
-import { AuthRequest, AuthResponse } from 'http/dto/user'
+import { PinValidateRequest, PinValidateResponse } from 'http/dto/role'
+import { AuthRequest, AuthResponse, GetMfaKeyResponse } from 'http/dto/user'
 import { throwError } from 'rxjs'
 import { catchError, map } from 'rxjs/operators'
 
@@ -42,6 +43,39 @@ class UserApiHandler extends ApiHandlerBase {
 							result: 'auth-failed',
 						},
 					]
+				return throwError(err)
+			})
+		)
+	}
+	public getMfaKey() {
+		const apiKey = 'getMfaKey'
+		return Axios.request<GetMfaKeyResponse>({
+			url: userEndpoints[apiKey].path,
+			method: userEndpoints[apiKey].method,
+			baseURL: this.serverUrl,
+			headers: this.headers,
+		}).pipe(
+			map((res) => {
+				return res.data
+			}),
+			catchError((err: AxiosError) => {
+				return throwError(err)
+			})
+		)
+	}
+	public validatePin(request: PinValidateRequest) {
+		const apiKey = 'validatePin'
+		return Axios.request<PinValidateResponse>({
+			url: userEndpoints[apiKey].path,
+			method: userEndpoints[apiKey].method,
+			baseURL: this.serverUrl,
+			headers: this.headers,
+			params: request,
+		}).pipe(
+			map((res) => {
+				return res.data
+			}),
+			catchError((err: AxiosError) => {
 				return throwError(err)
 			})
 		)

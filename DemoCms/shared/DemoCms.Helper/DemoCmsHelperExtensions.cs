@@ -12,7 +12,7 @@ namespace DemoCms.Helper
 			ServiceLifetime scope = ServiceLifetime.Scoped
 			)
 		{
-			services.Add(new ServiceDescriptor(typeof(ICrypytoHelper), typeof(CryptoHelper), scope));
+			services.Add(new ServiceDescriptor(typeof(ICryptoHelper), typeof(CryptoHelper), scope));
 			services.Add(new ServiceDescriptor(typeof(IJWTokenHelper), typeof(JWTokenHelper), scope));
 			return services;
 		}

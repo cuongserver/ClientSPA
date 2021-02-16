@@ -1,4 +1,5 @@
 ﻿using DemoCms.RestAPI.Attributes;
+using DemoCms.RestAPI.Caching;
 using DemoCms.Service.Database;
 using Microsoft.AspNetCore.Http;
 using Newtonsoft.Json;
@@ -17,7 +18,7 @@ namespace DemoCms.RestAPI.Middlewares
 		{
 			_next = next;
 		}
-		public async Task Invoke(HttpContext context, IUserService service)
+		public async Task Invoke(HttpContext context, IUserService service, PermissionCachingManager cache)
         {
 			var endpoint = context.GetEndpoint();
 			if (endpoint == null)
@@ -32,7 +33,8 @@ namespace DemoCms.RestAPI.Middlewares
 				return;
 			}
 			var userId = context.Items["uid"].ToString();
-			var claims = (await service.GetPermissionByUserId(Guid.Parse(userId))).Permissions;
+			var cacheValue = cache.GetValue(Guid.Parse(userId));
+			var claims = cacheValue == null ? (await service.GetPermissionByUserId(Guid.Parse(userId))).Permissions: cacheValue.Claims;
 			foreach(var claim in authorizeAttr.Claims)
             {
 				if(claims.Where(x => x == claim).ToList().Count() == 0)

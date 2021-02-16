@@ -1,16 +1,16 @@
-﻿using System;
+﻿using DemoCms.Service.DTO.Output;
+using System;
 using System.Collections.Generic;
-using System.Text;
+using System.Linq;
+using System.Threading.Tasks;
 
-namespace DemoCms.Service.DTO.Output
+namespace DemoCms.RestAPI.Models
 {
-    public class AuthOutput
+    public class AuthResponse
     {
         public string DisplayName { get; set; }
         public string JwToken { get; set; }
         public List<string> Permissions { get; set; }
         public string Result { get; set; }
-        public Guid UserId { get; set; }
-        public Guid RoleId { get; set; }
     }
 }

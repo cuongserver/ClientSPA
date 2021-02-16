@@ -5,6 +5,7 @@ using DemoCms.Service.Database;
 using DemoCms.Service.DTO.Input;
 using FluentValidation;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Caching.Memory;
 using Microsoft.Extensions.Configuration;
 using System;
 using System.Threading;
@@ -26,6 +27,7 @@ namespace DemoCms.RestAPI.Controllers
             IConfiguration configuration, 
             IPermissionService permissionService, 
             IValidator<RoleCreateOrEditRequest> roleCreateOrEditValidator)
+
         {
             _roleService = roleService;
             _configuration = configuration;

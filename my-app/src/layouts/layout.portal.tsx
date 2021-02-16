@@ -17,7 +17,7 @@ import {
 	List,
 } from '@material-ui/core'
 import { defaultTheme } from 'constants/default-theme-value'
-import { Add, Apps, Close, NavigateNext, Security } from '@material-ui/icons'
+import { Add, Apps, Close, Lock, NavigateNext, Security } from '@material-ui/icons'
 import { mediaMatches } from 'constants/get-media-query'
 import { DrawerMenuGroup } from 'components/app-drawer/component.drawer-menu-group'
 import { WithTranslation, withTranslation } from 'react-i18next'
@@ -50,6 +50,11 @@ const LoremIpsum = React.lazy(async () => {
 const RoleDetails = React.lazy(async () => {
 	const bundle = await import('modules/role/page.role-details')
 	return { default: bundle.RoleDetails }
+})
+
+const MfaSetup = React.lazy(async () => {
+	const bundle = await import('modules/account/page.mfa-setup')
+	return { default: bundle.MfaSetup }
 })
 
 interface IProps extends RouteComponentProps, WithTranslation {}
@@ -205,6 +210,32 @@ class LayoutPortal_Root extends React.PureComponent<IProps, IState> {
 										</List>
 									</ListItem>
 								</DrawerMenuGroup>
+								<DrawerMenuGroup groupName={'Account'} groupNameTextVariant="secondary">
+									<ListItem
+										button
+										onClick={() => {
+											history.push(routes.setupMfa)
+										}}
+									>
+										<ListItemIcon>
+											<Lock />
+										</ListItemIcon>
+										<ListItemText
+											primary={
+												<span
+													style={{
+														color:
+															matchPath(history.location.pathname, { path: routes.setupMfa, exact: true }) !== null
+																? 'red'
+																: undefined,
+													}}
+												>
+													{'setup mfa'}
+												</span>
+											}
+										/>
+									</ListItem>
+								</DrawerMenuGroup>
 							</div>
 						</div>
 					</div>
@@ -250,6 +281,13 @@ class LayoutPortal_Root extends React.PureComponent<IProps, IState> {
 									path={routes.roleDetails}
 									isAuth={ctx.auth.isAuth}
 									render={() => <RoleDetails />}
+								/>
+								<PrivateRoute
+									location={location}
+									exact
+									path={routes.setupMfa}
+									isAuth={ctx.auth.isAuth}
+									render={() => <MfaSetup />}
 								/>
 								<PrivateRoute
 									location={location}

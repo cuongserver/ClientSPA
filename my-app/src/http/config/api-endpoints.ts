@@ -18,6 +18,14 @@ const userEndpoints: Endpoints = {
 		path: 'user/restore-session',
 		method: 'GET',
 	},
+	getMfaKey: {
+		path: 'user/get-qr-key',
+		method: 'GET',
+	},
+	validatePin: {
+		path: 'user/validate-pin',
+		method: 'GET',
+	},
 }
 
 const roleEndpoints: Endpoints = {

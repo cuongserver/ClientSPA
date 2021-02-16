@@ -18,6 +18,15 @@ export interface RoleCreateOrEditResponse {
 	result: string
 }
 
+export interface PinValidateRequest {
+	pin: string
+	mfaKey: string
+}
+
+export interface PinValidateResponse {
+	result: boolean
+}
+
 export interface RoleDetailsResponse {
 	id: string | null
 	name: string | null

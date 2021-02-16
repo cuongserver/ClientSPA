@@ -10,4 +10,9 @@ export interface AuthResponse {
 	result: string
 }
 
+export interface GetMfaKeyResponse {
+	mfaKey: string
+	base64QrImageString: string
+}
+
 export type AuthMessage = 'auth-success' | 'auth-failed'

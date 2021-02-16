@@ -1,6 +1,7 @@
 using DemoCms.EF;
 using DemoCms.EF.MsSqlServer;
 using DemoCms.Helper;
+using DemoCms.RestAPI.Caching;
 using DemoCms.RestAPI.Middlewares;
 using DemoCms.RestAPI.ModelValidators;
 using DemoCms.Service;
@@ -44,6 +45,7 @@ namespace DemoCms.RestAPI
 			services.AddSwaggerGen();
 			services.AddCors();
 			services.ApplyFluentValidation();
+			services.AddSingleton<PermissionCachingManager>();
 		}
 
 		// This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

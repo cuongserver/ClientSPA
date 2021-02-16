@@ -16,7 +16,7 @@ namespace DemoCms.Service.Database
     {
         #region Fields
 
-        private readonly ICrypytoHelper _crypytoHelper;
+        private readonly ICryptoHelper _crypytoHelper;
 
         private readonly IPermissionRepository _permissionRepo;
 
@@ -33,7 +33,7 @@ namespace DemoCms.Service.Database
         public UserService
             (
                 IUserRepository userRepo,
-                ICrypytoHelper crypytoHelper,
+                ICryptoHelper crypytoHelper,
                 IJWTokenHelper tokenHelper,
                 IRoleAssignmentRepository roleAssignmentRepo,
                 IPermissionRepository permissionRepo
@@ -86,7 +86,9 @@ namespace DemoCms.Service.Database
                     Result = AuthMessage.AuthSuccess,
                     DisplayName = credential.DisplayName,
                     JwToken = _tokenHelper.GenerateJwToken(credential.Id, secretKey, validPeriodInMinutes),
-                    Permissions = output.Select(x => x.Claim.Claim).ToList()
+                    Permissions = output.Select(x => x.Claim.Claim).ToList(),
+                    UserId = credential.Id,
+                    RoleId = output.First().RoleAssignment.RoleId
                 };
 
             }
