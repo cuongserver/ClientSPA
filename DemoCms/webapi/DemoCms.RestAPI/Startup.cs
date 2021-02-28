@@ -67,11 +67,10 @@ namespace DemoCms.RestAPI
 			app.UseCors(policy =>
 			{
 				policy
-				.WithOrigins("http://localhost:3000")
 				.AllowAnyMethod()
 				.AllowAnyHeader()
 				.AllowCredentials()
-				.SetIsOriginAllowed(origin => origin == "http://localhost:3000");
+				.SetIsOriginAllowed(origin => true);
 			});
 
 			app.UseHttpsRedirection();
